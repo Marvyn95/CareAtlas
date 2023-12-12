@@ -1,0 +1,21 @@
+{% extends 'users/base_2.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="mb-5">
+        <h1 class="mb-3"> <span class="fw-bolder">Register With </span><a href="{% url 'home-page' %}" class=" link-underline link-underline-opacity-0"><span class="display-1 fw-bolder text-primary fw-medium">CareAtlas</span></a></h1>
+        <p class="text-secondary fs-4">Elevating Healthcare, One Data Point at a Time!</p>
+    </div>
+    <!-- <div class="mt-5">
+        <h4 class="fw-bold">Register With Us</h4>
+    </div> -->
+    <div class="">
+        <form method="POST" action="#">
+            {% csrf_token %}
+            <div class="form-control"> {{ form2|crispy }} {{ form1|crispy }}</div>
+            <button type="submit" class="btn btn-primary fw-bold btn-lg px-6 me-3 mt-4">Sign Up</button>
+            <a href="{% url 'login' %}"><button type="button" class="btn btn-primary btn-lg me-3 mt-4">Have An Account? Login</button></a>
+
+            <!-- {{ form }} -->
+        </form>
+    </div>
+{% endblock content%}
