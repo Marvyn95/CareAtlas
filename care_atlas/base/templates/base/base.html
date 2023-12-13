@@ -1,47 +1,59 @@
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CareAtlas</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    
+
 </head>
 <body>
   <div class="d-flex justify-content-start h-100">
     
-    <div class="w-25 h-100 p-3 bg-primary-subtle d-flex flex-column align-items-center">
+    <div class="w-25 h-100 p-3 bg-body-secondary d-flex flex-column align-items-center m-2 rounded-4">
       
-      <div class="d-flex flex-column align-items-center" style="width: 18rem;">
-        <i class="bi bi-person-fill" style="font-size: 500%"></i>
+      <div class="d-flex flex-column align-items-center h-25" style="width: 18rem;">
+        <i class="bi bi-person-fill text-primary" style="font-size: 600%"></i>
         <div class="card-body">
-          <h5 class="card-title text-center"> {{ user.first_name }} {{ user.last_name}} </h5>
-          <h5 class="card-title text-center"> {{ user.hospitalprofile.hospital_name }} </h5>
+          <h5 class="card-title text-center fs-3 fw-bold"> {{ user.first_name }} {{ user.last_name}} </h5>
+          <h5 class="card-title text-center fs-2 fw-semibold"> {{ user.hospitalprofile.hospital_name }} </h5>
         </div>
+      </div>
+
+      <div class="mt-5 h-50">
+        <div class="d-grid gap-2 my-2">
+          <a href="" class="my-3 bg-primary py-3 rounded-4"><i class="ms-3 bi bi-people text-body-emphasis me-3" style="font-size: 190%"></i><button class="border border-0 btn btn-light fw-bolder fs-6 bg-primary text-light" type="button">Patient Records</button></a>
+
+          <a href="" class="my-2"><i class="bi bi-person-fill-add text-body-emphasis me-3" style="font-size: 190%"></i><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button">Add New Patient/Client</button></a>
+
+          <a href="" class="my-2"><i class="bi bi-journal-text text-body-emphasis me-3" style="font-size: 190%"></i><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button">Reports</button></a>
+
+          <a href="" class="mt-2 mb-5"><i class="bi bi-currency-exchange text-body-emphasis me-3" style="font-size: 190%"></i><button class=" border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button">Bills</button></a>
+        </div>
+
+        <div class="h-25 d-flex align-items-end mt-5">
+          <a href="{% url 'logout' %}" class="mt-5"><i class=" bi bi-box-arrow-left text-body-emphasis me-3" style="font-size: 190%"></i><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button">Log Out</button></a>
+        </div>
+
       </div>
 
     </div>
     
-    <div class="w-75 h-100 p-3 bg-body-secondary">
+    <div class="w-50 h-100 p-3 bg-body-secondary m-2 rounded-4">
       {% block content %}
       {% endblock content%}
     </div>
+
+    <div class="w-25 h-100 p-3 bg-body-secondary m-2 rounded-4">
+
+    </div>
+
   </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 </body>
 </html>
