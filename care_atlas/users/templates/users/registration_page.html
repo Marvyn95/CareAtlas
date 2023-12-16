@@ -11,9 +11,9 @@
     <div class="">
         <form method="POST" action="#">
             {% csrf_token %}
-            <div class="form-control"> {{ form2|crispy }} {{ form1|crispy }}</div>
+            {{ form2|crispy }} {{ form1|crispy }}
             <button type="submit" class="btn btn-primary fw-bold btn-lg px-6 me-3 mt-4">Sign Up</button>
-            <a href="{% url 'login' %}"><button type="button" class="btn btn-primary btn-lg me-3 mt-4">Have An Account? Login</button></a>
+            <a href="{% url 'login' %}"><button type="button" class="btn btn-primary btn-lg me-3 mt-4 fw-bold">Have An Account? Login</button></a>
 
             <!-- {{ form }} -->
         </form>

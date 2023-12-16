@@ -80,14 +80,14 @@
 
     </div>
 
-    <div class="d-flex justify-content-around mt-5 w-75 mx-auto">
+    <div class="d-flex justify-content-center mt-5 w-75 mx-auto">
 
-        <div>
+        <div class="me-4 d-flex flex-column align-items-center">
             <p class="fs-3">Have no Account?</p>
-            <a href="{% url 'register' %}"><button type="button" class="btn btn-primary btn-lg fw-bold">Register</button></a>
+            <a class="" href="{% url 'register' %}"><button type="button" class="btn btn-primary btn-lg fw-bold">Register</button></a>
         </div>
 
-        <div>
+        <div class="ms-4 d-flex flex-column align-items-center">
             <p class="fs-3">Have an account?</p>
             <a href="{% url 'login' %}"><button type="button" class="btn btn-primary btn-lg fw-bold">Login</button></a>
         </div>

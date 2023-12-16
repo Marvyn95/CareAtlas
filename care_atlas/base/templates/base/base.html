@@ -10,9 +10,10 @@
 
 </head>
 <body>
-  <div class="d-flex justify-content-start h-100">
+<div class="">
+  <div class="row justify-content-center h-100">
     
-    <div class="w-25 h-100 p-3 bg-body-secondary d-flex flex-column align-items-center m-2 rounded-4">
+    <div class="col-2 h-100 p-3 bg-body-secondary d-flex flex-column align-items-center mx-2 my-2 rounded-4">
       
       <div class="d-flex flex-column align-items-center h-25" style="width: 18rem;">
         <i class="bi bi-person-fill text-primary" style="font-size: 600%"></i>
@@ -24,33 +25,46 @@
 
       <div class="mt-5 h-50">
         <div class="d-grid gap-2 my-2">
-          <a href="" class="my-3 bg-primary py-3 rounded-4"><i class="ms-3 bi bi-people text-body-emphasis me-3" style="font-size: 190%"></i><button class="border border-0 btn btn-light fw-bolder fs-6 bg-primary text-light" type="button">Patient Records</button></a>
+          <a href="{% url 'application-page' %}" class="my-2 bg-primary py-3 rounded-3"><button class="border border-0 btn btn-light fw-bolder fs-6 bg-primary text-light" type="button"><i class="ms-2 bi bi-people-fill text-body-emphasis me-2" style="font-size: 190%"></i>Patient Records</button></a>
 
-          <a href="" class="my-2"><i class="bi bi-person-fill-add text-body-emphasis me-3" style="font-size: 190%"></i><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button">Add New Patient/Client</button></a>
+          <a href="{% url 'new-patient' %}" class="my-1"><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button"><i class="bi bi-person-fill-add text-body-emphasis me-3" style="font-size: 190%"></i>Add New Patient/Client</button></a>
 
-          <a href="" class="my-2"><i class="bi bi-journal-text text-body-emphasis me-3" style="font-size: 190%"></i><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button">Reports</button></a>
+          <a href="" class="my-1"><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button"><i class="bi bi-journal-text text-body-emphasis me-3" style="font-size: 190%"></i>Reports</button></a>
 
-          <a href="" class="mt-2 mb-5"><i class="bi bi-currency-exchange text-body-emphasis me-3" style="font-size: 190%"></i><button class=" border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button">Bills</button></a>
+          <a href="" class="mt-1 mb-5"><button class=" border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button"><i class="bi bi-currency-exchange text-body-emphasis me-3" style="font-size: 190%"></i>Bills</button></a>
         </div>
 
         <div class="h-25 d-flex align-items-end mt-5">
-          <a href="{% url 'logout' %}" class="mt-5"><i class=" bi bi-box-arrow-left text-body-emphasis me-3" style="font-size: 190%"></i><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button">Log Out</button></a>
+          <a href="{% url 'logout' %}" class="mt-5"><button class="border border-0 btn btn-light fw-bolder fs-6 bg-primary-subtle rounded-4 text-body-secondary p-3" type="button"><i class=" bi bi-x-octagon-fill text-body-emphasis me-3" style="font-size: 190%"></i>Log Out</button></a>
         </div>
-
       </div>
-
     </div>
     
-    <div class="w-50 h-100 p-3 bg-body-secondary m-2 rounded-4">
+    <div class="col-7 h-100 p-3 bg-body-secondary my-2 rounded-4">
       {% block content %}
       {% endblock content%}
     </div>
 
-    <div class="w-25 h-100 p-3 bg-body-secondary m-2 rounded-4">
-
+    <div class="col-2 h-100 p-3 bg-body-secondary mx-2 my-2 rounded-4">
+      <div>
+        <h1 class="display-5 mt-5 ms-3 text-light fw-bold bg-primary p-4 rounded-4">{{ day }}, {{ date }}</h1>
+      </div>
+      <div>
+        <h1 class="display-5 ms-5 text-primary fw-bold">{{month }}</h1>
+      </div>
+      <div>
+        <h1 class="display-4 ms-5 fw-bolder">{{year}}</h1>
+      </div>
+      <div>
+        <h1 class="display-5 ms-5">
+          {% if True %}
+          {% endif %}
+        </h1>
+      </div>
     </div>
 
   </div>
+</div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
