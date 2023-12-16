@@ -55,12 +55,9 @@ def login_page(request):
         user = User.objects.filter(email = request.POST['email']).first()
         if user:
             username = user.username
-            print(username)
             password = request.POST['password']
-            print(password)
             # authenticating and logging in user
             user = authenticate(request, username=username, password=password)
-            print(user)
             if user is not None:
                 login(request, user) 
                 messages.success(request, 'Your Login Was Succesful')

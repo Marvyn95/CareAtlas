@@ -12,6 +12,10 @@ class Patient(models.Model):
     sex = models.CharField(blank=False, choices=sex_type, max_length=15)
     phone_number = models.CharField(max_length=20, null=True)
     
+    def __str__(self):
+        patient = f"{self.first_name} {self.last_name}, {self.nationality}, {self.sex}, DOB: {self.date_of_birth}, TEL: {self.phone_number}"
+        return (patient)
+    
 class PatientRecord(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
