@@ -11,15 +11,22 @@
             </div>
         </nav>
 
-        <div class="container text-center">
-          <div class="row row-cols-3">
+        <div class="container  mt-4">
+          <div class="row">
             {% for patient in patients %}
-            <div class="col">Column</div>
+            <div class="col-3 mt-2">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title fw-semibold text-primary"><i class="bi bi-person-circle me-2"></i>{{patient.first_name}} {{patient.last_name}}</h5>
+                  <h5 class="card-subtitle mb-2 text-body-secondary">{{patient.nationality}}, <span class="text-primary">{{patient.sex}}</span>, {{patient.age}}</h5>
+                  <h5 class="fw-semibold">Born: <span class="fw-bold ">{{patient.date_of_birth}}</span></h5>
+                  <h5 class="fw-semiold">Tel: <span class="fw-bold text-primary">{{patient.phone_number}}</span></h5>
+                  <!-- <a href="#" class="card-link"><button class="btn btn-primary" type="submit">Medical Records</button></a> -->
+                  <!-- <a href="#" class="card-link"><button class="btn btn-primary" type="submit">Bills</button></a> -->
+                </div>
+              </div>
+            </div>
             {% endfor %}
-            <div class="col">Column</div>
-            <div class="col">Column</div>
-            <div class="col">Column</div>
-            <div class="col">Column</div>
           </div>
         </div>
     </div>

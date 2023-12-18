@@ -11,6 +11,7 @@ class Patient(models.Model):
     sex_type = {"Male": "Male", "Female": "Female", "Complicated": "Complicated"}
     sex = models.CharField(blank=False, choices=sex_type, max_length=15)
     phone_number = models.CharField(max_length=20, null=True)
+    age = models.IntegerField(null=True)
     
     def __str__(self):
         patient = f"{self.first_name} {self.last_name}, {self.nationality}, {self.sex}, DOB: {self.date_of_birth}, TEL: {self.phone_number}"
