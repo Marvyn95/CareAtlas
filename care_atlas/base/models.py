@@ -41,7 +41,7 @@ class PatientVital(models.Model):
     diastolic_blood_pressure = models.IntegerField(null=True)
     
     def __str__(self):
-        patient_vital = f"Doc: {self.doctor}, Pulse: {self.pulse_bpm}, Temp: {self.temperature}, Weight: {self.weight}, BP: {self.systolic_blood_pressure} / {self.diastolic_blood_pressure}"
+        patient_vital = f"Patient: {self.patient.first_name} {self.patient.last_name} Doc: {self.doctor}, Pulse: {self.pulse_bpm}, Temp: {self.temperature}, Weight: {self.weight}, BP: {self.systolic_blood_pressure} / {self.diastolic_blood_pressure}"
         return (patient_vital)
         
     
