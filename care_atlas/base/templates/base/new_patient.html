@@ -19,7 +19,7 @@
     </div>
 
     <div class="">
-        <form method="POST" class="row mx-auto bg-primary-subtle p-4 rounded-4 g-3 w-75">
+        <form method="POST" class="row mx-auto bg-primary-subtle p-4 rounded-4 g-3 w-75 mb-5">
             {% csrf_token %}
             <div class="col-md-6">
               <label for="" class="form-label">First Name</label>
@@ -39,7 +39,7 @@
               </div>
             <div class="col-12">
               <label for="i" class="form-label">Nationality</label>
-              <input type="text" class="form-control" id="" placeholder="" name="nationality">
+              <input type="text" class="form-control" id="" placeholder="Ugandan" name="nationality">
             </div>
             <div class="col-12">
                 <label for="" class="form-label">Phone Number</label>
@@ -50,7 +50,7 @@
                 <input type="date" class="form-control" id="" placeholder="" name="date_of_birth" required>
             </div>
             <div class="col-12">
-              <button type="submit" class="btn btn-primary fw-bold fs-5 p-2 mt-2">Save Patient</button>
+              <button type="submit" class="btn btn-primary fw-bold fs-5 p-2 mt-2 mb-5">Save Patient</button>
             </div>
           </form>
     </div>

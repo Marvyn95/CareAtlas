@@ -4,6 +4,7 @@ import datetime
 from django.contrib import messages
 from base.models import Patient, PatientRecord, PatientVital
 import math
+from django.core.paginator import Paginator
 
 
 date_1 = datetime.datetime.now().strftime("%A %d %b %Y, %I:%M%p").split(" ")
@@ -13,15 +14,18 @@ date = {"day": date_1[0],  "day_of_month": date_1[1], "month": date_1[2], "year"
 def home_page(request):
     return render(request, 'base/home_page.html')
 
-def application_page(request):
+def application_page(request, page):
+    all_patients = Patient.objects.all()
+    patients = Paginator(all_patients, 8)
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
         "month": date_1[2],
         "year": date_1[3].replace(",", ""),
         "date": date,
-        "patients": Patient.objects.all()
+        "patients": patients.page(page)
     }
+    print(context["patients"].has_next())
     return render(request, 'base/application_page.html', context)
 
 def new_patient_page(request):
@@ -60,3 +64,15 @@ def new_patient_vital_page(request):
 
 def new_patient_record_page(request):
     return render(request, 'base/new_patient_record.html', date)
+
+
+def patient_page(request, patient_id):
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "patient": Patient.objects.get(id=patient_id)
+    }
+    return render(request, 'base/patient_page.html', context)
