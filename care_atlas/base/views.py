@@ -5,6 +5,7 @@ from django.contrib import messages
 from base.models import Patient, PatientRecord, PatientVital
 import math
 from django.core.paginator import Paginator
+from django.urls import reverse
 
 
 date_1 = datetime.datetime.now().strftime("%A %d %b %Y, %I:%M%p").split(" ")
@@ -14,9 +15,9 @@ date = {"day": date_1[0],  "day_of_month": date_1[1], "month": date_1[2], "year"
 def home_page(request):
     return render(request, 'base/home_page.html')
 
-def application_page(request, page):
+def application_page(request, page=1):
     all_patients = Patient.objects.all()
-    patients = Paginator(all_patients, 8)
+    patients = Paginator(all_patients, 24)
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -25,8 +26,9 @@ def application_page(request, page):
         "date": date,
         "patients": patients.page(page)
     }
-    print(context["patients"].has_next())
     return render(request, 'base/application_page.html', context)
+
+
 
 def new_patient_page(request):
     if request.method == "POST":
@@ -57,8 +59,26 @@ def new_patient_page(request):
 
 
 
-def new_patient_vital_page(request):
-    return render(request, 'base/new_patient_vital.html', date)
+def new_patient_vital_page(request, patient_id):
+    if request.method == "POST":
+        patient = Patient.objects.get(id=patient_id)
+        temperature = request.POST["temperature"]
+        weight = request.POST["weight"]
+        pulse = request.POST["pulse"]
+        bp_sys = request.POST["systolic_blood_pressure"]
+        bp_dias = request.POST["diastolic_blood_pressure"]
+        
+        vitals = PatientVital(patient=patient,
+                              doctor=request.user,
+                              pulse_bpm=pulse,
+                              temperature=temperature,
+                              weight=weight,
+                              systolic_blood_pressure=bp_sys,
+                              diastolic_blood_pressure=bp_dias)
+        vitals.save()
+        messages.success(request, "Vital Record Has Been Added")
+    redirect_url=reverse('patient-page', args=(patient_id,))
+    return redirect(redirect_url)
 
 
 

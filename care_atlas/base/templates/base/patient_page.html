@@ -2,16 +2,84 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <div>
-        <nav class="navbar bg-body-tertiary rounded-4">
-            <div class="container-fluid">
-              <a href=" {% url 'application-page' %} " class="link-underline link-underline-opacity-0"><span class="navbar-brand mb-0 h1 text-primary fw-bolder fs-3 ms-3">CareAtlas</span></a>
-              <form class="d-flex w-75 my-auto" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search Clients/Patients" aria-label="Search">
-                <button class="btn btn-primary" type="submit">Search</button>
-              </form>
-            </div>
+        <div class="">
+          <h2 class="mb-1 mt-3 text-black fw-bold"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2>
+          <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}, {{patient.sex}}, {{patient.age}}</h5>
+          <h5 class="my-1 fw-medium"><i class="bi bi-telephone-fill me-2"></i>{{patient.phone_number}}</h5>
+        </div>
 
-        </nav>
+        <div>
+          <div class="container text-center mt-3">
+            <div class="row">
+              <div class="col bg-primary-subtle mx-1">col</div>
+              <div class="col bg-primary-subtle mx-1">col</div>
+              <div class="col bg-primary-subtle mx-1">col</div>
+              <div class="col bg-primary-subtle mx-1">col</div>
+              <div class="col bg-primary-subtle mx-1">col</div>
+            </div>
+          </div>
+
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary mt-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add New Patient Vitals
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade modal-dialog modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">New Patient Vitals</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form method="POST" action="{% url 'new-patient-vital' patient.id %}">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                      <label for="temperature" class="col-sm-2 col-form-label">Temperature</label>
+                      <div class="col-sm-10">
+                        <input type="number" class="form-control" id="temperature" name="temperature">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="weight" class="col-sm-2 col-form-label">Weight (kg)</label>
+                      <div class="col-sm-10">
+                        <input type="number" class="form-control" id="weight" name="weight">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="pulse" class="col-sm-2 col-form-label">Heart Rate (bpm)</label>
+                      <div class="col-sm-10">
+                        <input type="number" class="form-control" id="pulse" name="pulse">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="bp_sys" class="col-sm-2 col-form-label">Systolic BP</label>
+                      <div class="col-sm-10">
+                        <input type="number" class="form-control" id="bp_sys" name="systolic_blood_pressure">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="bp_dias" class="col-sm-2 col-form-label">Diastolic BP</label>
+                      <div class="col-sm-10">
+                        <input type="number" class="form-control" id="bp_dias" name="diastolic_blood_pressure">
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary ms-2">Save</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
     </div>
     
 {% endblock content %}
+
+
+<i class="bi bi-person-circle"></i>

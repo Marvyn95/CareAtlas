@@ -6,6 +6,9 @@ from .forms import UserRegistrationForm, HospitalProfileForm
 from django.contrib.auth import authenticate, login, logout
 from .utils import *
 from django.contrib.auth.hashers import make_password
+from django.urls import reverse
+
+
 
 # Create your views here.
 def register(request):
@@ -50,6 +53,8 @@ def register(request):
     return render(request, 'users/registration_page.html', {'form1': form1, "form2": form2})
 
 
+
+
 def login_page(request):
     if request.method == 'POST':
         user = User.objects.filter(email = request.POST['email']).first()
@@ -61,7 +66,8 @@ def login_page(request):
             if user is not None:
                 login(request, user) 
                 messages.success(request, 'Your Login Was Succesful')
-                return redirect('application-page')
+                redirect_url = reverse('application-page', args=(1,))
+                return redirect(redirect_url)
             else:
                 messages.warning(request, 'Login Denied!, Please Check Login Credentials')
                 return redirect('login')
@@ -69,6 +75,8 @@ def login_page(request):
             messages.warning(request, 'Login Denied!, Please Check Login Credentials')
             return redirect('login')
     return render(request, 'users/login_page.html')
+
+
 
 def logout_page(request):
     logout(request)

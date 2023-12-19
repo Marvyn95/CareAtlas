@@ -30,6 +30,8 @@ class PatientRecord(models.Model):
     prescriptions = models.TextField(blank=False)
     
 class PatientVital(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
+    doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     date_added = models.DateField(auto_now_add=True)
     time_added = models.TimeField(auto_now_add=True)
     pulse_bpm = models.IntegerField(null=True)
@@ -37,6 +39,10 @@ class PatientVital(models.Model):
     weight = models.IntegerField(null=True)
     systolic_blood_pressure = models.IntegerField(null=True)
     diastolic_blood_pressure = models.IntegerField(null=True)
+    
+    def __str__(self):
+        patient_vital = f"Doc: {self.doctor}, Pulse: {self.pulse_bpm}, Temp: {self.temperature}, Weight: {self.weight}, BP: {self.systolic_blood_pressure} / {self.diastolic_blood_pressure}"
+        return (patient_vital)
         
     
     

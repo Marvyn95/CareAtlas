@@ -1,28 +1,16 @@
 {% extends 'base/base.html' %}
 {% block content %}
     <div>
-        <nav class="navbar bg-body-tertiary rounded-4">
-            <div class="container-fluid">
-              <a href=" {% url 'application-page' 1 %} " class="link-underline link-underline-opacity-0"><span class="navbar-brand mb-0 h1 text-primary fw-bolder fs-3 ms-3">CareAtlas</span></a>
-              <form class="d-flex w-75 my-auto" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search Clients/Patients" aria-label="Search">
-                <button class="btn btn-primary" type="submit">Search</button>
-              </form>
-            </div>
-        </nav>
-
         <div class="container  mt-4">
           <div class="row">
             {% for patient in patients %}
             <div class="col-3 mt-2">
-              <div class="card bg-primary-subtle">
+              <div class="card bg-primary-subtle rounded-4">
                 <a href="{% url 'patient-page' patient.id %}" class="link-underline link-underline-opacity-0"><div class="card-body">
-                  <h5 class="card-title fw-semibold text-primary"><i class="bi bi-person-circle me-2"></i>{{patient.first_name}} {{patient.last_name}}</h5>
+                  <h5 class="card-title fw-semibold text-primary"><i class="bi bi-person-circle me-2 text-black"></i>{{patient.first_name}} {{patient.last_name}}</h5>
                   <h5 class="card-subtitle mb-2 text-body-secondary">{{patient.nationality}}, <span class="text-primary">{{patient.sex}}</span>, {{patient.age}}</h5>
                   <h5 class="fw-semibold text-black">Born: <span class="fw-bold ">{{patient.date_of_birth}}</span></h5>
-                  <h5 class="fw-semiold text-black">Tel: <span class="fw-bold text-primary">{{patient.phone_number}}</span></h5>
-                  <!-- <a href="#" class="card-link"><button class="btn btn-primary" type="submit">Medical Records</button></a> -->
-                  <!-- <a href="#" class="card-link"><button class="btn btn-primary" type="submit">Bills</button></a> -->
+                  <h5 class="fw-semiold text-black"><i class="bi bi-telephone me-2"></i></i><span class="fw-bold text-primary">{{patient.phone_number}}</span></h5>
                 </div></a>
               </div>
             </div>
@@ -30,17 +18,20 @@
             <div class="d-flex justify-content-center mt-5">
               <nav aria-label="..." class="">
                 <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link">First</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                  <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="{% url 'application-page' 1 %}">{{patients.number}}</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Last</a>
-                  </li>
+
+                  {% if patients.has_previous %}
+                  <li class="page-item"><a class="page-link" href="{% url 'application-page' 1 %}">First</a></li>
+                  <li class="page-item"><a class="page-link" href="{% url 'application-page' patients.previous_page_number %}">Prev</a></li>
+                  {% endif %}
+
+                  <li class="page-item active" aria-current="page"><a class="page-link" href="{% url 'application-page' patients.number %}">{{patients.number}}</a></li>
+
+                  {% if patients.has_next %}
+                  <li class="page-item"><a class="page-link" href="{% url 'application-page' patients.next_page_number %}">{{patients.next_page_number}}</a></li>
+                  <!-- <p>{{patients.paginator.num_pages}}</p> -->
+                  <li class="page-item"><a class="page-link" href="{% url 'application-page' patients.paginator.num_pages %}">Last</a></li>
+                  {% endif %}
+
                 </ul>
               </nav>
             </div>
