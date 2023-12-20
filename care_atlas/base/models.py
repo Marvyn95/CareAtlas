@@ -17,17 +17,22 @@ class Patient(models.Model):
         patient = f"{self.first_name} {self.last_name}, {self.nationality}, {self.sex}, DOB: {self.date_of_birth}, TEL: {self.phone_number}"
         return (patient)
     
+    
 class PatientRecord(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     date_added = models.DateField(auto_now_add=True)
     time_added = models.TimeField(auto_now_add=True)
     signs_and_symptoms = models.TextField(blank=False)
-    test_for = models.TextField(null=True)
-    test_method = models.TextField(null=True)
-    results = {"Positive": "Positive", "Negative": "Negative"}
-    test_result = models.CharField(choices=results, null=True, max_length=20)
+    tests_for = models.TextField(null=True)
+    test_methods = models.TextField(null=True)
+    test_results = models.TextField(null=True)
     prescriptions = models.TextField(blank=False)
+    
+    def __str__(self):
+        record = f"signs: {self.signs_and_symptoms}, Tests: {self.tests_for}, Test Results: {self.test_results}, Test Methods: {self.test_methods}, Prescriptions: {self.prescriptions}"
+        return record
+    
     
 class PatientVital(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)

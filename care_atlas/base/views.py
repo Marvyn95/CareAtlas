@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from base.forms import PatientForm, PatientRecordForm, PatientVitalForm
 import datetime
 from django.contrib import messages
 from base.models import Patient, PatientRecord, PatientVital
@@ -8,7 +7,7 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 
 
-date_1 = datetime.datetime.now().strftime("%A %d %b %Y, %I:%M%p").split(" ")
+date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
 date = {"day": date_1[0],  "day_of_month": date_1[1], "month": date_1[2], "year": date_1[3].replace(",", "")}
 
 # Create your views here.
@@ -68,6 +67,21 @@ def new_patient_vital_page(request, patient_id):
         bp_sys = request.POST["systolic_blood_pressure"]
         bp_dias = request.POST["diastolic_blood_pressure"]
         
+        if temperature == "" and weight=="" and pulse=="" and bp_sys=="" and bp_dias == "":
+            redirect_url=reverse('patient-page', args=(patient_id,))
+            return redirect(redirect_url)
+        
+        if temperature=="":
+            temperature=None
+        if weight=="":
+            weight=None
+        if pulse=="":
+            pulse=None
+        if bp_sys=="":
+            bp_sys=None
+        if bp_dias=="":
+            bp_dias=None
+        
         vitals = PatientVital(patient=patient,
                               doctor=request.user,
                               pulse_bpm=pulse,
@@ -82,17 +96,46 @@ def new_patient_vital_page(request, patient_id):
 
 
 
-def new_patient_record_page(request):
-    return render(request, 'base/new_patient_record.html', date)
+def new_patient_record_page(request, patient_id):
+    if request.method == "POST":
+        signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n"))
+        tests_for = ", ".join(request.POST["tests_for"].split("\r\n"))
+        test_methods = ", ".join(request.POST["test_methods"].split("\r\n"))
+        test_results = ", ".join(request.POST["test_results"].split("\r\n"))
+        prescriptions = ", ".join(request.POST["prescriptions"].split("\r\n"))
+        patient=Patient.objects.get(id=patient_id)
+        
+        if tests_for=="":
+            test_for = None
+        if test_methods=="":
+            test_methods=None
+            
+        medical_record = PatientRecord(patient=patient,
+                                       doctor=request.user,
+                                       signs_and_symptoms=signs_and_symptoms,
+                                       tests_for=tests_for,
+                                       test_methods=test_methods,
+                                       test_results=test_results,
+                                       prescriptions=prescriptions)
+        medical_record.save()
+        redirect_url = reverse('patient-page', args=(patient_id,))
+        return redirect(redirect_url)
 
 
 def patient_page(request, patient_id):
+    patient = Patient.objects.get(id=patient_id)
+    
+    vitals = list(PatientVital.objects.filter(patient=patient).order_by("date_added", "time_added"))[-5:]
+    medical_records = PatientRecord.objects.filter(patient=patient).order_by("-date_added", "-time_added")
+    
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
         "month": date_1[2],
         "year": date_1[3].replace(",", ""),
         "date": date,
-        "patient": Patient.objects.get(id=patient_id)
+        "patient": patient,
+        "vitals": vitals,
+        "medical_records": medical_records
     }
     return render(request, 'base/patient_page.html', context)

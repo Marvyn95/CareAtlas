@@ -1,6 +1,5 @@
 {% extends 'base/base.html' %}
 {% block content %}
-    <div>
         <div class="container  mt-4">
           <div class="row">
             {% for patient in patients %}
@@ -10,11 +9,12 @@
                   <h5 class="card-title fw-semibold text-primary"><i class="bi bi-person-circle me-2 text-black"></i>{{patient.first_name}} {{patient.last_name}}</h5>
                   <h5 class="card-subtitle mb-2 text-body-secondary">{{patient.nationality}}, <span class="text-primary">{{patient.sex}}</span>, {{patient.age}}</h5>
                   <h5 class="fw-semibold text-black">Born: <span class="fw-bold ">{{patient.date_of_birth}}</span></h5>
-                  <h5 class="fw-semiold text-black"><i class="bi bi-telephone me-2"></i></i><span class="fw-bold text-primary">{{patient.phone_number}}</span></h5>
+                  <!-- <h5 class="fw-semiold text-black"><i class="bi bi-telephone me-2"></i></i><span class="fw-bold text-primary">{{patient.phone_number}}</span></h5> -->
                 </div></a>
               </div>
             </div>
             {% endfor %}
+
             <div class="d-flex justify-content-center mt-5">
               <nav aria-label="..." class="">
                 <ul class="pagination">
@@ -38,5 +38,4 @@
 
           </div>
         </div>
-    </div>
 {% endblock content %}

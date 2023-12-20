@@ -1,85 +1,177 @@
 {% extends 'base/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div>
-        <div class="">
-          <h2 class="mb-1 mt-3 text-black fw-bold"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2>
-          <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}, {{patient.sex}}, {{patient.age}}</h5>
-          <h5 class="my-1 fw-medium"><i class="bi bi-telephone-fill me-2"></i>{{patient.phone_number}}</h5>
-        </div>
-
-        <div>
-          <div class="container text-center mt-3">
-            <div class="row">
-              <div class="col bg-primary-subtle mx-1">col</div>
-              <div class="col bg-primary-subtle mx-1">col</div>
-              <div class="col bg-primary-subtle mx-1">col</div>
-              <div class="col bg-primary-subtle mx-1">col</div>
-              <div class="col bg-primary-subtle mx-1">col</div>
-            </div>
+<div>
+    <!-- Modal 1-->
+    <div class="modal fade modal-dialog modal-lg" id="addvitals" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-body-secondary">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5 text-primary fw-bold" id="exampleModalLabel">New Patient Vitals</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-
-          <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary mt-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Add New Patient Vitals
-          </button>
-
-          <!-- Modal -->
-          <div class="modal fade modal-dialog modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">New Patient Vitals</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form method="POST" action="{% url 'new-patient-vital' patient.id %}">
-                    {% csrf_token %}
-                    <div class="row mb-3">
-                      <label for="temperature" class="col-sm-2 col-form-label">Temperature</label>
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" id="temperature" name="temperature">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="weight" class="col-sm-2 col-form-label">Weight (kg)</label>
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" id="weight" name="weight">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="pulse" class="col-sm-2 col-form-label">Heart Rate (bpm)</label>
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" id="pulse" name="pulse">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="bp_sys" class="col-sm-2 col-form-label">Systolic BP</label>
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" id="bp_sys" name="systolic_blood_pressure">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="bp_dias" class="col-sm-2 col-form-label">Diastolic BP</label>
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" id="bp_dias" name="diastolic_blood_pressure">
-                      </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary ms-2">Save</button>
-                    </div>
-                  </form>
+          <div class="modal-body">
+            <form method="POST" action="{% url 'new-patient-vital' patient.id %}" class="mx-5">
+              {% csrf_token %}
+              <div class="row mb-3">
+                <label for="temperature" class="col-sm-2 col-form-label fw-semibold">Temperature</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="temperature" name="temperature" value="">
                 </div>
               </div>
-            </div>
+              <div class="row mb-3">
+                <label for="weight" class="col-sm-2 col-form-label fw-semibold">Weight (kg)</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="weight" name="weight" value="None">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="pulse" class="col-sm-2 col-form-label fw-semibold">Heart Rate (bpm)</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="pulse" name="pulse" value="None">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="bp_sys" class="col-sm-2 col-form-label fw-semibold">Systolic BP</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="bp_sys" name="systolic_blood_pressure" value="None">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="bp_dias" class="col-sm-2 col-form-label fw-semibold">Diastolic BP</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="bp_dias" name="diastolic_blood_pressure" value="None">
+                </div>
+              </div>
+              <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary ms-2">Save</button>
+              </div>
+            </form>
           </div>
+        </div>
+      </div>
+    </div>
+    <!-- end model 1 -->
+
+    <!-- Modal 2-->
+    <div class="modal fade modal-dialog modal-lg" id="new_medical_record" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-body-secondary">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5 text-primary fw-bold" id="exampleModalLabel">New Medical Record</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="{% url 'new-patient-record' patient.id %}" class="mx-5">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                <label for="sas" class="form-label fw-medium">Signs and Symptoms</label>
+                <textarea class="form-control" id="sas" rows="3" name="signs_and_symptoms" placeholder="Enter present signs and symptoms of the patient" required></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="tdf" class="form-label fw-medium">Tests Done For:</label>
+                <textarea class="form-control" id="tdf" rows="3" placeholder="please enter diseases or disorders being tested for based on the signs and symptoms mentioned" name="tests_for"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="tmu" class="form-label fw-medium">Test Methods Used</label>
+                <textarea class="form-control" id="tmu" rows="3" name="test_methods"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="tr" class="form-label fw-medium">Test Results and Conclusions</label>
+                <textarea class="form-control" id="tr" rows="3" name="test_results" placeholder="Please Enter Test Results and/or Conclusion from Medical Diagnosis" required></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="pr" class="form-label fw-medium">Prescriptions</label>
+                <textarea class="form-control" id="pr" rows="3" name="prescriptions" placeholder="Please Enter Prescriptions Given To Patient" required></textarea>
+              </div>
+
+              <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary ms-2">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal end -->
+
+  <!-- patient details section -->
+  <div class="d-flex justify-content-center">
+    <div class="">
+      <h2 class="mb-1 mt-3 text-black fw-bold"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2>
+      <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}, {{patient.sex}}, {{patient.age}}</h5>
+      <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2"></i>{{patient.phone_number}}</h5>
+    </div>
+  </div>
+
+
+  <!-- Vitals section -->
+  <div class="mt-3">
+    <div class="row">
+      <div class="col-4"><h4 class="fw-bold">Vitals History</h4></div>
+      <div class="col-4"></div>
+      <div class="col-4"><button type="button" class="btn btn-secondary fs-5 px-5 fw-semibold" data-bs-toggle="modal" data-bs-target="#addvitals"><i class="bi bi-plus-square-fill me-2 text-black"></i>Add New Vitals</button></div>
+    </div>
+
+    <div class="container mt-3">
+      <div class="row">
+        {% for vital in vitals %}
+        <div class="col bg-primary-subtle m-1 py-3 rounded-3">
+          <h6 class=""><i class="bi bi-calendar3-week-fill me-2 text-primary"></i>{{vital.date_added}}</h6>
+          <h4 class="ps-2"><span class="h3">{{vital.systolic_blood_pressure}}</span> / {{vital.diastolic_blood_pressure}} <span class="text-primary fs-6">bp</span></h4>
+          <h5 class="ps-2">{{vital.weight}}<span class="text-primary fs-6">kg</span> {{vital.temperature}}<i class="bi bi-thermometer-high text-primary"></i> {{vital.pulse_bpm}}<span class="text-primary fs-6">bpm</span></h5>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary mt-2 fw-semibold ms-3 fs-5" data-bs-toggle="modal" data-bs-target="#allvitals">All Vitals Records</button>
+  </div>
+
+
+  <!-- medical history section -->
+  <div>
+    <div class="container mt-5 mb-3">
+      <div class="row">
+        <div class="col-4"><h4 class="fw-bold">Medical History</h4></div>
+        <div class="col-4"></div>
+        <div class="col-4"><a class="btn btn-secondary fs-5 px-5 fw-semibold" data-bs-toggle="modal" data-bs-target="#new_medical_record" href="#" role="button"><i class="bi bi-plus-square-fill me-2 text-black"></i>New Medical Record</a></div>
+      </div>
+    </div>
+
+    {% for record in medical_records %}
+    <div class="card w-100 h-15 mb-3 me-4 rounded-4">
+      <div class="card-body">
+        <div class="row pt-2">
+          <h5 class="card-title col">{{record.date_added}}</h5>
+          <p class="col fw-medium"><i class="bi bi-alarm-fill me-1"></i>{{record.time_added}}</p>
+          <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{record.doctor.first_name}}</p>
+          <p class="col-4 fw-medium"><i class="bi bi-hospital-fill me-1"></i>{{record.doctor.hospitalprofile.hospital_name}}</p>
+          
+          {% if user == record.doctor %}
+          <button type="button" class="btn btn-primary col fw-semibold me-4" data-bs-toggle="modal" data-bs-target="#model3">Edit</button>
+          {% endif %}
 
         </div>
 
+        <ul class="">
+          <li class="list-group-item"><span class="fw-bold">Signs and Symptoms: </span>{{record.signs_and_symptoms}}</li>
+          <li class="list-group-item"><span class="fw-bold">Tests Done For: </span>{{record.tests_for}}</li>
+          <li class="list-group-item"><span class="fw-bold">Tests Done / Test Methods: </span>{{record.test_methods}}</li>
+          <li class="list-group-item"><span class="fw-bold">Results: </span>{{record.test_results}}</li>
+          <li class="list-group-item"><span class="fw-bold">Prescriptions: </span>{{record.prescriptions}}</li>
+        </ul>
+        <button type="button" class="btn btn-primary col fw-semibold mx-4" data-bs-toggle="modal" data-bs-target="#model4">View in Detail</button>
+      </div>
     </div>
-    
+    {% endfor %}
+  </div>
+
+</div>  
 {% endblock content %}
-
-
-<i class="bi bi-person-circle"></i>

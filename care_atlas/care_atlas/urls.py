@@ -29,6 +29,6 @@ urlpatterns = [
     path('base/application/<int:page>', base_views.application_page, name='application-page'),
     path('base/new_patient', base_views.new_patient_page, name='new-patient'),
     path('base/new_patient_vital/<int:patient_id>', base_views.new_patient_vital_page, name='new-patient-vital'),
-    path('base/new_patient_record', base_views.new_patient_record_page, name='new-patient-record'),
+    path('base/new_patient_record/<int:patient_id>', base_views.new_patient_record_page, name='new-patient-record'),
     path('base/patient_page/<int:patient_id>', base_views.patient_page, name='patient-page')
 ]
