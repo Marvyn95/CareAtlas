@@ -42,8 +42,17 @@
       <h5 class="mb-2 fw-bold">Test Results</h5>
       <p class="fs-5 mb-5 fst-italic">{{record.test_results}}</p>
 
-      <h5 class="mb-2 fw-bold">Medications Prescribed</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.prescriptions}}</p>
+      <div class="row">
+        <div class="col-8">
+        <h5 class="mb-2 fw-bold">Medications Prescribed</h5>
+        <p class="fs-5 mb-5 fst-italic">{{record.prescriptions}}</p>
+        </div>
+        {% if user == record.doctor %}
+        <div class="col text-center">
+          <a class="btn btn-primary my-5 px-3 fw-bold fs-5" href="{% url 'bill-patient' patient.id record.id%}" role="button">Bill Patient</a>
+        </div>
+        {% endif %}
+      </div>
     </div>   
 </div>
 {% endblock content %}

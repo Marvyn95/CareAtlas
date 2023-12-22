@@ -251,3 +251,17 @@ def medical_record_page(request, patient_id, record_id):
     }
     
     return render(request, 'base/medical_record_page.html', context)
+
+def bill_patient_page(request, patient_id, record_id):
+    patient = Patient.objects.get(id=patient_id)
+    record = PatientRecord.objects.get(id=record_id)
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "record": record,
+        "patient": patient
+    }
+    return render(request, 'base/bill_patient_page.html', context)
