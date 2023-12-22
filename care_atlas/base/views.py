@@ -53,8 +53,10 @@ def new_patient_page(request):
         
         patient1.save()
         messages.success(request, "Patient Profile Created Successfully")
-        return redirect("application-page")
-    return render(request, 'base/new_patient.html', date)
+        redirect_url=reverse('application-page', args=(1,))
+        return redirect(redirect_url)
+    else:
+        return render(request, 'base/new_patient.html', date)
 
 
 
@@ -95,6 +97,48 @@ def new_patient_vital_page(request, patient_id):
     return redirect(redirect_url)
 
 
+def edit_vitals_page(request, patient_id, vital_id):
+    vital = PatientVital.objects.get(id=vital_id)
+    patient = Patient.objects.get(id=patient_id)
+    
+    if request.method == "POST":
+        temperature = request.POST["temperature"]
+        weight = request.POST["weight"]
+        pulse = request.POST["pulse"]
+        bp_sys = request.POST["systolic_blood_pressure"]
+        bp_dias = request.POST["diastolic_blood_pressure"]
+        
+        if temperature == "" and weight=="" and pulse=="" and bp_sys=="" and bp_dias == "":
+            redirect_url=reverse('patient-page', args=(patient_id,))
+            return redirect(redirect_url)
+        
+        if temperature=="":
+            temperature=None
+        if weight=="":
+            weight=None
+        if pulse=="":
+            pulse=None
+        if bp_sys=="":
+            bp_sys=None
+        if bp_dias=="":
+            bp_dias=None
+        
+        vital.temperature = temperature
+        vital.weight = weight
+        vital.pulse_bpm = pulse
+        vital.systolic_blood_pressure = bp_sys
+        vital.diastolic_blood_pressure = bp_dias
+        vital.save()
+        messages.success(request, "Vitals Have Been Updated Successfully")
+        redirect_url=reverse('patient-page', args=(patient_id,))
+        return redirect(redirect_url)
+    else:
+        context = {
+            "vital": vital
+        }
+        return render(request, 'base/edit_vitals_record.html', context)
+
+
 
 def new_patient_record_page(request, patient_id):
     if request.method == "POST":
@@ -120,6 +164,41 @@ def new_patient_record_page(request, patient_id):
         medical_record.save()
         redirect_url = reverse('patient-page', args=(patient_id,))
         return redirect(redirect_url)
+    
+def edit_patient_record_page(request, patient_id, record_id):
+    record = PatientRecord.objects.get(id=record_id)
+    
+    if request.method == "POST":
+        signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n"))
+        tests_for = ", ".join(request.POST["tests_for"].split("\r\n"))
+        test_methods = ", ".join(request.POST["test_methods"].split("\r\n"))
+        test_results = ", ".join(request.POST["test_results"].split("\r\n"))
+        prescriptions = ", ".join(request.POST["prescriptions"].split("\r\n"))
+        
+        if tests_for=="":
+            test_for = None
+        if test_methods=="":
+            test_methods=None
+        
+        record.signs_and_symptoms = signs_and_symptoms
+        record.tests_for = tests_for
+        record.test_methods = test_methods
+        record.test_results = test_results
+        record.prescriptions = prescriptions
+        record.save()
+        messages.success(request, "Your Record Has Been Updated Successfully")    
+        redirect_url = reverse('patient-page', args=(patient_id,))
+        return redirect(redirect_url)
+    else:
+        context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "record": record
+        }
+        return render(request, 'base/edit_medical_record.html', context)
 
 
 def patient_page(request, patient_id):
@@ -139,3 +218,36 @@ def patient_page(request, patient_id):
         "medical_records": medical_records
     }
     return render(request, 'base/patient_page.html', context)
+
+
+def patient_vitals_page(request, patient_id):
+    patient = Patient.objects.get(id=patient_id)
+    vitals = PatientVital.objects.filter(patient=patient).order_by('-date_added')
+    
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "patient": patient,
+        "vitals": vitals
+    }
+    
+    return render(request, 'base/vitals_page.html', context)
+
+def medical_record_page(request, patient_id, record_id):
+    patient = Patient.objects.get(id=patient_id)
+    record = PatientRecord.objects.get(id=record_id)
+    
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "record": record,
+        "patient": patient
+    }
+    
+    return render(request, 'base/medical_record_page.html', context)

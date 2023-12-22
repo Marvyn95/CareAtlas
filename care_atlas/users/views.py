@@ -14,12 +14,13 @@ from django.urls import reverse
 def register(request):
     form1 = UserRegistrationForm()
     form2 = HospitalProfileForm()
-    approve_reg_application(form1, form2)
     
     if request.method == "POST":
         form1 = UserRegistrationForm(request.POST)
         form2 = HospitalProfileForm(request.POST)
         
+        approve_reg_application(form1, form2)
+                
         if form1.is_valid() and form2.is_valid():
             # saving user profile
             user_instance = User(

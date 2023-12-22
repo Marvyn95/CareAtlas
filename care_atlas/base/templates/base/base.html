@@ -11,33 +11,41 @@
 </head>
 <body>
   <div class="row justify-content-center">
-    
-    <div class="col-2 p-3 bg-body-secondary d-flex flex-column align-items-center justify-content-start mx-2 rounded-4 my-2">
-      
-      <div class="d-flex flex-column align-items-center mb-5">
+    <div class="col-2 p-3 bg-primary-subtle d-flex flex-column align-items-start justify-content-start mx-1 rounded-4 my-2">
+ 
+      <div class="d-flex flex-column mt-3 mb-5 text-center w-100">
         <i class="bi bi-person-fill text-primary" style="font-size: 600%"></i>
         <div class="card-body">
-          <h5 class="card-title text-center fs-3 fw-bold"> {{ user.first_name }} </h5>
-          <h5 class="card-title text-center fs-4 fw-semibold"> {{ user.hospitalprofile.hospital_name }} </h5>
+          <h5 class="card-title fs-3 fw-bold">{{ user.first_name }} </h5>
+          <h4 class="card-title fs-4 text-secondary fw-bold">{{ user.hospitalprofile.hospital_name }} </h4>
         </div>
       </div>
 
-      <div class="mt-5">
-        <div class="d-grid gap-2 my-2">
-          <a href="{% url 'application-page' 1 %}" class=" bg-primary py-2 rounded-3"><button class="border border-0 btn btn-light fw-bolder fs-6 bg-primary text-light" type="button"><i class="ms-0 bi bi-people-fill text-body-emphasis me-1" style="font-size: 190%"></i><span class="ms-2">Patients</span></button></a>
+      <div class="mt-4 mb-5">
+        <div class="d-flex flex-column justify-content-start align-items-start ms-3">
 
-          <a href="{% url 'new-patient' %}" class="my-0"><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button"><i class="bi bi-person-fill-add text-body-emphasis me-3" style="font-size: 190%"></i>Add New Patient/Client</button></a>
+          <div class="mb-5"></div>
 
-          <a href="" class="my-0"><button class="border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button"><i class="bi bi-journal-text text-body-emphasis me-3" style="font-size: 190%"></i>Reports</button></a>
+          <a href="" class="border border-0 btn btn-light fw-bolder fs-5 text-primary mb-2 bg-primary-subtle" type="button"><i class="bi bi-house-fill me-3 text-black" style="font-size: 170%"></i>Home Page</a>
 
-          <a href="" class="mt-0 mb-5"><button class=" border border-0 btn btn-light fw-bolder fs-6 bg-body-secondary text-body-secondary" type="button"><i class="bi bi-currency-exchange text-body-emphasis me-3" style="font-size: 190%"></i>Bills</button></a>
+          <a href="{% url 'application-page' 1 %}" class="border border-0 btn btn-light fw-bold fs-5 text-primary bg-primary-subtle mb-2" type="button"><i class="text-black bi bi-people-fill me-3" style="font-size: 170%"></i>Patients</a>
+
+          <a href="{% url 'new-patient' %}" class="border border-0 btn btn-light fw-bolder fs-5 text-primary mb-2 bg-primary-subtle" type="button"><i class="bi bi-person-fill-add me-3 text-black" style="font-size: 170%"></i>Add New Patient</a>
+
+          <a href="" class="border border-0 btn btn-light fw-bolder fs-5 text-primary mb-5 bg-primary-subtle" type="button"><i class="bi bi-receipt text-black me-3" style="font-size: 160%"></i>Bills</a>
+
+          <div class="mb-5"></div>
+          <div class="mb-5"></div>
+          <div class="mb-5"></div>
         </div>
+      </div>
 
-        <div class="d-flex align-items-end mt-5">
-          <a href="{% url 'logout' %}" class="mt-5"><button class="border border-0 btn btn-light fw-bolder fs-6 bg-primary-subtle rounded-4 text-body-secondary p-3" type="button"><i class=" bi bi-x-octagon-fill text-body-emphasis me-3" style="font-size: 160%"></i>Log Out</button></a>
-        </div>
+      <div class="d-flex align-items-end mt-5">
+        <a href="{% url 'logout' %}" class="border border-0 btn btn-light fw-bold fs-6 rounded-4 text-primary p-3 ms-3" type="button"><i class=" bi bi-backspace-fill text-body-emphasis me-3" style="font-size: 150%"></i>Log Out</a>
       </div>
     </div>
+    
+
     
     <div class="col-7 p-3 bg-body-secondary my-2 rounded-4">
       <nav class="navbar bg-body-tertiary rounded-4">
@@ -60,9 +68,10 @@
 
       {% block content %}
       {% endblock content%}
+      
     </div>
 
-    <div class="col-2 p-3 bg-body-secondary mx-2 my-2 rounded-4">
+    <div class="col-2 p-3 bg-body-secondary mx-1 my-2 rounded-4">
       <div>
         <h1 class="display-5 mt-5 text-light fw-bold bg-primary p-4 rounded-4">{{ day }}, {{ day_of_month }}</h1>
       </div>
