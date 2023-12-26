@@ -3,7 +3,7 @@
 <div class="w-75 mt-4 mx-auto bg-white rounded-4 p-5">
     <div class="row">
       <div class="col-8">
-        <h3 class="fw-bold">Medical Bill</h3>
+        <h3 class="fw-bold">Generating Medical Bill</h3>
       </div>
       <div class="col">
         <h3><span class="text-secondary fw-bold">{{record.date_added}}</span></h3>
@@ -11,7 +11,6 @@
     </div>
 
     <div class="row">
-        <p class="col fw-medium"><i class="bi bi-alarm-fill me-1"></i>{{record.time_added}}</p>
         <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{record.doctor.first_name}}</p>
         <p class="col-4 fw-medium"><i class="bi bi-hospital-fill me-1"></i>{{record.doctor.hospitalprofile.hospital_name}}</p>
     </div>
@@ -50,13 +49,13 @@
         <div class="row mb-3">
             <label for="dt" class="col-sm-4 col-form-label fw-semibold">Diagnostic Tests </label>
             <div class="col-sm-6">
-            <input type="number" class="form-control" id="dt" name="diagnostic_tests" value="None" placeholder="Enter Ammount">
+            <input type="number" class="form-control" id="dt" name="diagnostic_test_fees" value="None" placeholder="Enter Ammount">
             </div>
         </div>
         <div class="row mb-3">
             <label for="nc" class="col-sm-4 col-form-label fw-semibold">Nursing Care</label>
             <div class="col-sm-6">
-            <input type="number" class="form-control" id="nc" name="nursing_care" value="None" placeholder="Enter Ammount">
+            <input type="number" class="form-control" id="nc" name="nursing_care_fees" value="None" placeholder="Enter Ammount">
             </div>
         </div>
         <div class="row mb-3">
@@ -69,11 +68,11 @@
             <label for="of" class="col-sm-4 col-form-label fw-semibold mt-3">Other Fees</label>
             <div class="col-sm-6">
             <input type="text" class="form-control my-2" id="oft" name="specific_charges" placeholder="Specify Items Charged For">
-            <input type="number" class="form-control" id="of" name="other_fees" value="None" placeholder="Enter Ammount">
+            <input type="number" class="form-control" id="of" name="specific_charge_fees" value="None" placeholder="Enter Ammount">
             </div>
         </div>
         <div class="d-flex justify-content-center">
-        <a type="button" class="btn btn-secondary me-2 fw-bold" href="#">Cancel</a>
+        <a type="button" class="btn btn-secondary me-2 fw-bold" href="{% url 'medical-record-page' patient.id record.id %}">Cancel</a>
         <button type="submit" class="btn btn-primary ms-2 fw-bold">Generate Bill</button>
         </div>
         </form>

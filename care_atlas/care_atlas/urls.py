@@ -35,5 +35,7 @@ urlpatterns = [
     path('base/edit_vitals_record/<int:patient_id>/<int:vital_id>', base_views.edit_vitals_page, name='edit-vitals-record'),
     path('base/patient_vitals/<patient_id>', base_views.patient_vitals_page, name='patient-vitals-page'),
     path('base/medical_record/<patient_id>/<record_id>', base_views.medical_record_page, name='medical-record-page'),
-    path('base/bill_patient/<patient_id>/<record_id>', base_views.bill_patient_page, name='bill-patient')
+    path('base/bill_patient/<patient_id>/<record_id>', base_views.bill_patient_page, name='bill-patient'),
+    path('base/patient_bill/<patient_id>/<record_id>/<bill_id>', base_views.patient_bill_page, name='patient-bill-page'),
+    path('base/edit_patient_bill/<patient_id>/<record_id>/<bill_id>', base_views.edit_patient_bill_page, name='edit-patient-bill')
 ]

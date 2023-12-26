@@ -48,6 +48,26 @@ class PatientVital(models.Model):
     def __str__(self):
         patient_vital = f"Patient: {self.patient.first_name} {self.patient.last_name} Doc: {self.doctor}, Pulse: {self.pulse_bpm}, Temp: {self.temperature}, Weight: {self.weight}, BP: {self.systolic_blood_pressure} / {self.diastolic_blood_pressure}"
         return (patient_vital)
+    
+class PatientBill(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
+    doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    medical_record = models.OneToOneField(PatientRecord, on_delete=models.DO_NOTHING, null=True)
+    date_added = models.DateField(auto_now_add=True)
+    time_added = models.TimeField(auto_now_add=True)
+    consultation_fees = models.IntegerField(null=True)
+    diagnostic_test_fees = models.IntegerField(null=True)
+    nursing_care_fees = models.IntegerField(null=True)
+    medication_fees = models.IntegerField(null=True)
+    specific_charges = models.TextField(null=True)
+    specific_charge_fees = models.IntegerField(null=True)
+    total_charges = models.IntegerField(null=True)
+    
+    def __str__(self):
+        patient_bill = f"Consultation: {self.consultation_fees}, Tests: {self.diagnostic_test_fees}, Nursing: {self.nursing_care_fees}, Medication: {self.medication_fees}, Other Charges: {self.specific_charge_fees}, Total: {self.total_charges}"
+        return patient_bill
+    
+    
         
     
     

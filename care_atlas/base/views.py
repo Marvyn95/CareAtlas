@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 import datetime
 from django.contrib import messages
-from base.models import Patient, PatientRecord, PatientVital
+from base.models import Patient, PatientRecord, PatientVital, PatientBill
 import math
 from django.core.paginator import Paginator
 from django.urls import reverse
@@ -16,7 +16,7 @@ def home_page(request):
 
 def application_page(request, page=1):
     all_patients = Patient.objects.all()
-    patients = Paginator(all_patients, 24)
+    patients = Paginator(all_patients, 8)
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -239,6 +239,7 @@ def patient_vitals_page(request, patient_id):
 def medical_record_page(request, patient_id, record_id):
     patient = Patient.objects.get(id=patient_id)
     record = PatientRecord.objects.get(id=record_id)
+    bill = PatientBill.objects.filter(medical_record=record).first()
     
     context = {
         "day": date_1[0],
@@ -247,7 +248,8 @@ def medical_record_page(request, patient_id, record_id):
         "year": date_1[3].replace(",", ""),
         "date": date,
         "record": record,
-        "patient": patient
+        "patient": patient,
+        "bill": bill
     }
     
     return render(request, 'base/medical_record_page.html', context)
@@ -255,13 +257,83 @@ def medical_record_page(request, patient_id, record_id):
 def bill_patient_page(request, patient_id, record_id):
     patient = Patient.objects.get(id=patient_id)
     record = PatientRecord.objects.get(id=record_id)
+    
+    if request.method == "POST":
+        consultation_fees = int(request.POST['consultation_fees'])
+        diagnostic_test_fees = int(request.POST['diagnostic_test_fees'])
+        nursing_care_fees = int(request.POST['nursing_care_fees'])
+        medication_fees = int(request.POST['medication_fees'])
+        specific_charges = request.POST['specific_charges']
+        specific_charge_fees = int(request.POST['specific_charge_fees'])
+        total_charges = consultation_fees+diagnostic_test_fees+nursing_care_fees+medication_fees+specific_charge_fees
+        
+        patient_bill = PatientBill(
+            patient = patient,
+            doctor = request.user,
+            medical_record = record,
+            consultation_fees = consultation_fees,
+            diagnostic_test_fees = diagnostic_test_fees,
+            nursing_care_fees = nursing_care_fees,
+            medication_fees = medication_fees,
+            specific_charges = specific_charges,
+            specific_charge_fees = specific_charge_fees,
+            total_charges = total_charges
+        )
+        patient_bill.save()
+        messages.success(request, "your Bill Was Generated Succesfully")
+        redirect_url = reverse('patient-bill-page', args=(patient_id, record_id, patient_bill.id))
+        return redirect(redirect_url)
+    else:    
+        context = {
+            "day": date_1[0],
+            "day_of_month": date_1[1],
+            "month": date_1[2],
+            "year": date_1[3].replace(",", ""),
+            "date": date,
+            "record": record,
+            "patient": patient
+        }
+        return render(request, 'base/bill_patient_page.html', context)
+
+def patient_bill_page(request, patient_id, record_id, bill_id):
+    patient = Patient.objects.get(id=patient_id)
+    record = PatientRecord.objects.get(id=record_id)
+    bill = PatientBill.objects.get(id=bill_id)
+    
     context = {
         "day": date_1[0],
-        "day_of_month": date_1[1],
-        "month": date_1[2],
-        "year": date_1[3].replace(",", ""),
-        "date": date,
-        "record": record,
-        "patient": patient
+            "day_of_month": date_1[1],
+            "month": date_1[2],
+            "year": date_1[3].replace(",", ""),
+            "date": date,
+            "record": record,
+            "patient": patient,
+            "bill": bill
     }
-    return render(request, 'base/bill_patient_page.html', context)
+    return render(request, 'base/patient_bill_page.html', context)
+
+def edit_patient_bill_page(request, patient_id, record_id, bill_id):
+    bill = PatientBill.objects.get(id=bill_id)
+    patient = Patient.objects.get(id=patient_id)
+    record = PatientRecord.objects.get(id=record_id)
+    
+    if request.method == "POST":
+        consultation_fees = int(request.POST['consultation_fees'])
+        diagnostic_test_fees = int(request.POST['diagnostic_test_fees'])
+        nursing_care_fees = int(request.POST['nursing_care_fees'])
+        medication_fees = int(request.POST['medication_fees'])
+        specific_charges = request.POST['specific_charges']
+        specific_charge_fees = int(request.POST['specific_charge_fees'])
+        
+        bill.consultation_fees = consultation_fees
+        bill.diagnostic_test_fees = diagnostic_test_fees
+        bill.nursing_care_fees = nursing_care_fees
+        bill.medication_fees = medication_fees
+        bill.specific_charges = specific_charges
+        bill.specific_charge_fees = specific_charge_fees
+        bill.total_charges = consultation_fees+diagnostic_test_fees+nursing_care_fees+medication_fees+specific_charge_fees
+        
+        bill.save()
+        
+        redirect_url = reverse('patient-bill-page', args=(patient.id, record.id, bill.id))
+        return redirect(redirect_url)
