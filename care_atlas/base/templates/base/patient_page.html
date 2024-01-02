@@ -123,14 +123,14 @@
     <div class="container mt-3">
       <div class="row">
         {% for vital in vitals %}
-        <div class="col bg-primary-subtle m-1 py-3 rounded-3">
+        <div class="col bg-primary-subtle m-3 py-3 rounded-3 shadow-lg">
           <div class="row">
-            <div class="col">
+            <div class="col-8">
               <h6 class=""><i class="bi bi-calendar3-week-fill text-primary me-1"></i>{{vital.date_added}}</h6>
             </div>
 
             {%if user == vital.doctor%}
-            <div class="col"><a type="button" class="btn text-primary fw-bold col ms-5" href="{% url 'edit-vitals-record' patient.id vital.id %}">Edit</a></div>
+            <div class="col-2"><a class="text-primary fw-bold link-underline link-underline-opacity-0" href="{% url 'edit-vitals-record' patient.id vital.id %}">Edit</a></div>
             {%endif%}
           </div>
           <h4 class="ps-2"><span class="h3">{{vital.systolic_blood_pressure}}</span> / {{vital.diastolic_blood_pressure}} <span class="text-primary fs-6">bp</span></h4>
@@ -139,7 +139,7 @@
         {% endfor %}
       </div>
     </div>
-    <a type="button" class="btn btn-primary mt-2 ms-3 fw-semibold" href="{% url 'patient-vitals-page' patient.id %}">All Vitals Records</a>
+    <a type="button" class="btn btn-primary mt-2 ms-3 fw-semibold shadow-lg" href="{% url 'patient-vitals-page' patient.id %}">All Vitals Records</a>
   </div>
 
 
@@ -154,7 +154,7 @@
     </div>
 
     {% for record in medical_records %}
-    <div class="card w-100 h-15 mb-3 me-4 rounded-4">
+    <div class="card w-100 h-15 mb-3 mx-auto rounded-4 shadow-lg">
       <div class="card-body">
         <div class="row pt-2">
           <h5 class="card-title col">{{record.date_added}}</h5>
@@ -174,7 +174,7 @@
           <li class="list-group-item"><span class="fw-bold">Results: </span>{{record.test_results}}</li>
           <li class="list-group-item"><span class="fw-bold">Prescriptions: </span>{{record.prescriptions}}</li>
         </ul>
-        <a type="button" class="btn btn-primary col fw-semibold mx-4" href="{% url 'medical-record-page' patient.id record.id %}">View in Detail</a>
+        <a type="button" class="btn btn-primary col fw-semibold mx-4 shadow-lg" href="{% url 'medical-record-page' patient.id record.id %}">View in Detail</a>
       </div>
     </div>
     {% endfor %}

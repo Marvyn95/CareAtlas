@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 import datetime
 from django.contrib import messages
 from base.models import Patient, PatientRecord, PatientVital, PatientBill
+from users.models import HospitalProfile
 import math
 from django.core.paginator import Paginator
 from django.urls import reverse
+import json
 
 
 date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
@@ -14,9 +16,9 @@ date = {"day": date_1[0],  "day_of_month": date_1[1], "month": date_1[2], "year"
 def home_page(request):
     return render(request, 'base/home_page.html')
 
-def application_page(request, page=1):
+def application_patient_page(request, page=1):
     all_patients = Patient.objects.all()
-    patients = Paginator(all_patients, 8)
+    patients = Paginator(all_patients, 24)
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -25,8 +27,74 @@ def application_page(request, page=1):
         "date": date,
         "patients": patients.page(page)
     }
-    return render(request, 'base/application_page.html', context)
+    return render(request, 'base/application_patient_page.html', context)
 
+
+def application_home_page(request):
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    today_records = PatientRecord.objects.filter(doctor__in=doctors).filter(date_added=datetime.datetime.now().date())
+    all_records = PatientRecord.objects.filter(doctor__in=doctors)
+    
+    #getting monthly number of clients for past 6 months
+    _date = datetime.datetime.now().date()
+    client_totals = []
+    for i in range(6):
+        count = 0
+        for j in all_records:
+            if j.date_added.month == _date.month:
+                count += 1
+        client_totals.append(count)
+        _date = _date - datetime.timedelta(days=_date.day) 
+    client_totals.reverse()
+    
+    #getting list of previous six months
+    months = ['JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC']
+    current_month = datetime.datetime.now().month - 1
+    current_month_index = current_month + 6
+    last_six_months = months[(current_month_index-5):current_month_index+1]
+    
+    # getting male clients, female clients, client ages in current year
+    current_year_records = [j for j in all_records if j.patient.date_added.year == datetime.datetime.now().year]
+    if current_year_records != []:
+        male_clients = [x for x in current_year_records if x.patient.sex == 'Male']
+        female_clients = [x for x in current_year_records if x.patient.sex == 'Female']
+    
+        ages = []
+        for i in current_year_records:
+            if i.patient.date_of_birth != 'null':
+                days=(datetime.datetime.now().date() - i.patient.date_of_birth).days
+                age = math.floor(days/365)
+                ages.append(age)
+                              
+        context = {
+            "day": date_1[0],
+            "day_of_month": date_1[1],
+            "month": date_1[2],
+            "year": date_1[3].replace(",", ""),
+            "date": date,
+            "days_patient_num": len(list(today_records)),
+            "male_ratio": int((len(male_clients)/len(current_year_records))*10),
+            "female_ratio": int((len(female_clients)/len(current_year_records))*10),
+            "average_age": int(sum(ages)/len(ages)),
+            "last_six_months": json.dumps(last_six_months, ensure_ascii=False),
+            "client_totals": json.dumps(client_totals)
+        }
+    else:        
+        context = {
+            "day": date_1[0],
+            "day_of_month": date_1[1],
+            "month": date_1[2],
+            "year": date_1[3].replace(",", ""),
+            "date": date,
+            "days_patient_num": len(list(today_records)),
+            "male_ratio": 0,
+            "female_ratio": 0,
+            "average_age": 0,
+            "last_six_months": json.dumps(last_six_months, ensure_ascii=False),
+            "client_totals": json.dumps(client_totals)
+        }
+    return render(request, 'base/application_home_page.html', context)
 
 
 def new_patient_page(request):
@@ -302,13 +370,13 @@ def patient_bill_page(request, patient_id, record_id, bill_id):
     
     context = {
         "day": date_1[0],
-            "day_of_month": date_1[1],
-            "month": date_1[2],
-            "year": date_1[3].replace(",", ""),
-            "date": date,
-            "record": record,
-            "patient": patient,
-            "bill": bill
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "record": record,
+        "patient": patient,
+        "bill": bill
     }
     return render(request, 'base/patient_bill_page.html', context)
 
@@ -337,3 +405,23 @@ def edit_patient_bill_page(request, patient_id, record_id, bill_id):
         
         redirect_url = reverse('patient-bill-page', args=(patient.id, record.id, bill.id))
         return redirect(redirect_url)
+    
+
+def bills_page(request):
+    #getting bills for users hospital
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    all_bills = PatientBill.objects.filter(doctor__in=doctors)
+    
+    print(all_bills)
+        
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "all_bills": all_bills
+    }
+
+    return render(request, 'base/bills_page.html', context)

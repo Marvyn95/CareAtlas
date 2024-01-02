@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
 
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center my-3">
         <div class="">
           <h2 class="mb-1 mt-3 text-black fw-bold"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span> <span class="fst-italic">Vital Records</span></h2>
           <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}, {{patient.sex}}, {{patient.age}}</h5>
@@ -12,7 +12,7 @@
 
     <div class="row row-cols-4 justify-content-center">
         {% for vital in vitals%}
-        <div class="card w-100 my-2 mx-auto rounded-4">
+        <div class="card w-75 my-3 mx-auto rounded-4 shadow-lg">
             <div class="">
               <div class="row pt-2 ms-1">
                 <h5 class="card-title col">{{vital.date_added}}</h5>

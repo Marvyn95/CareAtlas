@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <h2 class="mt-5 mb-5 ms-4 text-black fw-bold"><i class="bi bi-receipt me-3"></i>{{user.hospitalprofile.hospital_name}} <span class="text-primary">Medical Bills</span></h2>
+
+    {% for bill in all_bills %}
+    <div class="card w-75 h-15 mb-3 mx-auto rounded-4 shadow-lg">
+      <div class="card-body">
+        <div class="row pt-2 justify-content-center">
+          <h5 class="card-title col ms-4">{{bill.date_added}}</h5>
+          <p class="col fw-medium"><i class="bi bi-alarm-fill me-1"></i>{{bill.time_added}}</p>
+          <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{bill.doctor.first_name}}</p>
+          <p class="col-5 fw-medium"><i class="bi bi-hospital-fill me-1"></i>{{bill.doctor.hospitalprofile.hospital_name}}</p>
+        </div>
+
+        <ul class="fs-6">
+          <li class="list-group-item text-primary fw-bold"><span class="fw-semibold fst-italic me-3 text-dark">Patient Name: </span>{{bill.patient.first_name}} {{bill.patient.last_name}}</li>
+          <li class="list-group-item text-primary fw-bold"><span class="fw-semibold fst-italic me-3 text-dark">Doctor Consultation Fees: </span>{{bill.consultation_fees}}</li>
+          <li class="list-group-item text-primary fw-bold"><span class="fw-semibold fst-italic me-3 text-dark">Diagnostic Tests: </span>{{bill.diagnostic_test_fees}}</li>
+          <li class="list-group-item text-primary fw-bold"><span class="fw-semibold fst-italic me-3 text-dark">Nursing Care Fees: </span>{{bill.nursing_care_fees}}</li>
+          <li class="list-group-item text-primary fw-bold"><span class="fw-semibold fst-italic me-3 text-dark">Treatment and Medication Fees: </span>{{bill.medication_fees}}</li>
+          <li class="list-group-item text-primary fw-bold"><span class="fw-semibold fst-italic me-3 text-dark">Other Fees: </span>{{bill.specific_charge_fees}} ({{bill.specific_charges}})</li>
+          <li class="list-group-item fw-bold fs-5"><span class="fw-bold me-3">Total Fees: </span>{{bill.total_charges}}</li>
+        </ul>
+        <div class="row">
+            <div class="col-8"></div>
+            <div class="col"><a class="btn btn-primary px-3 fw-bold shadow-lg" href="{% url 'patient-bill-page' bill.patient.id bill.medical_record.id bill.id %}">View Bill Details</a></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+{% endblock content %}

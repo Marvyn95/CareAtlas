@@ -26,7 +26,8 @@ urlpatterns = [
     path('users/register/', users_views.register, name='register'),
     path('users/login/', users_views.login_page, name='login'),
     path('users/logout/', users_views.logout_page, name='logout'),
-    path('base/application/<int:page>', base_views.application_page, name='application-page'),
+    path('base/application_home/', base_views.application_home_page, name='application-home'),
+    path('base/application_patient/<int:page>', base_views.application_patient_page, name='application-page'),
     path('base/new_patient', base_views.new_patient_page, name='new-patient'),
     path('base/new_patient_vital/<int:patient_id>', base_views.new_patient_vital_page, name='new-patient-vital'),
     path('base/new_patient_record/<int:patient_id>', base_views.new_patient_record_page, name='new-patient-record'),
@@ -37,5 +38,6 @@ urlpatterns = [
     path('base/medical_record/<patient_id>/<record_id>', base_views.medical_record_page, name='medical-record-page'),
     path('base/bill_patient/<patient_id>/<record_id>', base_views.bill_patient_page, name='bill-patient'),
     path('base/patient_bill/<patient_id>/<record_id>/<bill_id>', base_views.patient_bill_page, name='patient-bill-page'),
-    path('base/edit_patient_bill/<patient_id>/<record_id>/<bill_id>', base_views.edit_patient_bill_page, name='edit-patient-bill')
+    path('base/edit_patient_bill/<patient_id>/<record_id>/<bill_id>', base_views.edit_patient_bill_page, name='edit-patient-bill'),
+    path('base/bills/', base_views.bills_page, name='bills-page')
 ]

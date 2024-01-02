@@ -4,7 +4,7 @@
           <div class="row">
             {% for patient in patients %}
             <div class="col-3 mt-2">
-              <div class="card bg-primary-subtle rounded-4">
+              <div class="card bg-primary-subtle rounded-4 shadow-lg">
                 <a href="{% url 'patient-page' patient.id %}" class="link-underline link-underline-opacity-0"><div class="card-body">
                   <h5 class="card-title fw-semibold text-primary"><i class="bi bi-person-circle me-2 text-black"></i>{{patient.first_name}} {{patient.last_name}}</h5>
                   <h5 class="card-subtitle mb-2 text-body-secondary">{{patient.nationality}}, <span class="text-primary">{{patient.sex}}</span>, {{patient.age}}</h5>

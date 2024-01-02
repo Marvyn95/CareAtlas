@@ -67,8 +67,7 @@ def login_page(request):
             if user is not None:
                 login(request, user) 
                 messages.success(request, 'Your Login Was Succesful')
-                redirect_url = reverse('application-page', args=(1,))
-                return redirect(redirect_url)
+                return redirect('application-home')
             else:
                 messages.warning(request, 'Login Denied!, Please Check Login Credentials')
                 return redirect('login')
