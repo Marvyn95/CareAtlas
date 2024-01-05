@@ -11,7 +11,7 @@
 </head>
 <body>
   <div class="row justify-content-center h-100">
-    <div class="col-2 p-3 bg-primary-subtle d-flex flex-column align-items-start justify-content-start mx-1 rounded-4 my-2">
+    <div class="col-2 p-3 bg-body-secondary d-flex flex-column align-items-start justify-content-start mx-1 rounded-4 my-2">
  
         <div class="d-flex flex-column mt-5 mb-5 text-center w-75 mx-auto border border-primary border-5 rounded-5 p-4 shadow-lg">
           <a href="{%url 'application-home' %}" class="link-underline link-underline-opacity-0">
@@ -23,22 +23,16 @@
           </a>
         </div>
 
-      <div class="mt-4 mb-5">
-        <div class="d-flex flex-column justify-content-start align-items-start ms-3">
+      <div class="mt-4 mx-auto">
+        <div class="d-flex flex-column">
 
-          <div class="mb-5"></div>
+          <a href="{%url 'application-home' %}" class="border border-0 ps-3 pe-3 fw-bold fs-4 text-white mb-3 bg-primary w-100 shadow-lg rounded-3 py-3 link-underline link-underline-opacity-0" ><i class="bi bi-house-fill me-3 text-white" style="font-size: 140%"></i>Home Page</a>
 
-          <a href="{%url 'application-home' %}" class="border border-0 btn btn-light fw-bold fs-4 text-dark mb-2 bg-primary-subtle" type="button"><i class="bi bi-house-fill me-3 text-primary" style="font-size: 170%"></i>Home Page</a>
+          <a href="{% url 'application-page' 1 %}" class="border border-0 ps-3 pe-3 fw-bold fs-4 text-white bg-primary w-100 shadow-lg rounded-3 py-3 mb-3 link-underline link-underline-opacity-0" ><i class="text-white bi bi-people-fill me-3" style="font-size: 140%"></i>Patients</a>
 
-          <a href="{% url 'application-page' 1 %}" class="border border-0 btn btn-light fw-bold fs-4 text-dark bg-primary-subtle mb-2" type="button"><i class="text-primary bi bi-people-fill me-3" style="font-size: 170%"></i>Patients</a>
+          <a href="{% url 'records-page' 1 %}" class="border border-0 ps-3 pe-3 fw-bold fs-4 text-white mb-3 bg-primary w-100 shadow-lg rounded-3 py-3 link-underline link-underline-opacity-0" ><i class="bi bi-receipt text-white me-3" style="font-size: 140%"></i>Records</a>
 
-          <a href="{% url 'new-patient' %}" class="border border-0 btn btn-light fw-bold fs-4 text-dark mb-2 bg-primary-subtle" type="button"><i class="bi bi-person-fill-add me-3 text-primary" style="font-size: 170%"></i>Add New Patient</a>
-
-          <a href="{% url 'bills-page' %}" class="border border-0 btn btn-light fw-bold fs-4 text-dark mb-5 bg-primary-subtle" type="button"><i class="bi bi-receipt text-primary me-3" style="font-size: 160%"></i>Bills</a>
-
-          <div class="mb-5"></div>
-          <div class="mb-5"></div>
-          <div class="mb-5"></div>
+          <a href="{% url 'bills-page' 1 %}" class="border border-0 ps-3 pe-3 fw-bold fs-4 text-white mb-3 bg-primary w-100 shadow-lg rounded-3 py-3 link-underline link-underline-opacity-0" ><i class="bi bi-receipt text-white me-3" style="font-size: 140%"></i>Bills</a>
         </div>
       </div>
 
@@ -50,12 +44,13 @@
 
     
     <div class="col-7 p-3 bg-body-secondary my-2 rounded-4">
-      <nav class="navbar bg-body-tertiary rounded-4">
+      <nav class="navbar bg-body-tertiary rounded-4 shadow-lg mb-4">
         <div class="container-fluid">
           <a href="{%url 'application-home' %}" class="link-underline link-underline-opacity-0"><span class="navbar-brand mb-0 h1 text-primary fw-bolder fs-3 ms-3">CareAtlas</span></a>
-          <form class="d-flex w-75 my-auto" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search Clients/Patients" aria-label="Search">
-            <button class="btn btn-primary" type="submit">Search</button>
+          <form class="d-flex w-75 my-auto" role="search" action="{% url 'search-page' 1 %}" method="POST">
+            {% csrf_token %}
+            <input class="form-control me-2" type="text" placeholder="Search Clients/Patients" aria-label="Search" name="search_string" value="{{search_text}}">
+            <button class="btn btn-primary shadow-lg fw-bold" type="submit">Search</button>
           </form>
         </div>
       </nav>
@@ -74,9 +69,9 @@
     </div>
 
     <div class="col-2 p-3 bg-body-secondary mx-1 my-2 rounded-4 text-center">
-      <a href="{% url 'logout' %}" class="border border-0 btn btn-light fw-bold fs-6 rounded-4 text-secondary p-3 shadow-lg" type="button"><i class=" bi bi-backspace-fill text-body-emphasis me-3" style="font-size: 150%"></i>Log Out</a>
+      <a href="{% url 'logout' %}" class="border border-3 border-dark btn btn-light fw-bold fs-6 rounded-4 text-secondary p-3 shadow-lg mt-5 w-75" type="button"><i class=" bi bi-backspace-fill text-body-emphasis me-3" style="font-size: 150%"></i>Log Out</a>
       <div>
-        <h1 class="display-5 mt-5 text-light fw-bold bg-primary p-4 rounded-4 shadow-lg">{{ day }}, {{ day_of_month }}</h1>
+        <h1 class="display-5 mt-5 text-light fw-bold bg-primary p-4 rounded-4 shadow-lg w-75 mx-auto">{{ day }}, {{ day_of_month }}</h1>
       </div>
       <div>
         <h1 class="display-5 ms-4 text-primary fw-bold">{{month}}, <span class="display-5 fw-bold text-dark">{{year}}</span></h1>

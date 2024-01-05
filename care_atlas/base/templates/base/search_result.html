@@ -1,0 +1,56 @@
+{% extends 'base/base.html' %}
+{% block content %}
+        <div class="container  mt-4">
+          {% if number_found == 0 %}
+            <div class="w-50 h-50 mx-auto my-auto text-center mt-5">
+              <h2>NO PATIENTS FOUND</h2>
+              <h4>SEARCH AGAIN OR ADD PATIENT TO DATABASE</h4>
+            </div>
+          {% endif %}
+
+          {% if number_found != 0 %}
+            <div class="mx-auto text-center mt-2">
+              <h4><span class="text-primary">{{number_found}}</span> Patients Found</h4>
+            </div>
+          {% endif %}
+
+          <div class="row">
+            {% for patient in patients %}
+            <div class="col-6 mt-2">
+              <div class="card bg-primary-subtle rounded-4 shadow-lg">
+                <a href="{% url 'patient-page' patient.id %}" class="link-underline link-underline-opacity-0"><div class="card-body">
+                  <h5 class="card-title fw-semibold text-primary"><i class="bi bi-person-circle me-2 text-black"></i>{{patient.first_name}} {{patient.last_name}}</h5>
+                  <h5 class="card-subtitle mb-2 text-body-secondary">{{patient.nationality}} <span class="text-primary">{{patient.sex}}</span></h5>
+                  <h5 class="fw-semibold text-black">Born: <span class="fw-bold ">{{patient.date_of_birth}}</span></h5>
+                  <!-- <h5 class="fw-semiold text-black"><i class="bi bi-telephone me-2"></i></i><span class="fw-bold text-primary">{{patient.phone_number}}</span></h5> -->
+                </div></a>
+              </div>
+            </div>
+            {% endfor %}
+
+
+            {% if number_found != 0 %}
+              <div class="d-flex justify-content-center mt-5 fw-bold">
+                <nav aria-label="..." class="">
+                  <ul class="pagination">
+
+                    {% if patients.has_previous %}
+                    <li class="page-item"><a class="page-link" href="{% url 'search-page' 1 search_text %}">First</a></li>
+                    <li class="page-item"><a class="page-link" href="{% url 'search-page' patients.previous_page_number search_text %}">Prev</a></li>
+                    {% endif %}
+
+                    <li class="page-item active" aria-current="page"><a class="page-link" href="{% url 'search-page' patients.number search_text%}">{{patients.number}}</a></li>
+
+                    {% if patients.has_next %}
+                    <li class="page-item"><a class="page-link" href="{% url 'search-page' patients.next_page_number search_text %}">{{patients.next_page_number}}</a></li>
+                    <!-- <p>{{patients.paginator.num_pages}}</p> -->
+                    <li class="page-item"><a class="page-link" href="{% url 'search-page' patients.paginator.num_pages search_text %}">Last</a></li>
+                    {% endif %}
+                  </ul>
+                </nav>
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+{% endblock content %}

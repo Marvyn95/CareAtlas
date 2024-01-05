@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+  <!-- medical history section -->
+  <div>
+    <div class="container mt-5 mb-3">
+      <div class="row">
+        <div class="col-7"><h4 class="fw-bold fs-3">{{user.hospitalprofile.hospital_name}} <span class="text-primary">Medical Records</span></h4></div>
+        <div class="col-3"></div>
+      </div>
+    </div>
+
+    {% for record in medical_records %}
+    <div class="card w-100 h-15 mb-3 mx-auto rounded-4 shadow-lg border border-2 border-secondary">
+      <div class="card-body">
+        <div class="row pt-2">
+          <h5 class="card-title col">{{record.date_added}}</h5>
+          <p class="col fw-medium"><i class="bi bi-alarm-fill me-1"></i>{{record.time_added}}</p>
+          <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{record.doctor.first_name}}</p>
+          <p class="col-4 fw-medium"><i class="bi bi-hospital-fill me-1"></i>{{record.doctor.hospitalprofile.hospital_name}}</p>
+        </div>
+
+        <ul class="">
+          <li class="list-group-item"><span class="fw-bold">Patient Details: <span class="text-primary">{{record.patient.first_name}}</span> {{record.patient.nationality}} {{record.patient.sex}}</span></li>
+            
+          <li class="list-group-item"><span class="fw-bold">Signs and Symptoms: </span>{{record.signs_and_symptoms}}</li>
+          <li class="list-group-item"><span class="fw-bold">Tests Done For: </span>{{record.tests_for}}</li>
+          <li class="list-group-item"><span class="fw-bold">Tests Done / Test Methods: </span>{{record.test_methods}}</li>
+          <li class="list-group-item"><span class="fw-bold">Results: </span>{{record.test_results}}</li>
+          <li class="list-group-item"><span class="fw-bold">Prescriptions: </span>{{record.prescriptions}}</li>
+        </ul>
+        <a class="btn btn-primary col fw-semibold mx-4 shadow-lg" href="{% url 'medical-record-page' record.patient.id record.id %}">View in Detail</a>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="d-flex justify-content-center mt-5 fw-bold">
+      <nav aria-label="..." class="">
+        <ul class="pagination">
+
+          {% if medical_records.has_previous %}
+          <li class="page-item"><a class="page-link" href="{% url 'records-page' 1 %}">First</a></li>
+          <li class="page-item"><a class="page-link" href="{% url 'records-page' medical_records.previous_page_number %}">Prev</a></li>
+          {% endif %}
+
+          <li class="page-item active" aria-current="page"><a class="page-link" href="{% url 'records-page' medical_records.number %}">{{medical_records.number}}</a></li>
+
+          {% if medical_records.has_next %}
+          <li class="page-item"><a class="page-link" href="{% url 'records-page' medical_records.next_page_number %}">{{medical_records.next_page_number}}</a></li>
+          <!-- <p>{{medical_records.paginator.num_pages}}</p> -->
+          <li class="page-item"><a class="page-link" href="{% url 'records-page' medical_records.paginator.num_pages %}">Last</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+
+
+  </div>
+
+</div>  
+{% endblock content %}

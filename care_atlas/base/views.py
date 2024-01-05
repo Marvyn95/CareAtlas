@@ -7,6 +7,7 @@ import math
 from django.core.paginator import Paginator
 from django.urls import reverse
 import json
+from fractions import Fraction
 
 
 date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
@@ -17,7 +18,7 @@ def home_page(request):
     return render(request, 'base/home_page.html')
 
 def application_patient_page(request, page=1):
-    all_patients = Patient.objects.all()
+    all_patients = Patient.objects.all().order_by('-date_added')
     patients = Paginator(all_patients, 24)
     context = {
         "day": date_1[0],
@@ -35,7 +36,7 @@ def application_home_page(request):
     doctors = [x.user for x in doctor_hospitalprofiles]
     today_records = PatientRecord.objects.filter(doctor__in=doctors).filter(date_added=datetime.datetime.now().date())
     all_records = PatientRecord.objects.filter(doctor__in=doctors)
-    
+        
     #getting monthly number of clients for past 6 months
     _date = datetime.datetime.now().date()
     client_totals = []
@@ -63,9 +64,10 @@ def application_home_page(request):
         ages = []
         for i in current_year_records:
             if i.patient.date_of_birth != 'null':
-                days=(datetime.datetime.now().date() - i.patient.date_of_birth).days
-                age = math.floor(days/365)
-                ages.append(age)
+                patient_age = int((datetime.datetime.now().date() - i.patient.date_of_birth).days/365)
+                ages.append(patient_age)
+        
+        gender_ratio = Fraction(len(male_clients) / len(female_clients))
                               
         context = {
             "day": date_1[0],
@@ -74,8 +76,8 @@ def application_home_page(request):
             "year": date_1[3].replace(",", ""),
             "date": date,
             "days_patient_num": len(list(today_records)),
-            "male_ratio": int((len(male_clients)/len(current_year_records))*10),
-            "female_ratio": int((len(female_clients)/len(current_year_records))*10),
+            "male_rep": gender_ratio.numerator,
+            "female_rep": gender_ratio.denominator,
             "average_age": int(sum(ages)/len(ages)),
             "last_six_months": json.dumps(last_six_months, ensure_ascii=False),
             "client_totals": json.dumps(client_totals)
@@ -275,6 +277,9 @@ def patient_page(request, patient_id):
     vitals = list(PatientVital.objects.filter(patient=patient).order_by("date_added", "time_added"))[-5:]
     medical_records = PatientRecord.objects.filter(patient=patient).order_by("-date_added", "-time_added")
     
+    patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
+    print(patient_age)
+    
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -283,7 +288,8 @@ def patient_page(request, patient_id):
         "date": date,
         "patient": patient,
         "vitals": vitals,
-        "medical_records": medical_records
+        "medical_records": medical_records,
+        "patient_age": patient_age
     }
     return render(request, 'base/patient_page.html', context)
 
@@ -325,6 +331,13 @@ def medical_record_page(request, patient_id, record_id):
 def bill_patient_page(request, patient_id, record_id):
     patient = Patient.objects.get(id=patient_id)
     record = PatientRecord.objects.get(id=record_id)
+    
+    bill_rec = list(PatientBill.objects.filter(medical_record=record))
+    
+    if len(bill_rec) != 0:
+        redirect_url = reverse('medical-record-page', args=(patient_id, record_id))
+        return redirect(redirect_url)
+    
     
     if request.method == "POST":
         consultation_fees = int(request.POST['consultation_fees'])
@@ -407,21 +420,69 @@ def edit_patient_bill_page(request, patient_id, record_id, bill_id):
         return redirect(redirect_url)
     
 
-def bills_page(request):
+def bills_page(request, page):
     #getting bills for users hospital
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
-    all_bills = PatientBill.objects.filter(doctor__in=doctors)
+    all_bills = PatientBill.objects.filter(doctor__in=doctors).order_by("-date_added", "-time_added")
     
-    print(all_bills)
-        
+    bills = Paginator(all_bills, 10)
+    
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
         "month": date_1[2],
         "year": date_1[3].replace(",", ""),
         "date": date,
-        "all_bills": all_bills
+        "all_bills": bills.page(page)
     }
-
     return render(request, 'base/bills_page.html', context)
+
+
+def records_page(request, page=1):
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    records_ = PatientRecord.objects.filter(doctor__in=doctors).order_by("-date_added", "-time_added")
+    
+    records = Paginator(records_, 10)
+    
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "medical_records": records.page(page)
+        }
+    return render(request, 'base/records_page.html', context)
+
+
+def search_page(request, page=1, search_string=""):
+    if request.method == "POST":
+        search_string = request.POST['search_string']
+        if search_string == "":
+            redirect_url=reverse('application-page', args=(1,))
+            return redirect(redirect_url)
+    else:
+        search_string = search_string
+    names = search_string.split(' ')
+    search_results = []
+    if len(names) > 1:
+        search_results.extend(Patient.objects.filter(first_name__icontains=names[0], last_name__icontains=names[1]))
+        search_results.extend(Patient.objects.filter(last_name__icontains=names[0], first_name__icontains=names[1]))
+    else:
+        search_results.extend(Patient.objects.filter(first_name__icontains=names[0]))
+        search_results.extend(Patient.objects.filter(last_name__icontains=names[0]))            
+            
+    patients = Paginator(search_results, 12)
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "patients": patients.page(page),
+        "number_found": len(list(search_results)),
+        "search_text": search_string     
+    }
+    return render(request, 'base/search_result.html', context)

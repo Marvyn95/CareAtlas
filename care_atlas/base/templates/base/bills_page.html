@@ -3,7 +3,7 @@
     <h2 class="mt-5 mb-5 ms-4 text-black fw-bold"><i class="bi bi-receipt me-3"></i>{{user.hospitalprofile.hospital_name}} <span class="text-primary">Medical Bills</span></h2>
 
     {% for bill in all_bills %}
-    <div class="card w-75 h-15 mb-3 mx-auto rounded-4 shadow-lg">
+    <div class="card w-75 h-15 mb-3 mx-auto rounded-4 shadow-lg border border-3 border-dark">
       <div class="card-body">
         <div class="row pt-2 justify-content-center">
           <h5 class="card-title col ms-4">{{bill.date_added}}</h5>
@@ -28,5 +28,25 @@
       </div>
     </div>
     {% endfor %}
+
+    <div class="d-flex justify-content-center mt-5 fw-bold">
+      <nav aria-label="..." class="">
+        <ul class="pagination">
+
+          {% if all_bills.has_previous %}
+          <li class="page-item"><a class="page-link" href="{% url 'bills-page' 1 %}">First</a></li>
+          <li class="page-item"><a class="page-link" href="{% url 'bills-page' all_bills.previous_page_number %}">Prev</a></li>
+          {% endif %}
+
+          <li class="page-item active" aria-current="page"><a class="page-link" href="{% url 'bills-page' all_bills.number %}">{{all_bills.number}}</a></li>
+
+          {% if all_bills.has_next %}
+          <li class="page-item"><a class="page-link" href="{% url 'bills-page' all_bills.next_page_number %}">{{all_bills.next_page_number}}</a></li>
+          <!-- <p>{{all_bills.paginator.num_pages}}</p> -->
+          <li class="page-item"><a class="page-link" href="{% url 'bills-page' all_bills.paginator.num_pages %}">Last</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
 
 {% endblock content %}

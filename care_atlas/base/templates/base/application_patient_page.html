@@ -1,13 +1,26 @@
 {% extends 'base/base.html' %}
 {% block content %}
-        <div class="container  mt-4">
-          <div class="row">
+
+        
+
+        <div class="">
+          <div class="row my-3">
+            <div class="col-9"></div>
+            <div class="col-3 row  justify-content-center">
+              <a href="{% url 'new-patient' %}" class="px-3 border border-0 fw-bold fs-4 text-white bg-primary shadow-lg rounded-3 py-2 link-underline link-underline-opacity-0" ><i class="bi bi-person-fill-add me-3 text-white" style="font-size: 140%"></i>Add New Patient</a>
+            </div>
+            <!-- <div class="col-9 bg-primary"></div>
+            <div class="col">
+              <a href="{% url 'new-patient' %}" class=" px-3 border border-0 fw-bold fs-4 text-white bg-primary shadow-lg rounded-3 py-2 link-underline link-underline-opacity-0" ><i class="bi bi-person-fill-add me-3 text-white" style="font-size: 140%"></i>Add New Patient</a>
+            </div> -->
+          </div>
+          <div class="row p-2">
             {% for patient in patients %}
             <div class="col-3 mt-2">
               <div class="card bg-primary-subtle rounded-4 shadow-lg">
                 <a href="{% url 'patient-page' patient.id %}" class="link-underline link-underline-opacity-0"><div class="card-body">
                   <h5 class="card-title fw-semibold text-primary"><i class="bi bi-person-circle me-2 text-black"></i>{{patient.first_name}} {{patient.last_name}}</h5>
-                  <h5 class="card-subtitle mb-2 text-body-secondary">{{patient.nationality}}, <span class="text-primary">{{patient.sex}}</span>, {{patient.age}}</h5>
+                  <h5 class="card-subtitle mb-2 text-body-secondary">{{patient.nationality}} <span class="text-primary">{{patient.sex}}</span></h5>
                   <h5 class="fw-semibold text-black">Born: <span class="fw-bold ">{{patient.date_of_birth}}</span></h5>
                   <!-- <h5 class="fw-semiold text-black"><i class="bi bi-telephone me-2"></i></i><span class="fw-bold text-primary">{{patient.phone_number}}</span></h5> -->
                 </div></a>
@@ -15,7 +28,7 @@
             </div>
             {% endfor %}
 
-            <div class="d-flex justify-content-center mt-5">
+            <div class="d-flex justify-content-center mt-5 fw-bold">
               <nav aria-label="..." class="">
                 <ul class="pagination">
 

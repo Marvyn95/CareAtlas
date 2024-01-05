@@ -1,24 +1,24 @@
 {% extends 'users/base_2.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="mb-5">
+    <div class="my-5 w-75 mx-auto">
         <h1 class="mb-3"> <span class="fw-bolder">Log Into </span><a href="{% url 'home-page' %}" class=" link-underline link-underline-opacity-0"><span class="display-1 fw-bolder text-primary fw-medium">CareAtlas</span></a></h1>
-        <p class="text-secondary fs-4">Elevating Healthcare, One Data Point at a Time!</p>
+        <p class="text-secondary fs-3">Elevating Healthcare, One Data Point at a Time!</p>
     </div>
     <!-- <div class="mt-5">
         <h4 class="fw-bold">Register With Us</h4>
     </div> -->
-    <div class="">
-        <form method="POST" action="#">
+    <div class="fw-semibold fs-5">
+        <form method="POST" action="#" class="w-75 mx-auto">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="InputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" name="email">
+                <input type="email" class="form-control border border-3 border-secondary" id="InputEmail1" aria-describedby="emailHelp" name="email">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
             <div class="mb-4">
                 <label for="Password1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="Password1" name="password">
+                <input type="password" class="form-control border border-3 border-secondary" id="Password1" name="password">
             </div>
             <button type="submit" class="btn btn-primary fw-bold btn-lg px-6 me-3">Login</button>
             <a href="{% url 'register' %}"><button type="button" class="btn btn-primary btn-lg fw-bold me-3">No Account? Register</button></a>
