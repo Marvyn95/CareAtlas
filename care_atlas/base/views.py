@@ -56,7 +56,7 @@ def application_home_page(request):
     last_six_months = months[(current_month_index-5):current_month_index+1]
     
     # getting male clients, female clients, client ages in current year
-    current_year_records = [j for j in all_records if j.patient.date_added.year == datetime.datetime.now().year]
+    current_year_records = [j for j in all_records if j.date_added.year == datetime.datetime.now().year]
     if current_year_records != []:
         male_clients = [x for x in current_year_records if x.patient.sex == 'Male']
         female_clients = [x for x in current_year_records if x.patient.sex == 'Female']

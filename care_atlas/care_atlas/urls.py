@@ -42,5 +42,6 @@ urlpatterns = [
     path('base/bills/<int:page>/', base_views.bills_page, name='bills-page'),
     path('base/records/<int:page>/', base_views.records_page, name='records-page'),
     path('base/search/<int:page>/', base_views.search_page, name='search-page'),
-    path('base/search/<int:page>/<str:search_string>/', base_views.search_page, name='search-page')
+    path('base/search/<int:page>/<str:search_string>/', base_views.search_page, name='search-page'),
+    path('base/user_profile_page/', users_views.user_profile_page, name='profile-page')
 ]

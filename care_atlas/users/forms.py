@@ -12,10 +12,3 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields  = ['first_name', 'last_name', 'email', 'password1', 'password2']
         
-class HospitalProfileForm(forms.ModelForm):
-    hospital_name = forms.CharField(max_length=50)
-    
-    class Meta:
-        model = HospitalProfile
-        fields = ['hospital_name']
-        

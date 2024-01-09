@@ -12,21 +12,22 @@
 <body>
   <div class="row justify-content-center h-100">
     <div class="col-2 p-3 bg-body-secondary d-flex flex-column align-items-start justify-content-start mx-1 rounded-4 my-2">
- 
         <div class="d-flex flex-column mt-5 mb-5 text-center w-75 mx-auto border border-primary border-5 rounded-5 p-4 shadow-lg">
-          <a href="{%url 'application-home' %}" class="link-underline link-underline-opacity-0">
+          <a href="{% url 'profile-page' %}" class="link-underline link-underline-opacity-0">
             <i class="bi bi-person-fill text-primary" style="font-size: 600%"></i>
+          </a>
             <div class="card-body">
-              <h2 class="card-title fw-bold">{{ user.first_name }} </h2>
+              <a href="{% url 'profile-page' %}" class="link-underline link-underline-opacity-0">
+                <h2 class="card-title fw-bold">{{ user.first_name }} </h2>
+              </a>
               <h4 class="card-title text-secondary fw-bold">{{ user.hospitalprofile.hospital_name }} </h4>
             </div>
-          </a>
         </div>
 
       <div class="mt-4 mx-auto">
         <div class="d-flex flex-column">
 
-          <a href="{%url 'application-home' %}" class="border border-0 ps-3 pe-3 fw-bold fs-4 text-white mb-3 bg-primary w-100 shadow-lg rounded-3 py-3 link-underline link-underline-opacity-0" ><i class="bi bi-house-fill me-3 text-white" style="font-size: 140%"></i>Home Page</a>
+          <a href="{%url 'application-home' %}" class="border border-0 ps-3 pe-3 fw-bold fs-4 text-white mb-3 bg-primary w-100 shadow-lg rounded-3 py-3 link-underline link-underline-opacity-0" ><i class="bi bi-house-fill me-3 text-white" style="font-size: 140%"></i>Home</a>
 
           <a href="{% url 'application-page' 1 %}" class="border border-0 ps-3 pe-3 fw-bold fs-4 text-white bg-primary w-100 shadow-lg rounded-3 py-3 mb-3 link-underline link-underline-opacity-0" ><i class="text-white bi bi-people-fill me-3" style="font-size: 140%"></i>Patients</a>
 
@@ -71,11 +72,16 @@
     <div class="col-2 p-3 bg-body-secondary mx-1 my-2 rounded-4 text-center">
       <a href="{% url 'logout' %}" class="border border-3 border-dark btn btn-light fw-bold fs-6 rounded-4 text-secondary p-3 shadow-lg mt-5 w-75" type="button"><i class=" bi bi-backspace-fill text-body-emphasis me-3" style="font-size: 150%"></i>Log Out</a>
       <div>
-        <h1 class="display-5 mt-5 text-light fw-bold bg-primary p-4 rounded-4 shadow-lg w-75 mx-auto">{{ day }}, {{ day_of_month }}</h1>
+        <a href="" class="link-underline link-underline-opacity-0">
+          <div>
+            <h1 class="display-5 mt-5 text-light fw-bold bg-primary p-4 rounded-4 shadow-lg w-75 mx-auto">{{ day }}, {{ day_of_month }}</h1>
+          </div>
+          <div>
+            <h1 class="display-5 ms-4 text-primary fw-bold">{{month}}, <span class="display-5 fw-bold text-dark">{{year}}</span></h1>
+          </div>
+        </a>
       </div>
-      <div>
-        <h1 class="display-5 ms-4 text-primary fw-bold">{{month}}, <span class="display-5 fw-bold text-dark">{{year}}</span></h1>
-      </div>
+
     </div>
 
   </div>

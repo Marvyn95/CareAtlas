@@ -2,9 +2,14 @@
 {% block content %}
 <div class="container">
 
-    <div class="d-flex justify-content-center my-3">
-        <div class="">
-          <h2 class="mb-1 mt-3 text-black fw-bold"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span> <span class="fst-italic">Vital Records</span></h2>
+    <div class="row my-3">
+        <div class="text-center mt-3 col">
+          <a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'patient-page' patient.id%}" role="button"><i class="bi bi-backspace-fill me-3"></i>Patient Page</a>
+        </div>
+        <div class="col">
+          <a href="{% url 'patient-page' patient.id %}" class="link-underline link-underline-opacity-0">
+            <h2 class="mb-1 mt-3 text-black fw-bold"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span> <span class="fst-italic text-secondary">Vital History</span></h2>
+          </a>
           <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}, {{patient.sex}}, {{patient.age}}</h5>
           <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2"></i>{{patient.phone_number}}</h5>
         </div>

@@ -11,7 +11,16 @@
     <div class="w-75 mx-auto">
         <form method="POST" action="#" class="fw-semibold">
             {% csrf_token %}
-            {{ form2|crispy }} {{ form1|crispy }}
+            <div class="mb-3">
+                <label for="" class="form-label">Hospital Name</label>
+                <select id="" class="form-select" name="hospital_name" required>
+                    <option value="" disabled selected>Select Your Hospital</option>
+                    {% for hosp in registered_hospitals %}
+                        <option>{{hosp.hospital_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {{ form1|crispy }}
             <button type="submit" class="btn btn-primary fw-bold btn-lg px-6 me-3 mt-4">Sign Up</button>
             <a href="{% url 'login' %}"><button type="button" class="btn btn-primary btn-lg me-3 mt-4 fw-bold">Have An Account? Login</button></a>
         </form>

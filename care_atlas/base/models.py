@@ -67,9 +67,6 @@ class PatientBill(models.Model):
         return patient_bill
     
     
-        
-    
-    
     
     
     

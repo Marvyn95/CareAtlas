@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="bg-light w-75 h-75 mx-auto mt-5 row">
+    <div class="col align-items-center ms-5">
+            <h1 class="fw-bold" style="font-size: 600%;">Profile</h1>
+            <h4 class="mt-5 text-secondary">First Name</h4>
+            <h4 class="border-bottom border-secondary-subtle border-3">{{user.first_name}}</h4>
+    
+            <h4 class="mt-5 text-secondary">Last Name</h4>
+            <h4 class="border-bottom border-secondary-subtle border-3">{{user.last_name}}</h4>
+    
+            <h4 class="mt-5 text-secondary">Email</h4>
+            <h4 class="border-bottom border-secondary-subtle border-3">{{user.email}}</h4>
+    
+            <h4 class="mt-5 text-secondary">Phone Number</h4>
+            <h4 class="border-bottom border-secondary-subtle border-3">07XX-XXX-XXX</h4>
+    
+            <h4 class="mt-5 text-secondary">Medical Facility</h4>
+            <h4 class="border-bottom border-secondary-subtle border-3">{{user.hospitalprofile.hospital_name}}</h4>
+    </div>
+    <div class="col text-center">
+        <div class=""><i class="bi bi-person-fill text-primary" style="font-size: 1800%;"></i></div>
+        <div class="h-25"></div>
+        <a href="" class="px-3 border border-0 fw-bold fs-4 text-white bg-primary shadow-lg rounded-3 py-2 link-underline link-underline-opacity-0" ><i class="bi bi-person-fill-add me-3 text-white" style="font-size: 140%"></i>Update Profile</a>
+    </div>
+</div>
+{% endblock content %}
