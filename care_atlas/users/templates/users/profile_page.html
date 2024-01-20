@@ -1,19 +1,28 @@
 {% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="bg-light w-75 h-75 mx-auto mt-5 row rounded-4">
     <div class="col align-items-center ms-5">
             <h1 class="fw-bold" style="font-size: 600%;">Profile</h1>
-            <h4 class="mt-5 text-secondary">First Name</h4>
+            <h4 class="mt-4 text-secondary">First Name</h4>
             <h4 class="border-bottom border-secondary-subtle border-3">{{user.first_name}}</h4>
     
-            <h4 class="mt-5 text-secondary">Last Name</h4>
+            <h4 class="mt-4 text-secondary">Last Name</h4>
             <h4 class="border-bottom border-secondary-subtle border-3">{{user.last_name}}</h4>
+
+            <h4 class="mt-4 text-secondary">Role</h4>
+            <h4 class="border-bottom border-secondary-subtle border-3">{{user.hospitalprofile.role}}</h4>
     
-            <h4 class="mt-5 text-secondary">Email</h4>
+            <h4 class="mt-4 text-secondary">Email</h4>
             <h4 class="border-bottom border-secondary-subtle border-3">{{user.email}}</h4>
     
-            <h4 class="mt-5 text-secondary">Phone Number</h4>
-            <h4 class="border-bottom border-secondary-subtle border-3">07XX-XXX-XXX</h4>
+            <h4 class="mt-4 text-secondary">Phone Number</h4>
+            {% if  user.hospitalprofile.phone_number %}
+                <h4 class="border-bottom border-secondary-subtle border-3">{{user.hospitalprofile.phone_number}}</h4>
+            {% else %}
+                <h4 class="border-bottom border-secondary-subtle border-3">None</h4>
+            {% endif %}
+
     
             <h4 class="mt-5 text-secondary">Medical Facility</h4>
             <h4 class="border-bottom border-secondary-subtle border-3">{{user.hospitalprofile.hospital_name}}</h4>
@@ -21,7 +30,79 @@
     <div class="col text-center mt-3">
         <div class=""><i class="bi bi-person-fill text-primary" style="font-size: 1800%;"></i></div>
         <div class=""></div>
-        <a href="" class="px-3 border border-0 fw-bold fs-4 text-white bg-primary shadow-lg rounded-3 py-2 link-underline link-underline-opacity-0" ><i class="bi bi-person-fill-add me-3 text-white" style="font-size: 140%"></i>Update Profile</a>
+        <button type="button" class="px-3 border border-0 fw-bold fs-4 text-white bg-primary shadow-lg rounded-3 py-2" data-bs-toggle="modal" data-bs-target="#edit_profile"><i class="bi bi-person-fill-add me-3 text-white" style="font-size: 140%"></i>Update Profile</button>
     </div>
+    <div class="row">
+        <div class="col-9"></div>
+        <button type="button" class="border border-0 bg-light mb-5 fw-semibold text-danger col" data-bs-toggle="modal" data-bs-target="#change_password">Change Passswod</button>
+    </div>
+
+
+    <!-- edit profile Modal-->
+    <div class="modal fade modal-dialog-scrollable modal-lg" id="edit_profile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content bg-body-secondary">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary fw-bold" id="exampleModalLabel">Update your Profile</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'edit-profile-page' %}" class="mx-5">
+                {% csrf_token %}
+                <div class="row mb-3 ">
+                    <label for="" class="col-sm-2 col-form-label fw-semibold">Hospital</label>
+                    <select id="" class="form-select col" name="hospital_name" required>
+                        <option value="{{user.hospitalprofile.hospital_name}}">{{user.hospitalprofile.hospital_name}}</option>
+                        {% for hosp in registered_hospitals %}
+                            <option>{{hosp.hospital_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="row mb-3">
+                    <label for="first_name" class="col-sm-2 col-form-label fw-semibold">First Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="first_name" name="first_name" value="{{user.first_name}}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="last_name" class="col-sm-2 col-form-label fw-semibold">Last Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="last_name" name="last_name" value="{{user.last_name}}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="role" class="col-sm-2 col-form-label fw-semibold">Role</label>
+                    <select id="role" class="form-select col" name="role" required>
+                        <option value="{{user.hospitalprofile.role}}">{{user.hospitalprofile.role}}</option>
+                        <option>Doctor</option>
+                        <option>Nurse</option>
+                        <option>Laboratory Technician</option>
+                        <option>Pharmacist</option>
+                        <option>Radiologist</option>
+                        <option>Physical Therapist</option>
+                    </select>
+                </div>
+                <div class="row mb-3">
+                    <label for="email" class="col-sm-2 col-form-label fw-semibold">Email</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="email" name="email" value="{{user.email}}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="phone_number" class="col-sm-2 col-form-label fw-semibold">Phone No.</label>
+                    <div class="col-sm-10">
+                      <input type="phone_number" class="form-control" id="phone_number" name="phone_number" value="{{user.hospitalprofile.phone_number}}">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary ms-2">Update</button>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- end model 1 -->
 </div>
 {% endblock content %}

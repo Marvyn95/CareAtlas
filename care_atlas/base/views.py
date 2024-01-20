@@ -32,6 +32,7 @@ def application_patient_page(request, page=1):
 
 
 def application_home_page(request):
+    user = request.user
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
     today_records = PatientRecord.objects.filter(doctor__in=doctors).filter(date_added=datetime.datetime.now().date())
@@ -66,9 +67,22 @@ def application_home_page(request):
             if i.patient.date_of_birth != 'null':
                 patient_age = int((datetime.datetime.now().date() - i.patient.date_of_birth).days/365)
                 ages.append(patient_age)
+                
         
-        gender_ratio = Fraction(len(male_clients) / len(female_clients))
-                              
+        if len(female_clients) == 0 and len(male_clients) != 0:
+            male_rep = 1
+            female_rep = 0
+        elif len(male_clients) == 0 and len(female_clients) !=0:
+            female_rep = 1
+            male_rep = 0
+        elif len(male_clients) == 0 and len(female_clients) == 0:
+            male_rep = 0
+            female_rep = 0
+        elif len(male_clients) != 0 and len(female_clients) != 0:
+            gender_ratio = Fraction(len(male_clients), len(female_clients))
+            male_rep = gender_ratio.numerator
+            female_rep = gender_ratio.denominator       
+                      
         context = {
             "day": date_1[0],
             "day_of_month": date_1[1],
@@ -76,8 +90,8 @@ def application_home_page(request):
             "year": date_1[3].replace(",", ""),
             "date": date,
             "days_patient_num": len(list(today_records)),
-            "male_rep": gender_ratio.numerator,
-            "female_rep": gender_ratio.denominator,
+            "male_rep": male_rep,
+            "female_rep": female_rep,
             "average_age": int(sum(ages)/len(ages)),
             "last_six_months": json.dumps(last_six_months, ensure_ascii=False),
             "client_totals": json.dumps(client_totals)
@@ -105,22 +119,40 @@ def new_patient_page(request):
         last_name = request.POST["last_name"]
         sex = request.POST["sex"]
         nationality = request.POST["nationality"]
-        phone_number = request.POST["phone_number"]
+        phone_number = request.POST["phone_number"]        
         date_of_birth = request.POST["date_of_birth"]
+        address = request.POST["address"]
+        next_of_kin = request.POST["next_of_kin"]
+        next_of_kin_contact = request.POST["next_of_kin_contact"]
+        religion = request.POST["religion"]
         
-        days=(datetime.datetime.now() - datetime.datetime.strptime(date_of_birth, "%Y-%m-%d")).days
-        age = math.floor(days/365)
         
-        patient1 = Patient(
-            first_name=first_name,
-            last_name=last_name,
-            sex=sex,
-            nationality=nationality,
-            phone_number=phone_number,
-            date_of_birth=date_of_birth,
-            age=age
+        if date_of_birth == "":
+            patient1 = Patient(
+                first_name=first_name,
+                last_name=last_name,
+                sex=sex,
+                nationality=nationality,
+                phone_number=phone_number,
+                address=address,
+                next_of_kin=next_of_kin,
+                next_of_kin_contact=next_of_kin_contact,
+                religion=religion
         )
-        
+        else:
+            patient1 = Patient(
+                first_name=first_name,
+                last_name=last_name,
+                sex=sex,
+                nationality=nationality,
+                phone_number=phone_number,
+                date_of_birth=date_of_birth,
+                address=address,
+                next_of_kin=next_of_kin,
+                next_of_kin_contact=next_of_kin_contact,
+                religion=religion
+            )
+            
         patient1.save()
         messages.success(request, "Patient Profile Created Successfully")
         redirect_url=reverse('application-page', args=(1,))
@@ -138,13 +170,14 @@ def new_patient_vital_page(request, patient_id):
         pulse = request.POST["pulse"]
         bp_sys = request.POST["systolic_blood_pressure"]
         bp_dias = request.POST["diastolic_blood_pressure"]
+        oxygen_saturation = request.POST["oxygen_saturation"]
         
-        if temperature == "" and weight=="" and pulse=="" and bp_sys=="" and bp_dias == "":
+        if temperature == "" and weight=="" and pulse=="" and bp_sys=="" and bp_dias == "" and oxygen_saturation == "":
             redirect_url=reverse('patient-page', args=(patient_id,))
             return redirect(redirect_url)
         
         if temperature=="":
-            temperature=None
+            temperature = 0
         if weight=="":
             weight=None
         if pulse=="":
@@ -153,14 +186,18 @@ def new_patient_vital_page(request, patient_id):
             bp_sys=None
         if bp_dias=="":
             bp_dias=None
+        if oxygen_saturation == "":
+            oxygen_saturation = 0
         
         vitals = PatientVital(patient=patient,
                               doctor=request.user,
                               pulse_bpm=pulse,
-                              temperature=temperature,
+                              temperature=float(temperature),
                               weight=weight,
                               systolic_blood_pressure=bp_sys,
-                              diastolic_blood_pressure=bp_dias)
+                              diastolic_blood_pressure=bp_dias,
+                              oxygen_saturation=float(oxygen_saturation)
+                              )
         vitals.save()
         messages.success(request, "Vital Record Has Been Added")
     redirect_url=reverse('patient-page', args=(patient_id,))
@@ -177,13 +214,14 @@ def edit_vitals_page(request, patient_id, vital_id):
         pulse = request.POST["pulse"]
         bp_sys = request.POST["systolic_blood_pressure"]
         bp_dias = request.POST["diastolic_blood_pressure"]
+        oxygen_saturation = request.POST["oxygen_saturation"]
         
-        if temperature == "" and weight=="" and pulse=="" and bp_sys=="" and bp_dias == "":
+        if temperature == "" and weight=="" and pulse=="" and bp_sys=="" and bp_dias == "" and oxygen_saturation=="":
             redirect_url=reverse('patient-page', args=(patient_id,))
             return redirect(redirect_url)
         
         if temperature=="":
-            temperature=None
+            temperature = 0
         if weight=="":
             weight=None
         if pulse=="":
@@ -192,12 +230,15 @@ def edit_vitals_page(request, patient_id, vital_id):
             bp_sys=None
         if bp_dias=="":
             bp_dias=None
+        if oxygen_saturation == "":
+            oxygen_saturation = 0
         
-        vital.temperature = temperature
+        vital.temperature = float(temperature)
         vital.weight = weight
         vital.pulse_bpm = pulse
         vital.systolic_blood_pressure = bp_sys
         vital.diastolic_blood_pressure = bp_dias
+        vital.oxygen_saturation = float(oxygen_saturation)
         vital.save()
         messages.success(request, "Vitals Have Been Updated Successfully")
         redirect_url=reverse('patient-page', args=(patient_id,))
@@ -213,24 +254,22 @@ def edit_vitals_page(request, patient_id, vital_id):
 def new_patient_record_page(request, patient_id):
     if request.method == "POST":
         signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n"))
-        tests_for = ", ".join(request.POST["tests_for"].split("\r\n"))
-        test_methods = ", ".join(request.POST["test_methods"].split("\r\n"))
+        impressions = ", ".join(request.POST["impressions"].split("\r\n"))
+        investigations = ", ".join(request.POST["investigations"].split("\r\n"))
         test_results = ", ".join(request.POST["test_results"].split("\r\n"))
-        prescriptions = ", ".join(request.POST["prescriptions"].split("\r\n"))
-        patient=Patient.objects.get(id=patient_id)
+        conclusions = ", ".join(request.POST["conclusions"].split("\r\n"))
         
-        if tests_for=="":
-            test_for = None
-        if test_methods=="":
-            test_methods=None
+        management = ", ".join(request.POST["management"].split("\r\n"))
+        patient=Patient.objects.get(id=patient_id)
             
         medical_record = PatientRecord(patient=patient,
                                        doctor=request.user,
                                        signs_and_symptoms=signs_and_symptoms,
-                                       tests_for=tests_for,
-                                       test_methods=test_methods,
+                                       impressions=impressions,
+                                       investigations=investigations,
                                        test_results=test_results,
-                                       prescriptions=prescriptions)
+                                       conclusions=conclusions,
+                                       management=management)
         medical_record.save()
         redirect_url = reverse('patient-page', args=(patient_id,))
         return redirect(redirect_url)
@@ -240,21 +279,18 @@ def edit_patient_record_page(request, patient_id, record_id):
     
     if request.method == "POST":
         signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n"))
-        tests_for = ", ".join(request.POST["tests_for"].split("\r\n"))
-        test_methods = ", ".join(request.POST["test_methods"].split("\r\n"))
+        impressions = ", ".join(request.POST["impressions"].split("\r\n"))
+        investigations = ", ".join(request.POST["investigations"].split("\r\n"))
         test_results = ", ".join(request.POST["test_results"].split("\r\n"))
-        prescriptions = ", ".join(request.POST["prescriptions"].split("\r\n"))
-        
-        if tests_for=="":
-            test_for = None
-        if test_methods=="":
-            test_methods=None
+        conclusions = ", ".join(request.POST["conclusions"].split("\r\n"))
+        management = ", ".join(request.POST["management"].split("\r\n"))
         
         record.signs_and_symptoms = signs_and_symptoms
-        record.tests_for = tests_for
-        record.test_methods = test_methods
+        record.impressions = impressions
+        record.investigations = investigations
         record.test_results = test_results
-        record.prescriptions = prescriptions
+        record.conclusions = conclusions
+        record.management = management
         record.save()
         messages.success(request, "Your Record Has Been Updated Successfully")    
         redirect_url = reverse('patient-page', args=(patient_id,))
@@ -277,8 +313,10 @@ def patient_page(request, patient_id):
     vitals = list(PatientVital.objects.filter(patient=patient).order_by("date_added", "time_added"))[-5:]
     medical_records = PatientRecord.objects.filter(patient=patient).order_by("-date_added", "-time_added")
     
-    patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
-    print(patient_age)
+    if patient.date_of_birth != None:
+        patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
+    else:
+        patient_age = ''
     
     context = {
         "day": date_1[0],
@@ -298,6 +336,11 @@ def patient_vitals_page(request, patient_id):
     patient = Patient.objects.get(id=patient_id)
     vitals = PatientVital.objects.filter(patient=patient).order_by('-date_added')
     
+    if patient.date_of_birth != None:
+        patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
+    else:
+        patient_age = 'Unknown'
+    
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -305,7 +348,8 @@ def patient_vitals_page(request, patient_id):
         "year": date_1[3].replace(",", ""),
         "date": date,
         "patient": patient,
-        "vitals": vitals
+        "vitals": vitals,
+        "patient_age": patient_age
     }
     
     return render(request, 'base/vitals_page.html', context)
@@ -315,6 +359,11 @@ def medical_record_page(request, patient_id, record_id):
     record = PatientRecord.objects.get(id=record_id)
     bill = PatientBill.objects.filter(medical_record=record).first()
     
+    if patient.date_of_birth != None:
+        patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
+    else:
+        patient_age = 'Unknown'
+    
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -323,7 +372,8 @@ def medical_record_page(request, patient_id, record_id):
         "date": date,
         "record": record,
         "patient": patient,
-        "bill": bill
+        "bill": bill,
+        "patient_age": patient_age
     }
     
     return render(request, 'base/medical_record_page.html', context)
@@ -333,6 +383,11 @@ def bill_patient_page(request, patient_id, record_id):
     record = PatientRecord.objects.get(id=record_id)
     
     bill_rec = list(PatientBill.objects.filter(medical_record=record))
+    
+    if patient.date_of_birth != None:
+        patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
+    else:
+        patient_age = 'Unknown'
     
     if len(bill_rec) != 0:
         redirect_url = reverse('medical-record-page', args=(patient_id, record_id))
@@ -372,7 +427,8 @@ def bill_patient_page(request, patient_id, record_id):
             "year": date_1[3].replace(",", ""),
             "date": date,
             "record": record,
-            "patient": patient
+            "patient": patient,
+            "patient_age": patient_age
         }
         return render(request, 'base/bill_patient_page.html', context)
 
@@ -380,6 +436,12 @@ def patient_bill_page(request, patient_id, record_id, bill_id):
     patient = Patient.objects.get(id=patient_id)
     record = PatientRecord.objects.get(id=record_id)
     bill = PatientBill.objects.get(id=bill_id)
+    
+    if patient.date_of_birth != None:
+        patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
+    else:
+        patient_age = 'Unknown'
+    
     
     context = {
         "day": date_1[0],
@@ -389,7 +451,9 @@ def patient_bill_page(request, patient_id, record_id, bill_id):
         "date": date,
         "record": record,
         "patient": patient,
-        "bill": bill
+        "bill": bill,
+        "patient_age": patient_age
+        
     }
     return render(request, 'base/patient_bill_page.html', context)
 

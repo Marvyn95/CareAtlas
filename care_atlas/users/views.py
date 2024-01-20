@@ -18,10 +18,10 @@ date = {"day": date_1[0],  "day_of_month": date_1[1], "month": date_1[2], "year"
 def register(request):
     form1 = UserRegistrationForm()
     registered_hospitals = RegisteredHospital.objects.all()
-    print(registered_hospitals)
     
     if request.method == "POST":
         hospital_name = request.POST['hospital_name']
+        role = request.POST['role']
         form1 = UserRegistrationForm(request.POST)        
         approve_reg_application()
                 
@@ -34,9 +34,11 @@ def register(request):
                 email = form1.cleaned_data.get('email'),              
                 password = make_password(form1.cleaned_data.get('password1'))          
             )            
-            hospital = HospitalProfile(user = user_instance, hospital_name = hospital_name)
+            hospital_profile = HospitalProfile(user = user_instance, hospital_name = hospital_name, role=role)
+            
             user_instance.save()
-            hospital.save()
+            hospital_profile.save()
+            
             messages.success(request, "Your CareAtlas Account Has Been Created! You May Log In")
             return redirect("login")
         else:
@@ -78,11 +80,40 @@ def logout_page(request):
     return redirect('login')
 
 def user_profile_page(request):
+    form1 = UserRegistrationForm()
+    registered_hospitals = RegisteredHospital.objects.all()
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
         "month": date_1[2],
         "year": date_1[3].replace(",", ""),
-        "date": date
+        "date": date,
+        "form1": form1,
+        "registered_hospitals": registered_hospitals
     }
     return render(request, 'users/profile_page.html', context)
+
+def edit_user_profile_page(request):
+    if request.method == "POST":
+        hospital_name = request.POST['hospital_name']
+        role = request.POST['role']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        email = request.POST['email']
+        phone_number = request.POST['phone_number']
+        
+        user = request.user
+        hospital_profile = HospitalProfile.objects.filter(user=user).first()
+        
+        hospital_profile.hospital_name = hospital_name
+        hospital_profile.role = role
+        hospital_profile.phone_number = phone_number
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email  
+              
+        user.save()
+        hospital_profile.save()
+        
+        redirect_url = reverse('profile-page')
+        return redirect(redirect_url)

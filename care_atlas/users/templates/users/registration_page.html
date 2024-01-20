@@ -20,6 +20,19 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Role</label>
+                <select id="" class="form-select" name="role" required>
+                    <option value="Doctor">Doctor</option>
+                    <option>Nurse</option>
+                    <option>Laboratory Technician</option>
+                    <option>Pharmacist</option>
+                    <option>Radiologist</option>
+                    <option>Physical Therapist</option>
+                    <option>Receptionist</option>
+                    <option>Accountant</option>
+                </select>
+            </div>
             {{ form1|crispy }}
             <button type="submit" class="btn btn-primary fw-bold btn-lg px-6 me-3 mt-4">Sign Up</button>
             <a href="{% url 'login' %}"><button type="button" class="btn btn-primary btn-lg me-3 mt-4 fw-bold">Have An Account? Login</button></a>

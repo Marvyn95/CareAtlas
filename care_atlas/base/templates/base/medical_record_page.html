@@ -14,7 +14,7 @@
       <div class=" col-6 d-flex">
         <div class="">
           <h2 class="text-black fw-medium"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2>
-          <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}, {{patient.sex}}, {{patient.age}}</h5>
+          <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</h5>
           <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2 text-black"></i>{{patient.phone_number}}</h5>
         </div>
       </div>
@@ -23,6 +23,7 @@
         <!-- <h5 class="my-1 fw-semibold text-primary">{{record.date_added}}</h5> -->
         <h5 class="my-1 fw-medium text-black">{{record.time_added}}</h5>
         <h5 class="my-1 fw-medium text-black">Report By: {{record.doctor.first_name}} {{record.doctor.last_name}}</h5>
+        <h5 class="my-1 fw-medium text-black">{{record.doctor.role}}</h5>
         <h5 class="my-1 fw-medium text-black">{{record.doctor.phone_number}}</h5>
         <h5 class="my-1 fw-medium text-black">{{record.doctor.email}}</h5>
         <h5 class="my-1 fw-medium text-black">{{record.doctor.hospitalprofile.hospital_name}}</h5>
@@ -33,17 +34,20 @@
       <h5 class="mb-2 fw-bold">Condition / Signs / Symptoms</h5>
       <p class="fs-5 mb-5 fst-italic">{{record.signs_and_symptoms}}</p>
 
-      <h5 class="mb-2 fw-bold">Disorders Tested For</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.tests_for}}</p>
+      <h5 class="mb-2 fw-bold">Impressions / Diagnosis</h5>
+      <p class="fs-5 mb-5 fst-italic">{{record.impressions}}</p>
 
-      <h5 class="mb-2 fw-bold">Test Methods / Tests Conducted</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.test_methods}}</p>
+      <h5 class="mb-2 fw-bold">Investigations / Lab Tests</h5>
+      <p class="fs-5 mb-5 fst-italic">{{record.investigations}}</p>
 
       <h5 class="mb-2 fw-bold">Test Results</h5>
       <p class="fs-5 mb-5 fst-italic">{{record.test_results}}</p>
 
-      <h5 class="mb-2 fw-bold">Medications Prescribed</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.prescriptions}}</p>
+      <h5 class="mb-2 fw-bold">Conclusions</h5>
+      <p class="fs-5 mb-5 fst-italic">{{record.conclusions}}</p>
+
+      <h5 class="mb-2 fw-bold">Management</h5>
+      <p class="fs-5 mb-5 fst-italic">{{record.management}}</p>
     </div>  
 
     <div class="row">

@@ -10,7 +10,7 @@
           <a href="{% url 'patient-page' patient.id %}" class="link-underline link-underline-opacity-0">
             <h2 class="mb-1 mt-3 text-black fw-bold"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span> <span class="fst-italic text-secondary">Vital History</span></h2>
           </a>
-          <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}, {{patient.sex}}, {{patient.age}}</h5>
+          <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</h5>
           <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2"></i>{{patient.phone_number}}</h5>
         </div>
     </div>
@@ -31,10 +31,11 @@
               </div>
       
               <ul class="fs-5">
-                <li class="list-group-item"><span class="fw-medium">Blood Pressure: </span><span class="fw-semibold text-danger">{{vital.systolic_blood_pressure}} / {{vital.diastolic_blood_pressure}}</span> <span class="text-primary">bp</span></span></li>
+                <li class="list-group-item"><span class="fw-medium">Blood Pressure: </span><span class="fw-semibold text-danger">{{vital.systolic_blood_pressure}} / {{vital.diastolic_blood_pressure}}</span> <span class="text-primary fw-medium">mmHg</span></span></li>
                 <li class="list-group-item"><span class="fw-medium">Weight: </span><span class="fw-semibold text-danger">{{vital.weight}} <span class="text-primary">kg</span></span></li>
                 <li class="list-group-item"><span class="fw-medium">Heart Rate: </span><span class="fw-semibold text-danger">{{vital.pulse_bpm}} <span class="text-primary">bpm</span></span></li>
                 <li class="list-group-item"><span class="fw-medium">Temperature: </span><span class="fw-semibold text-danger">{{vital.temperature}}<i class="bi bi-thermometer-high text-primary"></i></span></li>
+                <li class="list-group-item"><span class="fw-medium">Oxygen saturation: </span><span class="fw-semibold text-danger">{{vital.oxygen_saturation}}</span></li>
             </div>
         </div>
         {% endfor %}

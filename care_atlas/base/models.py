@@ -11,6 +11,10 @@ class Patient(models.Model):
     sex_type = {"Male": "Male", "Female": "Female", "Complicated": "Complicated"}
     sex = models.CharField(blank=False, choices=sex_type, max_length=15)
     phone_number = models.CharField(max_length=20, null=True)
+    address = models.CharField(max_length=30, null=True)
+    next_of_kin = models.CharField(max_length=30, null=True)
+    next_of_kin_contact = models.CharField(max_length=30, null=True)
+    religion = models.CharField(max_length=30, null=True)
     
     def __str__(self):
         patient = f"{self.first_name} {self.last_name}, {self.nationality}, {self.sex}, DOB: {self.date_of_birth}, TEL: {self.phone_number}"
@@ -23,13 +27,14 @@ class PatientRecord(models.Model):
     date_added = models.DateField(auto_now_add=True)
     time_added = models.TimeField(auto_now_add=True)
     signs_and_symptoms = models.TextField(blank=False)
-    tests_for = models.TextField(null=True)
-    test_methods = models.TextField(null=True)
+    impressions = models.TextField(null=True)
+    investigations = models.TextField(null=True)
     test_results = models.TextField(null=True)
-    prescriptions = models.TextField(blank=False)
+    conclusions = models.TextField(null=True)
+    management = models.TextField(blank=False)
     
     def __str__(self):
-        record = f"signs: {self.signs_and_symptoms}, Tests: {self.tests_for}, Test Results: {self.test_results}, Test Methods: {self.test_methods}, Prescriptions: {self.prescriptions}"
+        record = f"signs: {self.signs_and_symptoms}, Impressions: {self.impressions}, Investigations: {self.investigations}, Test Results: {self.test_results}, Conclusions: {self.conclusions}, Management: {self.management}"
         return record
     
     
@@ -39,13 +44,14 @@ class PatientVital(models.Model):
     date_added = models.DateField(auto_now_add=True)
     time_added = models.TimeField(auto_now_add=True)
     pulse_bpm = models.IntegerField(null=True)
-    temperature = models.IntegerField(null=True)
+    temperature = models.FloatField(null=True)
     weight = models.IntegerField(null=True)
     systolic_blood_pressure = models.IntegerField(null=True)
     diastolic_blood_pressure = models.IntegerField(null=True)
+    oxygen_saturation = models.FloatField(null=True)
     
     def __str__(self):
-        patient_vital = f"Patient: {self.patient.first_name} {self.patient.last_name} Doc: {self.doctor}, Pulse: {self.pulse_bpm}, Temp: {self.temperature}, Weight: {self.weight}, BP: {self.systolic_blood_pressure} / {self.diastolic_blood_pressure}"
+        patient_vital = f"Patient: {self.patient.first_name} {self.patient.last_name} Doc: {self.doctor}, Pulse: {self.pulse_bpm}, Temp: {self.temperature}, Weight: {self.weight}, BP: {self.systolic_blood_pressure} / {self.diastolic_blood_pressure}, spO2: {self.oxygen_saturation}"
         return (patient_vital)
     
 class PatientBill(models.Model):

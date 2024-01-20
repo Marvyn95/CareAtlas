@@ -15,23 +15,28 @@
       </div>
 
       <div class="mb-3">
-        <label for="tdf" class="form-label fw-medium">Tests Done For:</label>
-        <textarea class="form-control" id="tdf" rows="3" placeholder="please enter diseases or disorders being tested for based on the signs and symptoms mentioned" name="tests_for">{{record.tests_for}}</textarea>
+        <label for="ii" class="form-label fw-medium">Impressions / Diagnosis:</label>
+        <textarea class="form-control" id="ii" rows="3" placeholder="Enter diseases or disorders being tested for based on the signs and symptoms mentioned" name="impressions">{{record.impressions}}</textarea>
       </div>
 
       <div class="mb-3">
-        <label for="tmu" class="form-label fw-medium">Test Methods Used</label>
-        <textarea class="form-control" id="tmu" rows="3" name="test_methods">{{record.test_methods}}</textarea>
+        <label for="tmu" class="form-label fw-medium">Investigations / Lab Tests</label>
+        <textarea class="form-control" id="tmu" rows="3" name="investigations">{{record.investigations}}</textarea>
       </div>
 
       <div class="mb-3">
         <label for="tr" class="form-label fw-medium">Test Results and Conclusions</label>
-        <textarea class="form-control" id="tr" rows="3" name="test_results" placeholder="Please Enter Test Results and/or Conclusion from Medical Diagnosis" required>{{record.test_results}}</textarea>
+        <textarea class="form-control" id="tr" rows="3" name="test_results" placeholder="Please Enter Test Results from Medical Diagnosis" required>{{record.test_results}}</textarea>
       </div>
 
       <div class="mb-3">
-        <label for="pr" class="form-label fw-medium"> Treatments and Prescriptions</label>
-        <textarea class="form-control" id="pr" rows="3" name="prescriptions" placeholder="Please Enter Prescriptions Given To Patient" required>{{record.prescriptions}}</textarea>
+        <label for="cc" class="form-label fw-medium">Conclusions</label>
+        <textarea class="form-control" id="cc" rows="3" name="conclusions" placeholder="Please Conclusion from Medical Diagnosis" required>{{record.conclusions}}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="pr" class="form-label fw-medium"> Management</label>
+        <textarea class="form-control" id="pr" rows="3" name="management" placeholder="Please Enter Treatments Given / Recommended To Patient" required>{{record.prescriptions}}</textarea>
       </div>
 
       <div class="d-flex justify-content-center">
