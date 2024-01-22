@@ -9,6 +9,36 @@
 <div class="">
     <form method="POST" action="" class="mx-5">
       {% csrf_token %}
+
+      <!-- clinical summary -->
+
+      <div class="mb-3">
+        <label for="sas" class="form-label fw-medium">Medical History</label>
+        <textarea class="form-control" id="sas" rows="3" name="medical_history" placeholder="Enter brief medical history of patient">{{record.surgical_history}}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="sas" class="form-label fw-medium">Surgical History</label>
+        <textarea class="form-control" id="sas" rows="3" name="surgical_history" placeholder="Enter patient surgical history of patient if any">{{record.surgical_history}}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="sas" class="form-label fw-medium">GYN / OBS History</label>
+        <textarea class="form-control" id="sas" rows="3" name="gyn_obs_history" placeholder="Enter Patient GYN / OBS History">{{record.gyn_obs_history}}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="sas" class="form-label fw-medium">Family Medical History </label>
+        <textarea class="form-control" id="sas" rows="3" name="family_history" placeholder="Enter patient family medical history">{{record.family_history}}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="sas" class="form-label fw-medium">Social History / Lifestyle</label>
+        <textarea class="form-control" id="sas" rows="3" name="social_history" placeholder="Enter patient social history">{{record.social_history}}</textarea>
+      </div>
+
+      <!-- End of clinical summary -->
+
       <div class="mb-3">
         <label for="sas" class="form-label fw-medium">Signs and Symptoms</label>
         <textarea class="form-control" id="sas" rows="3" name="signs_and_symptoms" placeholder="Enter present signs and symptoms of the patient" required>{{record.signs_and_symptoms}}</textarea>
@@ -36,7 +66,7 @@
 
       <div class="mb-3">
         <label for="pr" class="form-label fw-medium"> Management</label>
-        <textarea class="form-control" id="pr" rows="3" name="management" placeholder="Please Enter Treatments Given / Recommended To Patient" required>{{record.prescriptions}}</textarea>
+        <textarea class="form-control" id="pr" rows="3" name="management" placeholder="Please Enter Treatments Given / Recommended To Patient" required>{{record.management}}</textarea>
       </div>
 
       <div class="d-flex justify-content-center">

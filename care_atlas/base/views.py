@@ -253,13 +253,21 @@ def edit_vitals_page(request, patient_id, vital_id):
 
 def new_patient_record_page(request, patient_id):
     if request.method == "POST":
+        # getting medical history data from form
+        medical_history = ", ".join(request.POST["medical_history"].split("\r\n"))
+        surgical_history = ", ".join(request.POST["surgical_history"].split("\r\n"))
+        gyn_obs_history = ", ".join(request.POST["gyn_obs_history"].split("\r\n"))
+        family_history = ", ".join(request.POST["family_history"].split("\r\n"))
+        social_history = ", ".join(request.POST["social_history"].split("\r\n"))
+        
+        # getting medical record data from form
         signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n"))
         impressions = ", ".join(request.POST["impressions"].split("\r\n"))
         investigations = ", ".join(request.POST["investigations"].split("\r\n"))
         test_results = ", ".join(request.POST["test_results"].split("\r\n"))
         conclusions = ", ".join(request.POST["conclusions"].split("\r\n"))
+        management = ", ".join(request.POST["management"].split("\r\n"))        
         
-        management = ", ".join(request.POST["management"].split("\r\n"))
         patient=Patient.objects.get(id=patient_id)
             
         medical_record = PatientRecord(patient=patient,
@@ -269,7 +277,13 @@ def new_patient_record_page(request, patient_id):
                                        investigations=investigations,
                                        test_results=test_results,
                                        conclusions=conclusions,
-                                       management=management)
+                                       management=management,
+                                       medical_history=medical_history,
+                                       surgical_history=surgical_history,
+                                       gyn_obs_history=gyn_obs_history,
+                                       family_history=family_history,
+                                       social_history=social_history
+                                       )
         medical_record.save()
         redirect_url = reverse('patient-page', args=(patient_id,))
         return redirect(redirect_url)
@@ -278,12 +292,27 @@ def edit_patient_record_page(request, patient_id, record_id):
     record = PatientRecord.objects.get(id=record_id)
     
     if request.method == "POST":
+        # getting medical history data from form
+        medical_history = ", ".join(request.POST["medical_history"].split("\r\n"))
+        surgical_history = ", ".join(request.POST["surgical_history"].split("\r\n"))
+        gyn_obs_history = ", ".join(request.POST["gyn_obs_history"].split("\r\n"))
+        family_history = ", ".join(request.POST["family_history"].split("\r\n"))
+        social_history = ", ".join(request.POST["social_history"].split("\r\n"))
+        
+        # getting medical record data from form        
         signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n"))
         impressions = ", ".join(request.POST["impressions"].split("\r\n"))
         investigations = ", ".join(request.POST["investigations"].split("\r\n"))
         test_results = ", ".join(request.POST["test_results"].split("\r\n"))
         conclusions = ", ".join(request.POST["conclusions"].split("\r\n"))
         management = ", ".join(request.POST["management"].split("\r\n"))
+        
+        # editing / updating medical record
+        record.medical_history = medical_history
+        record.surgical_history = surgical_history
+        record.gyn_obs_history = gyn_obs_history
+        record.family_history = family_history
+        record.social_history = social_history
         
         record.signs_and_symptoms = signs_and_symptoms
         record.impressions = impressions
@@ -292,6 +321,7 @@ def edit_patient_record_page(request, patient_id, record_id):
         record.conclusions = conclusions
         record.management = management
         record.save()
+        
         messages.success(request, "Your Record Has Been Updated Successfully")    
         redirect_url = reverse('patient-page', args=(patient_id,))
         return redirect(redirect_url)
@@ -550,3 +580,42 @@ def search_page(request, page=1, search_string=""):
         "search_text": search_string     
     }
     return render(request, 'base/search_result.html', context)
+
+def order_tests_page(request, patient_id):
+    if request.method == "POST":
+        # getting medical history data from form
+        medical_history = ", ".join(request.POST["medical_history"].split("\r\n"))
+        surgical_history = ", ".join(request.POST["surgical_history"].split("\r\n"))
+        gyn_obs_history = ", ".join(request.POST["gyn_obs_history"].split("\r\n"))
+        family_history = ", ".join(request.POST["family_history"].split("\r\n"))
+        social_history = ", ".join(request.POST["social_history"].split("\r\n"))
+        
+        # getting medical record data from form
+        signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n"))
+        impressions = ", ".join(request.POST["impressions"].split("\r\n"))
+        investigations = ", ".join(request.POST["investigations"].split("\r\n"))      
+        
+        patient=Patient.objects.get(id=patient_id)
+            
+        medical_record = PatientRecord(patient=patient,
+                                    doctor=request.user,
+                                    signs_and_symptoms=signs_and_symptoms,
+                                    impressions=impressions,
+                                    investigations=investigations,
+                                    test_results="Awaiting Test Results",
+                                    conclusions="Awaiting Test Results",
+                                    management="Awaiting Test Results",
+                                    medical_history=medical_history,
+                                    surgical_history=surgical_history,
+                                    gyn_obs_history=gyn_obs_history,
+                                    family_history=family_history,
+                                    social_history=social_history,
+                                    record_status="Awaiting Test Results"
+                                    )
+        medical_record.save()
+
+    #send notification to Lab Technicians in Facility
+    messages.success(request, "Tests Have Been Requested Successfully")
+    redirect_url = reverse('patient-page', args=(patient_id, ))
+    return redirect(redirect_url)
+    

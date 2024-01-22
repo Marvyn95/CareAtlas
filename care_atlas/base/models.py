@@ -33,6 +33,14 @@ class PatientRecord(models.Model):
     conclusions = models.TextField(null=True)
     management = models.TextField(blank=False)
     
+    medical_history = models.TextField(null=True)
+    surgical_history = models.TextField(null=True)
+    gyn_obs_history = models.TextField(null=True)
+    family_history = models.TextField(null=True)
+    social_history = models.TextField(null=True)
+    
+    record_status = models.CharField(max_length=20, null=True)
+    
     def __str__(self):
         record = f"signs: {self.signs_and_symptoms}, Impressions: {self.impressions}, Investigations: {self.investigations}, Test Results: {self.test_results}, Conclusions: {self.conclusions}, Management: {self.management}"
         return record

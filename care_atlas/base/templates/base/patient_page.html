@@ -72,8 +72,37 @@
             <form method="POST" action="{% url 'new-patient-record' patient.id %}" class="mx-5">
               {% csrf_token %}
 
+              <!-- clinical summary -->
+
               <div class="mb-3">
-                <label for="sas" class="form-label fw-medium">Signs and Symptoms</label>
+                <label for="sas" class="form-label fw-medium">Medical History</label>
+                <textarea class="form-control" id="sas" rows="3" name="medical_history" placeholder="Enter brief medical history of patient"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="sas" class="form-label fw-medium">Surgical History</label>
+                <textarea class="form-control" id="sas" rows="3" name="surgical_history" placeholder="Enter patient surgical history of patient if any"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="sas" class="form-label fw-medium">GYN / OBS History</label>
+                <textarea class="form-control" id="sas" rows="3" name="gyn_obs_history" placeholder="Enter Patient GYN / OBS History"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="sas" class="form-label fw-medium">Family Medical History </label>
+                <textarea class="form-control" id="sas" rows="3" name="family_history" placeholder="Enter patient family medical history"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="sas" class="form-label fw-medium">Social History / Lifestyle</label>
+                <textarea class="form-control" id="sas" rows="3" name="social_history" placeholder="Enter patient social history"></textarea>
+              </div>
+
+              <!-- End of clinical summary -->
+
+              <div class="mb-3">
+                <label for="sas" class="form-label fw-medium">Signs and Symptoms (History of Presenting Complaints)</label>
                 <textarea class="form-control" id="sas" rows="3" name="signs_and_symptoms" placeholder="Enter present signs and symptoms of the patient" required></textarea>
               </div>
 
@@ -83,8 +112,13 @@
               </div>
 
               <div class="mb-3">
-                <label for="tmu" class="form-label fw-medium">Investigations / Lab tests</label>
+                <label for="tmu" class="form-label fw-medium">Investigations / Lab tests to be Conducted</label>
                 <textarea class="form-control" id="tmu" rows="3" name="investigations"></textarea>
+              </div>
+
+              <div class="mb-3 row">
+                <div class="col-8"></div>
+                <button type="submit" formaction="{% url 'order-tests' patient.id %}" class="btn col btn-primary shadow-lg">Order Tests</button>
               </div>
 
               <div class="mb-3">
@@ -94,17 +128,17 @@
 
               <div class="mb-3">
                 <label for="cc" class="form-label fw-medium">Conclusions</label>
-                <textarea class="form-control" id="cc" rows="3" name="conclusions" placeholder="Please Enter Test Results and/or Conclusion from Medical Diagnosis" required></textarea>
+                <textarea class="form-control" id="cc" rows="3" name="conclusions" placeholder="Please Enter Test Results and/or Conclusion from Medical Diagnosis" ></textarea>
               </div>
 
               <div class="mb-3">
                 <label for="mm" class="form-label fw-medium">Management</label>
-                <textarea class="form-control" id="mm" rows="3" name="management" placeholder="Please Enter Treatments and Prescriptions given To Patient" required></textarea>
+                <textarea class="form-control" id="mm" rows="3" name="management" placeholder="Please Enter Treatments and Prescriptions given To Patient" ></textarea>
               </div>
 
               <div class="d-flex justify-content-center">
-              <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary ms-2">Save</button>
+              <button type="button" class="btn btn-secondary me-2 shadow-lg" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary ms-2 shadow-lg fw-semibold">Save</button>
               </div>
             </form>
           </div>
