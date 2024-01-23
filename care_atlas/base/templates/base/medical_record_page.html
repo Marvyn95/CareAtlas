@@ -57,6 +57,12 @@
       <div class="col text-center">
         <a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'patient-page' patient.id%}" role="button">Patient Page</a>
       </div>
+
+      <div class="col text-center">
+        {% if user == record.doctor %}
+          <a type="button" class="btn col fw-bold text-primary me-4 fs-5" href="{% url 'edit-patient-record' patient.id record.id %}">Update Record</a>
+        {% endif %}
+      </div>
       {% if user == record.doctor and bill == None%}
         <div class="col text-center">
           <a class="btn btn-primary px-3 fw-bold fs-5" href="{% url 'bill-patient' patient.id record.id%}" role="button">Bill Patient</a>

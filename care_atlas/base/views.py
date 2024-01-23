@@ -13,6 +13,8 @@ from fractions import Fraction
 date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
 date = {"day": date_1[0],  "day_of_month": date_1[1], "month": date_1[2], "year": date_1[3].replace(",", "")}
 
+
+
 # Create your views here.
 def home_page(request):
     return render(request, 'base/home_page.html')
@@ -20,23 +22,35 @@ def home_page(request):
 def application_patient_page(request, page=1):
     all_patients = Patient.objects.all().order_by('-date_added')
     patients = Paginator(all_patients, 24)
+    
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)  
+    
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
         "month": date_1[2],
         "year": date_1[3].replace(",", ""),
         "date": date,
-        "patients": patients.page(page)
+        "patients": patients.page(page),
+        "test_notifications": test_notifications
     }
     return render(request, 'base/application_patient_page.html', context)
 
 
 def application_home_page(request):
-    user = request.user
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
     today_records = PatientRecord.objects.filter(doctor__in=doctors).filter(date_added=datetime.datetime.now().date())
     all_records = PatientRecord.objects.filter(doctor__in=doctors)
+    
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
         
     #getting monthly number of clients for past 6 months
     _date = datetime.datetime.now().date()
@@ -94,7 +108,8 @@ def application_home_page(request):
             "female_rep": female_rep,
             "average_age": int(sum(ages)/len(ages)),
             "last_six_months": json.dumps(last_six_months, ensure_ascii=False),
-            "client_totals": json.dumps(client_totals)
+            "client_totals": json.dumps(client_totals),
+            "test_notifications": test_notifications
         }
     else:        
         context = {
@@ -108,7 +123,8 @@ def application_home_page(request):
             "female_ratio": 0,
             "average_age": 0,
             "last_six_months": json.dumps(last_six_months, ensure_ascii=False),
-            "client_totals": json.dumps(client_totals)
+            "client_totals": json.dumps(client_totals),
+            "test_notifications": test_notifications
         }
     return render(request, 'base/application_home_page.html', context)
 
@@ -208,6 +224,13 @@ def edit_vitals_page(request, patient_id, vital_id):
     vital = PatientVital.objects.get(id=vital_id)
     patient = Patient.objects.get(id=patient_id)
     
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
+    
     if request.method == "POST":
         temperature = request.POST["temperature"]
         weight = request.POST["weight"]
@@ -245,7 +268,8 @@ def edit_vitals_page(request, patient_id, vital_id):
         return redirect(redirect_url)
     else:
         context = {
-            "vital": vital
+            "vital": vital,
+            "test_notifications": test_notifications
         }
         return render(request, 'base/edit_vitals_record.html', context)
 
@@ -291,6 +315,13 @@ def new_patient_record_page(request, patient_id):
 def edit_patient_record_page(request, patient_id, record_id):
     record = PatientRecord.objects.get(id=record_id)
     
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
+    
     if request.method == "POST":
         # getting medical history data from form
         medical_history = ", ".join(request.POST["medical_history"].split("\r\n"))
@@ -332,7 +363,8 @@ def edit_patient_record_page(request, patient_id, record_id):
         "month": date_1[2],
         "year": date_1[3].replace(",", ""),
         "date": date,
-        "record": record
+        "record": record,
+        "test_notifications": test_notifications
         }
         return render(request, 'base/edit_medical_record.html', context)
 
@@ -342,6 +374,13 @@ def patient_page(request, patient_id):
     
     vitals = list(PatientVital.objects.filter(patient=patient).order_by("date_added", "time_added"))[-5:]
     medical_records = PatientRecord.objects.filter(patient=patient).order_by("-date_added", "-time_added")
+    
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
     
     if patient.date_of_birth != None:
         patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
@@ -357,7 +396,8 @@ def patient_page(request, patient_id):
         "patient": patient,
         "vitals": vitals,
         "medical_records": medical_records,
-        "patient_age": patient_age
+        "patient_age": patient_age,
+        "test_notifications": test_notifications
     }
     return render(request, 'base/patient_page.html', context)
 
@@ -365,6 +405,13 @@ def patient_page(request, patient_id):
 def patient_vitals_page(request, patient_id):
     patient = Patient.objects.get(id=patient_id)
     vitals = PatientVital.objects.filter(patient=patient).order_by('-date_added')
+    
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
     
     if patient.date_of_birth != None:
         patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
@@ -379,7 +426,8 @@ def patient_vitals_page(request, patient_id):
         "date": date,
         "patient": patient,
         "vitals": vitals,
-        "patient_age": patient_age
+        "patient_age": patient_age,
+        "test_notifications": test_notifications
     }
     
     return render(request, 'base/vitals_page.html', context)
@@ -388,6 +436,13 @@ def medical_record_page(request, patient_id, record_id):
     patient = Patient.objects.get(id=patient_id)
     record = PatientRecord.objects.get(id=record_id)
     bill = PatientBill.objects.filter(medical_record=record).first()
+    
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
     
     if patient.date_of_birth != None:
         patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
@@ -403,7 +458,8 @@ def medical_record_page(request, patient_id, record_id):
         "record": record,
         "patient": patient,
         "bill": bill,
-        "patient_age": patient_age
+        "patient_age": patient_age,
+        "test_notifications": test_notifications
     }
     
     return render(request, 'base/medical_record_page.html', context)
@@ -413,6 +469,13 @@ def bill_patient_page(request, patient_id, record_id):
     record = PatientRecord.objects.get(id=record_id)
     
     bill_rec = list(PatientBill.objects.filter(medical_record=record))
+    
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
     
     if patient.date_of_birth != None:
         patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
@@ -458,7 +521,8 @@ def bill_patient_page(request, patient_id, record_id):
             "date": date,
             "record": record,
             "patient": patient,
-            "patient_age": patient_age
+            "patient_age": patient_age,
+            "test_notifications": test_notifications
         }
         return render(request, 'base/bill_patient_page.html', context)
 
@@ -466,6 +530,13 @@ def patient_bill_page(request, patient_id, record_id, bill_id):
     patient = Patient.objects.get(id=patient_id)
     record = PatientRecord.objects.get(id=record_id)
     bill = PatientBill.objects.get(id=bill_id)
+    
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
     
     if patient.date_of_birth != None:
         patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
@@ -482,7 +553,8 @@ def patient_bill_page(request, patient_id, record_id, bill_id):
         "record": record,
         "patient": patient,
         "bill": bill,
-        "patient_age": patient_age
+        "patient_age": patient_age,
+        "test_notifications": test_notifications
         
     }
     return render(request, 'base/patient_bill_page.html', context)
@@ -522,13 +594,19 @@ def bills_page(request, page):
     
     bills = Paginator(all_bills, 10)
     
+    #getting records awaiting results
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
+    
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
         "month": date_1[2],
         "year": date_1[3].replace(",", ""),
         "date": date,
-        "all_bills": bills.page(page)
+        "all_bills": bills.page(page),
+        "test_notifications": test_notifications
     }
     return render(request, 'base/bills_page.html', context)
 
@@ -540,18 +618,32 @@ def records_page(request, page=1):
     
     records = Paginator(records_, 10)
     
+    #getting records awaiting results
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
+    
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
         "month": date_1[2],
         "year": date_1[3].replace(",", ""),
         "date": date,
-        "medical_records": records.page(page)
+        "medical_records": records.page(page),
+        "test_notifications": test_notifications
         }
     return render(request, 'base/records_page.html', context)
 
 
 def search_page(request, page=1, search_string=""):
+    
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
+    
     if request.method == "POST":
         search_string = request.POST['search_string']
         if search_string == "":
@@ -577,7 +669,8 @@ def search_page(request, page=1, search_string=""):
         "date": date,
         "patients": patients.page(page),
         "number_found": len(list(search_results)),
-        "search_text": search_string     
+        "search_text": search_string,
+        "test_notifications":  test_notifications
     }
     return render(request, 'base/search_result.html', context)
 
@@ -612,10 +705,47 @@ def order_tests_page(request, patient_id):
                                     social_history=social_history,
                                     record_status="Awaiting Test Results"
                                     )
-        medical_record.save()
-
-    #send notification to Lab Technicians in Facility
+        medical_record.save()    
+    
     messages.success(request, "Tests Have Been Requested Successfully")
     redirect_url = reverse('patient-page', args=(patient_id, ))
     return redirect(redirect_url)
+
+def investigations_update_page(request, patient_id, record_id):
+    
+    patient = Patient.objects.get(id=patient_id)
+    record = PatientRecord.objects.get(id=record_id)
+    
+    #getting records awaiting test results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
+    
+    if request.method == 'POST':
+        test_results = ", ".join(request.POST["test_results"].split("\r\n"))
+        record.test_results = test_results
+        record.conclusions = "Awaiting Doctors Conclusion"
+        record.management = "Awaiting Doctors Recommendations"
+        record.record_status = "Tests Done Successfully!"
+        record.save()
+        
+        messages.success(request, "Tests Results Updated Successfully")
+        redirect_url = reverse('patient-page', args=(patient_id, ))
+        return redirect(redirect_url)
+
+        
+    context = {
+            "day": date_1[0],
+            "day_of_month": date_1[1],
+            "month": date_1[2],
+            "year": date_1[3].replace(",", ""),
+            "date": date,
+            "record": record,
+            "patient": patient,
+            "test_notifications": test_notifications
+    }
+    return render(request, 'base/investigations_update.html', context)
+    
     

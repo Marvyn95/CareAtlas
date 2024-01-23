@@ -82,6 +82,46 @@
         </a>
       </div>
 
+      <div class="mt-5">
+        {% if user.hospitalprofile.role == "Doctor" or user.hospitalprofile.role == "Nurse" or user.hospitalprofile.role == "Pharmacist" %}
+          {% for notification in test_notifications %}
+            {% if notification.record_status == "Awaiting Test Results" %}
+            <a href="{% url 'patient-page' notification.patient.id %}" class="link-underline link-underline-opacity-0">
+              <div class="card text-bg-dark mb-3 mx-auto shadow-lg rounded-4" style="max-width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{notification.patient.first_name}} {{notification.patient.last_name}}</h5>
+                  <p class="card-text fs-5 fst-italic">{{notification.record_status}}</p>
+                </div>
+              </div>
+            </a>
+            {% elif notification.record_status == "Tests Done Successfully!" and notification.conclusions == "Awaiting Doctors Conclusion" %}
+            <a href="{% url 'patient-page' notification.patient.id %}" class="link-underline link-underline-opacity-0">
+              <div class="card text-bg-dark mb-3 mx-auto shadow-lg rounded-4" style="max-width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{notification.patient.first_name}} {{notification.patient.last_name}}</h5>
+                  <p class="card-text fs-5 fst-italic">{{notification.record_status}}</p>
+                </div>
+              </div>
+            </a>
+            {% endif %}
+          {% endfor %}
+        {% elif user.hospitalprofile.role == "Laboratory Technician" %}
+          {% for notification in test_notifications %}
+            {% if notification.record_status == "Awaiting Test Results" %}
+            <a href="{% url 'investigations-update' notification.patient.id notification.id%}" class="link-underline link-underline-opacity-0">
+              <div class="card text-bg-dark mb-3 mx-auto shadow-lg rounded-4" style="max-width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{notification.patient.first_name}} {{notification.patient.last_name}}</h5>
+                  <p class="card-text fs-5 fst-italic">Investigations / Lab Tests request urgent!!</p>
+                </div>
+              </div>
+            </a>
+            {% endif %}
+          {% endfor %}   
+        {% endif %}
+
+      </div>
+
     </div>
 
   </div>

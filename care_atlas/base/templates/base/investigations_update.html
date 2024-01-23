@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="ms-4 mb-5">
+        <h1 class="fw-bold">Investigations / Lab Test Request</h1>
+    </div>
+
+    <div class="row mb-4">
+        <div class=" col-6 d-flex">
+        <div class="ms-4">
+            <button class="btn"><h2 class="mb-1 text-black fw-bold" data-bs-toggle="modal" data-bs-target="#patient_profile"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2></button>
+            <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</h5>
+            <h5 class="my-1 fw-medium text-body-secondary">Born: <span class="text-primary">{{patient.date_of_birth}}</span></h5>
+            <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2"></i>{{patient.phone_number}}</h5>
+        </div>
+        </div>
+
+        <div class="col text-start ms-5">
+        <!-- <h5 class="my-1 fw-semibold text-primary">{{record.date_added}}</h5> -->
+        <h5 class="my-1 fw-medium text-black">{{record.time_added}}</h5>
+        <h5 class="my-1 fw-medium text-black">Request By: {{record.doctor.first_name}} {{record.doctor.last_name}}</h5>
+        <h5 class="my-1 fw-medium text-black">{{record.doctor.hospitalprofile.role}}</h5>
+        <h5 class="my-1 fw-medium text-black">{{record.doctor.phone_number}}</h5>
+        </div>
+    </div> 
+
+    <div class="mx-auto w-75 mb-5 bg-light rounded-4 px-3 py-4">
+        <h2>Investigations / Lab tests requested</h2>
+        <p class="fs-4 fst-italic">{{record.investigations}}</p>
+    </div>
+
+    <div class="w-75 mx-auto">
+        <form method="POST" action="#">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="tr" class="form-label fw-medium fs-2">Test Results</label>
+                <textarea class="form-control w-100 rounded-4" id="tr" rows="5" name="test_results" placeholder="Please Enter Investigation or Lab Test Results"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary ms-2 shadow-lg fw-semibold fs-4">Upload Results</button>
+        </form>
+    </div>
+
+{% endblock content %}

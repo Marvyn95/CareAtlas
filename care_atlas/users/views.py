@@ -8,6 +8,7 @@ from .utils import *
 from django.contrib.auth.hashers import make_password
 from django.urls import reverse
 import datetime
+from base.models import PatientRecord
 
 
 
@@ -82,6 +83,12 @@ def logout_page(request):
 def user_profile_page(request):
     form1 = UserRegistrationForm()
     registered_hospitals = RegisteredHospital.objects.all()
+    
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status="Awaiting Test Results")
+    
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -89,7 +96,8 @@ def user_profile_page(request):
         "year": date_1[3].replace(",", ""),
         "date": date,
         "form1": form1,
-        "registered_hospitals": registered_hospitals
+        "registered_hospitals": registered_hospitals,
+        "test_notifications": test_notifications
     }
     return render(request, 'users/profile_page.html', context)
 
