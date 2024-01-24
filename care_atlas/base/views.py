@@ -489,7 +489,29 @@ def bill_patient_page(request, patient_id, record_id):
     
     if request.method == "POST":
         consultation_fees = int(request.POST['consultation_fees'])
-        diagnostic_test_fees = int(request.POST['diagnostic_test_fees'])
+        
+        #getting diagnostic tests and their fees
+        test_1 = request.POST['test_1']
+        test_cost_1 = int(request.POST['test_cost_1']) if request.POST['test_cost_1'] != "" else 0
+                
+        test_2 = request.POST['test_2']
+        test_cost_2 = int(request.POST['test_cost_2']) if request.POST['test_cost_2'] != "" else 0
+        
+        test_3 = request.POST['test_3']
+        test_cost_3 = int(request.POST['test_cost_3']) if request.POST['test_cost_3'] != "" else 0
+        
+        test_4 = request.POST['test_4']
+        test_cost_4 = int(request.POST['test_cost_4']) if request.POST['test_cost_4'] != "" else 0
+        
+        test_5 = request.POST['test_5']
+        test_cost_5 = int(request.POST['test_cost_5']) if request.POST['test_cost_5'] != "" else 0
+        
+        test_list = ", ".join([test_1, test_2, test_3, test_4, test_5])
+        test_cost_list = ", ".join([str(test_cost_1), str(test_cost_2), str(test_cost_3), str(test_cost_4), str(test_cost_5)])
+
+        diagnostic_test_fees = test_cost_1 + test_cost_2 + test_cost_3 + test_cost_4 + test_cost_5
+        
+        #getting remaining bill inputs       
         nursing_care_fees = int(request.POST['nursing_care_fees'])
         medication_fees = int(request.POST['medication_fees'])
         specific_charges = request.POST['specific_charges']
@@ -501,6 +523,8 @@ def bill_patient_page(request, patient_id, record_id):
             doctor = request.user,
             medical_record = record,
             consultation_fees = consultation_fees,
+            test_list = test_list,
+            test_cost_list = test_cost_list,
             diagnostic_test_fees = diagnostic_test_fees,
             nursing_care_fees = nursing_care_fees,
             medication_fees = medication_fees,
@@ -543,6 +567,12 @@ def patient_bill_page(request, patient_id, record_id, bill_id):
     else:
         patient_age = 'Unknown'
     
+    test_list = bill.test_list.split(", ")
+    test_list_filtered = [i for i in test_list if i != ""]
+    test_cost_list = bill.test_cost_list.split(", ")
+    test_cost_list_filtered = [j for j in test_cost_list if j != "0"]
+    test_dict = dict(zip(test_list, test_cost_list))
+    print(test_dict)
     
     context = {
         "day": date_1[0],
@@ -554,7 +584,19 @@ def patient_bill_page(request, patient_id, record_id, bill_id):
         "patient": patient,
         "bill": bill,
         "patient_age": patient_age,
-        "test_notifications": test_notifications
+        "test_notifications": test_notifications,
+        "test_list_filtered": test_list_filtered,
+        "test_cost_list_filtered": test_cost_list,
+        "test_1": test_list[0],
+        "test_2": test_list[1],
+        "test_3": test_list[2],
+        "test_4": test_list[3],
+        "test_5": test_list[4],
+        "test_cost_1": test_cost_list[0],
+        "test_cost_2": test_cost_list[1],
+        "test_cost_3": test_cost_list[2],
+        "test_cost_4": test_cost_list[3],
+        "test_cost_5": test_cost_list[4],
         
     }
     return render(request, 'base/patient_bill_page.html', context)
@@ -566,12 +608,35 @@ def edit_patient_bill_page(request, patient_id, record_id, bill_id):
     
     if request.method == "POST":
         consultation_fees = int(request.POST['consultation_fees'])
-        diagnostic_test_fees = int(request.POST['diagnostic_test_fees'])
+        
+        #getting diagnostic tests and their fees
+        test_1 = request.POST['test_1']
+        test_cost_1 = int(request.POST['test_cost_1']) if request.POST['test_cost_1'] != "" else 0
+                
+        test_2 = request.POST['test_2']
+        test_cost_2 = int(request.POST['test_cost_2']) if request.POST['test_cost_2'] != "" else 0
+        
+        test_3 = request.POST['test_3']
+        test_cost_3 = int(request.POST['test_cost_3']) if request.POST['test_cost_3'] != "" else 0
+        
+        test_4 = request.POST['test_4']
+        test_cost_4 = int(request.POST['test_cost_4']) if request.POST['test_cost_4'] != "" else 0
+        
+        test_5 = request.POST['test_5']
+        test_cost_5 = int(request.POST['test_cost_5']) if request.POST['test_cost_5'] != "" else 0
+        
+        test_list = ", ".join([test_1, test_2, test_3, test_4, test_5])
+        test_cost_list = ", ".join([str(test_cost_1), str(test_cost_2), str(test_cost_3), str(test_cost_4), str(test_cost_5)])
+
+        diagnostic_test_fees = test_cost_1 + test_cost_2 + test_cost_3 + test_cost_4 + test_cost_5
+        
+        #getting remaining bill inputs
         nursing_care_fees = int(request.POST['nursing_care_fees'])
         medication_fees = int(request.POST['medication_fees'])
         specific_charges = request.POST['specific_charges']
         specific_charge_fees = int(request.POST['specific_charge_fees'])
         
+        #updating bill record
         bill.consultation_fees = consultation_fees
         bill.diagnostic_test_fees = diagnostic_test_fees
         bill.nursing_care_fees = nursing_care_fees
@@ -579,6 +644,8 @@ def edit_patient_bill_page(request, patient_id, record_id, bill_id):
         bill.specific_charges = specific_charges
         bill.specific_charge_fees = specific_charge_fees
         bill.total_charges = consultation_fees+diagnostic_test_fees+nursing_care_fees+medication_fees+specific_charge_fees
+        bill.test_list = test_list
+        bill.test_cost_list = test_cost_list
         
         bill.save()
         
@@ -595,7 +662,6 @@ def bills_page(request, page):
     bills = Paginator(all_bills, 10)
     
     #getting records awaiting results
-    
     values = ["Tests Done Successfully!", "Awaiting Test Results"]
     test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
     
@@ -615,11 +681,9 @@ def records_page(request, page=1):
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
     records_ = PatientRecord.objects.filter(doctor__in=doctors).order_by("-date_added", "-time_added")
-    
     records = Paginator(records_, 10)
     
     #getting records awaiting results
-    
     values = ["Tests Done Successfully!", "Awaiting Test Results"]
     test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
     
@@ -636,7 +700,6 @@ def records_page(request, page=1):
 
 
 def search_page(request, page=1, search_string=""):
-    
     #getting records awaiting results
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
@@ -712,7 +775,6 @@ def order_tests_page(request, patient_id):
     return redirect(redirect_url)
 
 def investigations_update_page(request, patient_id, record_id):
-    
     patient = Patient.objects.get(id=patient_id)
     record = PatientRecord.objects.get(id=record_id)
     

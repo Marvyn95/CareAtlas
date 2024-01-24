@@ -76,6 +76,9 @@ class PatientBill(models.Model):
     specific_charge_fees = models.IntegerField(null=True)
     total_charges = models.IntegerField(null=True)
     
+    test_list = models.CharField(max_length=150, blank=True, null=True)
+    test_cost_list = models.CharField(max_length=100, blank=True, null=True)
+    
     def __str__(self):
         patient_bill = f"Consultation: {self.consultation_fees}, Tests: {self.diagnostic_test_fees}, Nursing: {self.nursing_care_fees}, Medication: {self.medication_fees}, Other Charges: {self.specific_charge_fees}, Total: {self.total_charges}"
         return patient_bill

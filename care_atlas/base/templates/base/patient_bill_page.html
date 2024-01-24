@@ -47,10 +47,15 @@
                 <th scope="row">2</th>
                 <td>Investigations / Lab Tests</td>
                 <td>
-                    <p>{{record.impressions}}</p>
-                    <p>{{record.investigations}}</p>
+                  {% for test in test_list_filtered %}
+                    <p>{{test}}</p>
+                  {% endfor %}
                 </td>
-                <td>{{bill.diagnostic_test_fees}}</td>
+                <td>
+                  {% for cost in test_cost_list_filtered %}
+                    <p>{{cost}}</p>
+                  {% endfor %}
+                </td>
               </tr>
               <tr>
                 <th scope="row">3</th>
@@ -106,7 +111,53 @@
                         <div class="row mb-3">
                             <label for="dt" class="col-sm-4 col-form-label fw-semibold">Diagnostic Tests </label>
                             <div class="col-sm-6">
-                            <input type="number" class="form-control" id="dt" name="diagnostic_test_fees" value={{bill.diagnostic_test_fees}} placeholder="Enter Ammount" required>
+
+                              <!-- tests and costs -->
+                              <div class="row my-1">
+                                <div class="col">
+                                  <input type="text" class="form-control" placeholder="Test 1" aria-label="Test" name="test_1" value="{{test_1}}">
+                                </div>
+                                <div class="col">
+                                  <input type="number" class="form-control" placeholder="Cost" aria-label="Cost" name="test_cost_1" value="{{test_cost_1}}">
+                                </div>
+                              </div>
+
+                              <div class="row my-1">
+                                <div class="col">
+                                  <input type="text" class="form-control" placeholder="Test 2" aria-label="Test" name="test_2" value="{{test_2}}">
+                                </div>
+                                <div class="col">
+                                  <input type="number" class="form-control" placeholder="Cost" aria-label="Cost" name="test_cost_2" value="{{test_cost_2}}">
+                                </div>
+                              </div>
+
+                              <div class="row my-1">
+                                <div class="col">
+                                  <input type="text" class="form-control" placeholder="Test 3" aria-label="Test" name="test_3" value="{{test_3}}">
+                                </div>
+                                <div class="col">
+                                  <input type="number" class="form-control" placeholder="Cost" aria-label="Cost" name="test_cost_3" value="{{test_cost_3}}">
+                                </div>
+                              </div>
+
+                              <div class="row my-1">
+                                <div class="col">
+                                  <input type="text" class="form-control" placeholder="Test 4" aria-label="Test" name="test_4" value="{{test_4}}">
+                                </div>
+                                <div class="col">
+                                  <input type="number" class="form-control" placeholder="Cost" aria-label="Cost" name="test_cost_4" value="{{test_cost_4}}">
+                                </div>
+                              </div>
+
+                              <div class="row my-1">
+                                <div class="col">
+                                  <input type="text" class="form-control" placeholder="Test 5" aria-label="Test" name="test_5" value="{{test_5}}">
+                                </div>
+                                <div class="col">
+                                  <input type="number" class="form-control" placeholder="Cost" aria-label="Cost" name="test_cost_5" value="{{test_cost_5}}">
+                                </div>
+                              </div>
+                              <!-- end of tests and costs -->
                             </div>
                         </div>
                         <div class="row mb-3">
