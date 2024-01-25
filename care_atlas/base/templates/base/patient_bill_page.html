@@ -1,6 +1,8 @@
 {% extends 'base/base.html' %}
 {% block content %}
-<div class="w-75 mt-4 mx-auto bg-white rounded-4 p-5">
+<div class="row">
+  <div class="col mt-4"><a type="submit" class="btn btn-secondary ms-2 fw-bold" href="{% url 'medical-record-page' patient.id record.id %}">Medical Record Page</a></div>
+  <div class="col-9 mt-4 mx-auto bg-white rounded-4 p-5">
     <div class="row">
       <div class="col-8">
         <h3 class="fw-bold">Medical Bill</h3>
@@ -190,5 +192,8 @@
         </div>
       <!-- end model 1 -->
     </div>   
+  </div>
+  <div class="col"></div>
 </div>
+
 {% endblock content %}

@@ -131,9 +131,17 @@
                 <textarea class="form-control" id="cc" rows="3" name="conclusions" placeholder="Please Enter Test Results and/or Conclusion from Medical Diagnosis" ></textarea>
               </div>
 
+          
               <div class="mb-3">
-                <label for="mm" class="form-label fw-medium">Management</label>
-                <textarea class="form-control" id="mm" rows="3" name="management" placeholder="Please Enter Treatments and Prescriptions given To Patient" ></textarea>
+                <label for="mm" class="form-label fw-semibold">Management</label>
+                <h6 class="text-center">Medical</h6>
+                <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_meds" placeholder="Please Enter Medications Given If Any" ></textarea>
+                <h6 class="text-center">Surgical</h6>
+                <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_surg" placeholder="Please Enter Any Surgical Procedures Conducted If Any" ></textarea>
+                <h6 class="text-center">Therapy</h6>
+                <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_ther" placeholder="Please Enter Therapy Treatments Given If Any" ></textarea>
+                <h6 class="text-center">Others</h6>
+                <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_other" placeholder="Please Enter Any Other Treatment Methods Utilized If Any" ></textarea>
               </div>
 
               <div class="d-flex justify-content-center">
@@ -259,9 +267,9 @@
           <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{record.doctor.first_name}}</p>
           <p class="col-4 fw-medium"><i class="bi bi-hospital-fill me-1"></i>{{record.doctor.hospitalprofile.hospital_name}}</p>
           
-          {% if user == record.doctor %}
+          <!-- {% if user == record.doctor %}
             <a type="button" class="btn col fw-bold text-primary me-4" href="{% url 'edit-patient-record' patient.id record.id %}">Edit</a>
-          {% endif %}
+          {% endif %} -->
         </div>
 
         <ul class="">

@@ -278,20 +278,27 @@ def edit_vitals_page(request, patient_id, vital_id):
 def new_patient_record_page(request, patient_id):
     if request.method == "POST":
         # getting medical history data from form
-        medical_history = ", ".join(request.POST["medical_history"].split("\r\n"))
-        surgical_history = ", ".join(request.POST["surgical_history"].split("\r\n"))
-        gyn_obs_history = ", ".join(request.POST["gyn_obs_history"].split("\r\n"))
-        family_history = ", ".join(request.POST["family_history"].split("\r\n"))
-        social_history = ", ".join(request.POST["social_history"].split("\r\n"))
+        medical_history = ", ".join(request.POST["medical_history"].split("\r\n")) if request.POST["medical_history"] != "" else "None"
+        surgical_history = ", ".join(request.POST["surgical_history"].split("\r\n")) if request.POST["surgical_history"] != "" else "None"
+        gyn_obs_history = ", ".join(request.POST["gyn_obs_history"].split("\r\n")) if request.POST["gyn_obs_history"] != "" else "None"
+        family_history = ", ".join(request.POST["family_history"].split("\r\n")) if request.POST["family_history"] != "" else "None"
+        social_history = ", ".join(request.POST["social_history"].split("\r\n")) if request.POST["social_history"] != "" else "None"
         
         # getting medical record data from form
-        signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n"))
-        impressions = ", ".join(request.POST["impressions"].split("\r\n"))
-        investigations = ", ".join(request.POST["investigations"].split("\r\n"))
-        test_results = ", ".join(request.POST["test_results"].split("\r\n"))
-        conclusions = ", ".join(request.POST["conclusions"].split("\r\n"))
-        management = ", ".join(request.POST["management"].split("\r\n"))        
+        signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n")) if request.POST["signs_and_symptoms"] != "" else "None"
+        impressions = ", ".join(request.POST["impressions"].split("\r\n")) if request.POST["impressions"] != "" else "None"
+        investigations = ", ".join(request.POST["investigations"].split("\r\n")) if request.POST["investigations"] != "" else "None"
+        test_results = ", ".join(request.POST["test_results"].split("\r\n")) if request.POST["test_results"] != "" else "None"
+        conclusions = ", ".join(request.POST["conclusions"].split("\r\n")) if request.POST["conclusions"] != "" else "None"
         
+        #obtaining management information
+        mgt_meds = ", ".join(request.POST["mgt_meds"].split("\r\n")) if request.POST["mgt_meds"] != "" else "None"    
+        mgt_surg = ", ".join(request.POST["mgt_surg"].split("\r\n")) if request.POST["mgt_surg"] != "" else "None"     
+        mgt_ther = ", ".join(request.POST["mgt_ther"].split("\r\n")) if request.POST["mgt_ther"] != "" else "None"     
+        mgt_other = ", ".join(request.POST["mgt_other"].split("\r\n")) if request.POST["mgt_other"] != "" else "None"     
+                
+        management = "---".join([mgt_meds, mgt_surg, mgt_ther, mgt_other])
+        print(management)
         patient=Patient.objects.get(id=patient_id)
             
         medical_record = PatientRecord(patient=patient,
@@ -314,7 +321,7 @@ def new_patient_record_page(request, patient_id):
     
 def edit_patient_record_page(request, patient_id, record_id):
     record = PatientRecord.objects.get(id=record_id)
-    
+    mgt = record.management.split("---")
     #getting records awaiting results
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
@@ -324,19 +331,27 @@ def edit_patient_record_page(request, patient_id, record_id):
     
     if request.method == "POST":
         # getting medical history data from form
-        medical_history = ", ".join(request.POST["medical_history"].split("\r\n"))
-        surgical_history = ", ".join(request.POST["surgical_history"].split("\r\n"))
-        gyn_obs_history = ", ".join(request.POST["gyn_obs_history"].split("\r\n"))
-        family_history = ", ".join(request.POST["family_history"].split("\r\n"))
-        social_history = ", ".join(request.POST["social_history"].split("\r\n"))
+        medical_history = ", ".join(request.POST["medical_history"].split("\r\n")) if request.POST["medical_history"] != "" else "None"
+        surgical_history = ", ".join(request.POST["surgical_history"].split("\r\n")) if request.POST["surgical_history"] != "" else "None"
+        gyn_obs_history = ", ".join(request.POST["gyn_obs_history"].split("\r\n")) if request.POST["gyn_obs_history"] != "" else "None"
+        family_history = ", ".join(request.POST["family_history"].split("\r\n")) if request.POST["family_history"] != "" else "None"
+        social_history = ", ".join(request.POST["social_history"].split("\r\n")) if request.POST["social_history"] != "" else "None"
         
         # getting medical record data from form        
-        signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n"))
-        impressions = ", ".join(request.POST["impressions"].split("\r\n"))
-        investigations = ", ".join(request.POST["investigations"].split("\r\n"))
-        test_results = ", ".join(request.POST["test_results"].split("\r\n"))
-        conclusions = ", ".join(request.POST["conclusions"].split("\r\n"))
-        management = ", ".join(request.POST["management"].split("\r\n"))
+        # getting medical record data from form
+        signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n")) if request.POST["signs_and_symptoms"] != "" else "None"
+        impressions = ", ".join(request.POST["impressions"].split("\r\n")) if request.POST["impressions"] != "" else "None"
+        investigations = ", ".join(request.POST["investigations"].split("\r\n")) if request.POST["investigations"] != "" else "None"
+        test_results = ", ".join(request.POST["test_results"].split("\r\n")) if request.POST["test_results"] != "" else "None"
+        conclusions = ", ".join(request.POST["conclusions"].split("\r\n")) if request.POST["conclusions"] != "" else "None"
+        
+        #getting management data
+        mgt_meds = ", ".join(request.POST["mgt_meds"].split("\r\n")) if request.POST["mgt_meds"] != "" else "None"    
+        mgt_surg = ", ".join(request.POST["mgt_surg"].split("\r\n")) if request.POST["mgt_surg"] != "" else "None"     
+        mgt_ther = ", ".join(request.POST["mgt_ther"].split("\r\n")) if request.POST["mgt_ther"] != "" else "None"     
+        mgt_other = ", ".join(request.POST["mgt_other"].split("\r\n")) if request.POST["mgt_other"] != "" else "None"     
+                
+        management = "---".join([mgt_meds, mgt_surg, mgt_ther, mgt_other])
         
         # editing / updating medical record
         record.medical_history = medical_history
@@ -364,7 +379,11 @@ def edit_patient_record_page(request, patient_id, record_id):
         "year": date_1[3].replace(",", ""),
         "date": date,
         "record": record,
-        "test_notifications": test_notifications
+        "test_notifications": test_notifications,
+        "mgt_meds": mgt[0],
+        "mgt_surg": mgt[1],
+        "mgt_ther": mgt[2],
+        "mgt_other": mgt[3]
         }
         return render(request, 'base/edit_medical_record.html', context)
 
@@ -374,6 +393,13 @@ def patient_page(request, patient_id):
     
     vitals = list(PatientVital.objects.filter(patient=patient).order_by("date_added", "time_added"))[-5:]
     medical_records = PatientRecord.objects.filter(patient=patient).order_by("-date_added", "-time_added")
+    
+    medical_records_edited = []
+    for rec in medical_records:
+        mgt_list = rec.management.split("---")
+        mgt = f"Medical: {mgt_list[0]}, Surgical: {mgt_list[1]}, Therapy: {mgt_list[2]}, Other: {mgt_list[3]}"
+        rec.management = mgt
+        medical_records_edited.append(rec)
     
     #getting records awaiting results
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
@@ -395,7 +421,7 @@ def patient_page(request, patient_id):
         "date": date,
         "patient": patient,
         "vitals": vitals,
-        "medical_records": medical_records,
+        "medical_records": medical_records_edited,
         "patient_age": patient_age,
         "test_notifications": test_notifications
     }
@@ -437,6 +463,8 @@ def medical_record_page(request, patient_id, record_id):
     record = PatientRecord.objects.get(id=record_id)
     bill = PatientBill.objects.filter(medical_record=record).first()
     
+    mgt = record.management.split("---")
+    
     #getting records awaiting results
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
@@ -459,7 +487,11 @@ def medical_record_page(request, patient_id, record_id):
         "patient": patient,
         "bill": bill,
         "patient_age": patient_age,
-        "test_notifications": test_notifications
+        "test_notifications": test_notifications,
+        "mgt_meds": mgt[0],
+        "mgt_surg": mgt[1],
+        "mgt_ther": mgt[2],
+        "mgt_other": mgt[3]
     }
     
     return render(request, 'base/medical_record_page.html', context)
@@ -488,7 +520,7 @@ def bill_patient_page(request, patient_id, record_id):
     
     
     if request.method == "POST":
-        consultation_fees = int(request.POST['consultation_fees'])
+        consultation_fees = int(request.POST['consultation_fees']) if request.POST['consultation_fees'] !="" else 0
         
         #getting diagnostic tests and their fees
         test_1 = request.POST['test_1']
@@ -512,10 +544,10 @@ def bill_patient_page(request, patient_id, record_id):
         diagnostic_test_fees = test_cost_1 + test_cost_2 + test_cost_3 + test_cost_4 + test_cost_5
         
         #getting remaining bill inputs       
-        nursing_care_fees = int(request.POST['nursing_care_fees'])
-        medication_fees = int(request.POST['medication_fees'])
-        specific_charges = request.POST['specific_charges']
-        specific_charge_fees = int(request.POST['specific_charge_fees'])
+        nursing_care_fees = int(request.POST['nursing_care_fees']) if request.POST['nursing_care_fees'] != "" else 0
+        medication_fees = int(request.POST['medication_fees']) if request.POST['medication_fees'] != "" else 0
+        specific_charges = request.POST['specific_charges'] if request.POST['specific_charges'] != "" else "Other Charges"
+        specific_charge_fees = int(request.POST['specific_charge_fees']) if request.POST['specific_charge_fees'] != "" else 0
         total_charges = consultation_fees+diagnostic_test_fees+nursing_care_fees+medication_fees+specific_charge_fees
         
         patient_bill = PatientBill(
@@ -607,7 +639,7 @@ def edit_patient_bill_page(request, patient_id, record_id, bill_id):
     record = PatientRecord.objects.get(id=record_id)
     
     if request.method == "POST":
-        consultation_fees = int(request.POST['consultation_fees'])
+        consultation_fees = int(request.POST['consultation_fees']) if request.POST['consultation_fees'] !="" else 0
         
         #getting diagnostic tests and their fees
         test_1 = request.POST['test_1']
@@ -630,11 +662,11 @@ def edit_patient_bill_page(request, patient_id, record_id, bill_id):
 
         diagnostic_test_fees = test_cost_1 + test_cost_2 + test_cost_3 + test_cost_4 + test_cost_5
         
-        #getting remaining bill inputs
-        nursing_care_fees = int(request.POST['nursing_care_fees'])
-        medication_fees = int(request.POST['medication_fees'])
-        specific_charges = request.POST['specific_charges']
-        specific_charge_fees = int(request.POST['specific_charge_fees'])
+        #getting remaining bill inputs       
+        nursing_care_fees = int(request.POST['nursing_care_fees']) if request.POST['nursing_care_fees'] != "" else 0
+        medication_fees = int(request.POST['medication_fees']) if request.POST['medication_fees'] != "" else 0
+        specific_charges = request.POST['specific_charges'] if request.POST['specific_charges'] != "" else "Other Charges"
+        specific_charge_fees = int(request.POST['specific_charge_fees']) if request.POST['specific_charge_fees'] != "" else 0
         
         #updating bill record
         bill.consultation_fees = consultation_fees

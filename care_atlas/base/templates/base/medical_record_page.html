@@ -1,77 +1,89 @@
 {% extends 'base/base.html' %}
 {% block content %}
-<div class="w-75 mt-4 mx-auto bg-white rounded-4 p-5">
-    <div class="row mb-4">
-      <div class="col-8">
-        <h3 class="fw-bold">Medical Report</h3>
-      </div>
-      <div class="col">
-      <h3><span class="text-secondary fw-bold">{{record.date_added}}</span></h3>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class=" col-6 d-flex">
-        <div class="">
-          <h2 class="text-black fw-medium"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2>
-          <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</h5>
-          <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2 text-black"></i>{{patient.phone_number}}</h5>
+<div class="row w-100">
+  <div class="col mt-4"><a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'patient-page' patient.id%}" role="button">Patient Page</a></div>
+  <div class="col-9">
+    <div class="w-100 mt-4 mx-auto bg-white rounded-4 p-5 col">
+      <div class="row mb-4">
+        <div class="col-8">
+          <h3 class="fw-bold">Medical Report</h3>
+        </div>
+        <div class="col">
+        <h3><span class="text-secondary fw-bold">{{record.date_added}}</span></h3>
         </div>
       </div>
-
-      <div class="col text-start ms-5">
-        <!-- <h5 class="my-1 fw-semibold text-primary">{{record.date_added}}</h5> -->
-        <h5 class="my-1 fw-medium text-black">{{record.time_added}}</h5>
-        <h5 class="my-1 fw-medium text-black">Report By: {{record.doctor.first_name}} {{record.doctor.last_name}}</h5>
-        <h5 class="my-1 fw-medium text-black">{{record.doctor.role}}</h5>
-        <h5 class="my-1 fw-medium text-black">{{record.doctor.phone_number}}</h5>
-        <h5 class="my-1 fw-medium text-black">{{record.doctor.email}}</h5>
-        <h5 class="my-1 fw-medium text-black">{{record.doctor.hospitalprofile.hospital_name}}</h5>
-      </div>
-     </div>
-
-     <div class="mt-3">
-      <h5 class="mb-2 fw-bold">Patient History</h5>
-      <p class="fs-5 mb-5 fst-italic"> <span class="fw-medium">Medical: </span>{{record.medical_history}}, <span class="fw-medium">Surgical: </span>{{record.surgical_history}}, <span class="fw-medium">Gyn/Obs: </span>{{record.gyn_obs_history}}, <span class="fw-medium">Family: </span>{{record.family_history}}, <span class="fw-medium">Social: </span>{{record.social_history}}</p>
-
-      <h5 class="mb-2 fw-bold">Condition / Signs / Symptoms</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.signs_and_symptoms}}</p>
-
-      <h5 class="mb-2 fw-bold">Impressions / Diagnosis</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.impressions}}</p>
-
-      <h5 class="mb-2 fw-bold">Investigations / Lab Tests</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.investigations}}</p>
-
-      <h5 class="mb-2 fw-bold">Test Results</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.test_results}}</p>
-
-      <h5 class="mb-2 fw-bold">Conclusions</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.conclusions}}</p>
-
-      <h5 class="mb-2 fw-bold">Management</h5>
-      <p class="fs-5 mb-5 fst-italic">{{record.management}}</p>
-    </div>  
-
-    <div class="row">
-      <div class="col text-center">
-        <a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'patient-page' patient.id%}" role="button">Patient Page</a>
-      </div>
-
-      <div class="col text-center">
-        {% if user == record.doctor %}
-          <a type="button" class="btn col fw-bold text-primary me-4 fs-5" href="{% url 'edit-patient-record' patient.id record.id %}">Update Record</a>
+  
+      <div class="row">
+        <div class=" col-6 d-flex">
+          <div class="">
+            <h2 class="text-black fw-medium"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2>
+            <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</h5>
+            <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2 text-black"></i>{{patient.phone_number}}</h5>
+          </div>
+        </div>
+  
+        <div class="col text-start ms-5">
+          <!-- <h5 class="my-1 fw-semibold text-primary">{{record.date_added}}</h5> -->
+          <h5 class="my-1 fw-medium text-black">{{record.time_added}}</h5>
+          <h5 class="my-1 fw-medium text-black">Report By: {{record.doctor.first_name}} {{record.doctor.last_name}}</h5>
+          <h5 class="my-1 fw-medium text-black">{{record.doctor.role}}</h5>
+          <h5 class="my-1 fw-medium text-black">{{record.doctor.phone_number}}</h5>
+          <h5 class="my-1 fw-medium text-black">{{record.doctor.email}}</h5>
+          <h5 class="my-1 fw-medium text-black">{{record.doctor.hospitalprofile.hospital_name}}</h5>
+        </div>
+       </div>
+  
+       <div class="mt-3">
+        <h5 class="mb-2 fw-bold">Patient History</h5>
+        <p class="fs-5 mb-5 fst-italic"> <span class="fw-medium">Medical: </span>{{record.medical_history}}, <span class="fw-medium">Surgical: </span>{{record.surgical_history}}, <span class="fw-medium">Gyn/Obs: </span>{{record.gyn_obs_history}}, <span class="fw-medium">Family: </span>{{record.family_history}}, <span class="fw-medium">Social: </span>{{record.social_history}}</p>
+  
+        <h5 class="mb-2 fw-bold">Condition / Signs / Symptoms</h5>
+        <p class="fs-5 mb-5 fst-italic">{{record.signs_and_symptoms}}</p>
+  
+        <h5 class="mb-2 fw-bold">Impressions / Diagnosis</h5>
+        <p class="fs-5 mb-5 fst-italic">{{record.impressions}}</p>
+  
+        <h5 class="mb-2 fw-bold">Investigations / Lab Tests</h5>
+        <p class="fs-5 mb-5 fst-italic">{{record.investigations}}</p>
+  
+        <h5 class="mb-2 fw-bold">Test Results</h5>
+        <p class="fs-5 mb-5 fst-italic">{{record.test_results}}</p>
+  
+        <h5 class="mb-2 fw-bold">Conclusions</h5>
+        <p class="fs-5 mb-5 fst-italic">{{record.conclusions}}</p>
+  
+        <h5 class="mb-2 fw-bold">Management</h5>
+        <ul class="mb-5">
+          <li class="fs-5 mb-2 fst-italic">Medical: {{mgt_meds}}</li>
+          <li class="fs-5 mb-2 fst-italic">Surgical: {{mgt_surg}}</li>
+          <li class="fs-5 mb-2 fst-italic"> Therapy: {{mgt_ther}}</li>
+          <li class="fs-5 mb-2 fst-italic">Others: {{mgt_other}}</li>
+        </ul>
+      </div>  
+  
+      <div class="row">
+        <div class="col text-center">
+          <a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'patient-page' patient.id%}" role="button">Patient Page</a>
+        </div>
+  
+        <div class="col text-center">
+          {% if user == record.doctor %}
+            <a type="button" class="btn col fw-bold text-primary me-4 fs-5" href="{% url 'edit-patient-record' patient.id record.id %}">Update Record</a>
+          {% endif %}
+        </div>
+        {% if user == record.doctor and bill == None%}
+          <div class="col text-center">
+            <a class="btn btn-primary px-3 fw-bold fs-5" href="{% url 'bill-patient' patient.id record.id%}" role="button">Bill Patient</a>
+          </div>
+        {% elif bill %}
+          <div class="col text-center">
+            <a class="btn btn-primary px-3 fw-bold fs-5" href="{% url 'patient-bill-page' patient.id record.id bill.id %}" role="button">View Bill</a>
+          </div>
         {% endif %}
-      </div>
-      {% if user == record.doctor and bill == None%}
-        <div class="col text-center">
-          <a class="btn btn-primary px-3 fw-bold fs-5" href="{% url 'bill-patient' patient.id record.id%}" role="button">Bill Patient</a>
-        </div>
-      {% elif bill %}
-        <div class="col text-center">
-          <a class="btn btn-primary px-3 fw-bold fs-5" href="{% url 'patient-bill-page' patient.id record.id bill.id %}" role="button">View Bill</a>
-        </div>
-      {% endif %}
-    </div> 
+      </div> 
+  </div>
+  </div>
+  <div class="col"></div>
 </div>
+
 {% endblock content %}

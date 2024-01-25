@@ -8,6 +8,10 @@ class HospitalProfile(models.Model):
     phone_number = models.CharField(max_length=20, null=True)
     role = models.CharField(max_length=50, null=True)
     
+    def __str__(self):
+        profile = f"{self.user.first_name} {self.user.last_name}, {self.hospital_name}"
+        return profile
+    
 
 
 class RegisteredHospital(models.Model):
