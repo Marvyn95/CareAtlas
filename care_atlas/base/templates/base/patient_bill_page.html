@@ -31,7 +31,7 @@
     <div class="my-2 mx-5">
         <table class="table table-bordered border-black mt-5">
             <thead>
-              <tr class="table-primary">
+              <tr class="table-primary text-center">
                 <th scope="col">No.</th>
                 <th scope="col">Items</th>
                 <th scope="col">Description</th>
@@ -68,8 +68,16 @@
               <tr>
                 <th scope="row">4</th>
                 <td>Medication and Treatments</td>
-                <td><p>{{record.management}}</p></td>
-                <td>{{bill.medication_fees}}</td>
+                <td>
+                  <p>Medication</p>
+                  <p>Surgery</p>
+                  <p>Therapy</p>
+                </td>
+                <td>
+                  {% for fee in medication_fees_list %}
+                    <p>{{fee}}</p>
+                  {% endfor %}
+                </td>
               </tr>
               <tr>
                 <th scope="row">5</th>
@@ -87,11 +95,12 @@
         </table>
 
         <div class="row">
-            <div class="col-4"><a type="submit" class="btn btn-primary ms-2 fw-bold" href="{% url 'medical-record-page' patient.id record.id %}">Medical Record Page</a></div>
+            <div class="col-4"><a type="submit" class="btn btn-primary fw-bold" href="{% url 'medical-record-page' patient.id record.id %}">Medical Record Page</a></div>
             <div class="col-4"></div>
-            <div class="col"><button type="submit" class="btn text-primary ms-2 fw-bold" data-bs-toggle="modal" data-bs-target="#editbill">Edit Bill</button></div>
-            <div class="col"><button type="submit" class="btn btn-primary ms-2 fw-bold">Print Bill</button></div>
+            <div class="col"><button type="submit" class="btn text-primary fw-bold fs-5" data-bs-toggle="modal" data-bs-target="#editbill">Edit Bill</button></div>
+            <div class="col"><button type="submit" class="btn text-primary fw-bold fs-5">Print Bill</button></div>
         </div>
+
 
         <!-- Modal 1-->
         <div class="modal fade modal-dialog-scrollable modal-lg" id="editbill" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -169,10 +178,25 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="mf" class="col-sm-4 col-form-label fw-semibold">Medication Fees</label>
+                          <label for="mf" class="col-sm-4 col-form-label fw-semibold">Medication Fees</label>
+                          <div class="row mb-3">
+                            <label for="md" class="col-sm-4 col-form-label text-center">Medical</label>
                             <div class="col-sm-6">
-                            <input type="number" class="form-control" id="bp_sys" name="medication_fees" value={{bill.medication_fees}} placeholder="Enter Ammount" required>
+                              <input type="number" class="form-control" id="md" placeholder="Fees for any Medications Given" name="md_fees" value="{{medication_fees_dict.meds}}">
                             </div>
+                          </div>
+                          <div class="row mb-3">
+                            <label for="sg" class="col-sm-4 col-form-label text-center">Surgical</label>
+                            <div class="col-sm-6">
+                              <input type="number" class="form-control" id="sg" placeholder="Fees for any Surgical Treatments Given" name="sg_fees" value="{{medication_fees_dict.surg}}">
+                            </div>
+                          </div>
+                          <div class="row mb-3">
+                            <label for="th" class="col-sm-4 col-form-label text-center">Therapy</label>
+                            <div class="col-sm-6">
+                              <input type="number" class="form-control" id="th" placeholder="Fees for any Therapy Treatments Given" name="th_fees" value="{{medication_fees_dict.ther}}">
+                            </div>
+                          </div>
                         </div>
                         <div class="row mb-5">
                             <label for="of" class="col-sm-4 col-form-label fw-semibold mt-3">Other Fees</label>

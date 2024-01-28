@@ -6,7 +6,7 @@
         <h1 class="fw-bold">Investigations / Lab Test Request</h1>
     </div>
 
-    <div class="row mb-4">
+    <div class="row mb-5">
         <div class=" col-6 d-flex">
         <div class="ms-4">
             <button class="btn"><h2 class="mb-1 text-black fw-bold" data-bs-toggle="modal" data-bs-target="#patient_profile"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2></button>
@@ -25,12 +25,12 @@
         </div>
     </div> 
 
-    <div class="mx-auto w-75 mb-5 bg-light rounded-4 px-3 py-4">
+    <div class="mx-auto w-50 mb-5 rounded-4 px-3 py-4">
         <h2>Investigations / Lab tests requested</h2>
         <p class="fs-4 fst-italic">{{record.investigations}}</p>
     </div>
 
-    <div class="w-75 mx-auto">
+    <div class="w-50 mx-auto">
         <form method="POST" action="#">
             {% csrf_token %}
             <div class="mb-3">

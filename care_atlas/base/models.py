@@ -71,6 +71,7 @@ class PatientBill(models.Model):
     consultation_fees = models.IntegerField(null=True)
     diagnostic_test_fees = models.IntegerField(null=True)
     nursing_care_fees = models.IntegerField(null=True)
+    medication_fees_list = models.CharField(max_length=100, blank=True, null=True)
     medication_fees = models.IntegerField(null=True)
     specific_charges = models.TextField(null=True)
     specific_charge_fees = models.IntegerField(null=True)
