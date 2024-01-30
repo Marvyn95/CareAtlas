@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 {% block content %}
 <div class="row w-100">
   <div class="col mt-4"><a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'patient-page' patient.id%}" role="button">Patient Page</a></div>
@@ -48,6 +49,14 @@
   
         <h5 class="mb-2 fw-bold">Test Results</h5>
         <p class="fs-5 mb-5 fst-italic">{{record.test_results}}</p>
+
+        <h5 class="mb-2 fw-bold">Test Attachments (<span class="text-primary fw-bold">{{attachment_number}}</span>)</h5>
+        <ul class="mb-5">
+          {% for path in attachment_paths %}
+          <li class="fs-5 mb-2 fst-italic"><a class="text-primary fw-bold fs-6" href="{% static path %}">Attachment</a></li>
+          {% endfor %}
+        </ul>
+
   
         <h5 class="mb-2 fw-bold">Conclusions</h5>
         <p class="fs-5 mb-5 fst-italic">{{record.conclusions}}</p>

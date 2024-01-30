@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 {% block content %}
 
 <div class="row mt-4 mb-2">
@@ -7,7 +8,7 @@
 <div class="col"></div>
 </div>
 <div class="">
-    <form method="POST" action="" class="mx-5">
+    <form method="POST" enctype="multipart/form-data" action="" class="mx-5">
       {% csrf_token %}
 
       <!-- clinical summary -->
@@ -57,6 +58,16 @@
       <div class="mb-3">
         <label for="tr" class="form-label fw-medium">Test Results</label>
         <textarea class="form-control" id="tr" rows="3" name="test_results" placeholder="Please Enter Test Results from Medical Diagnosis">{{record.test_results}}</textarea>
+        <div class="row">
+          <div class="col-6 mb-3"></div>
+          <div class="col">
+            <label for="formFileMultiple" class="form-label my-2 text-center fw-semibold">Attach Files</label>
+            {% for path in attachment_paths %}
+              <P><a class="text-primary fw-bold fs-6" href="{% static path %}">Attachment</a><span><a href="" class="text-danger ms-5 fw-bold fs-6">Delete</a></span></P>
+            {% endfor %}
+            <input class="form-control" type="file" value="" id="formFileMultiple" name="test_attachments" multiple>
+          </div>
+        </div>
       </div>
 
       <div class="mb-3">

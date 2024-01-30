@@ -31,11 +31,18 @@
     </div>
 
     <div class="w-50 mx-auto">
-        <form method="POST" action="#">
+        <form method="POST" enctype="multipart/form-data" action="#">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="tr" class="form-label fw-medium fs-2">Test Results</label>
                 <textarea class="form-control w-100 rounded-4" id="tr" rows="5" name="test_results" placeholder="Please Enter Investigation or Lab Test Results"></textarea>
+                <div class="row">
+                    <div class="col-6 mb-3"></div>
+                    <div class="col">
+                      <label for="formFileMultiple" class="form-label my-2 text-center fw-semibold">Attach Files</label>
+                      <input class="form-control" type="file" value="" id="formFileMultiple" name="test_attachments" multiple>
+                    </div>
+                  </div>
             </div>
             <button type="submit" class="btn btn-primary ms-2 shadow-lg fw-semibold fs-4">Upload Results</button>
         </form>

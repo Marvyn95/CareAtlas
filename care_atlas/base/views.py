@@ -8,6 +8,7 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 import json
 from fractions import Fraction
+from base.utils import file_handler
 
 
 date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
@@ -289,6 +290,14 @@ def new_patient_record_page(request, patient_id):
         impressions = ", ".join(request.POST["impressions"].split("\r\n")) if request.POST["impressions"] != "" else "None"
         investigations = ", ".join(request.POST["investigations"].split("\r\n")) if request.POST["investigations"] != "" else "None"
         test_results = ", ".join(request.POST["test_results"].split("\r\n")) if request.POST["test_results"] != "" else "None"
+        
+        if "test_attachments" in request.FILES:
+            test_attachments = request.FILES.getlist("test_attachments")
+            test_attachments_name_s = file_handler(test_attachments)
+            test_attachments_name_s_string = "---".join(test_attachments_name_s)
+        else:
+            test_attachments_name_s_string = None
+        
         conclusions = ", ".join(request.POST["conclusions"].split("\r\n")) if request.POST["conclusions"] != "" else "None"
         
         #obtaining management information
@@ -298,7 +307,6 @@ def new_patient_record_page(request, patient_id):
         mgt_other = ", ".join(request.POST["mgt_other"].split("\r\n")) if request.POST["mgt_other"] != "" else "None"     
                 
         management = "---".join([mgt_meds, mgt_surg, mgt_ther, mgt_other])
-        print(management)
         patient=Patient.objects.get(id=patient_id)
             
         medical_record = PatientRecord(patient=patient,
@@ -313,7 +321,8 @@ def new_patient_record_page(request, patient_id):
                                        surgical_history=surgical_history,
                                        gyn_obs_history=gyn_obs_history,
                                        family_history=family_history,
-                                       social_history=social_history
+                                       social_history=social_history,
+                                       test_attachments=test_attachments_name_s_string
                                        )
         medical_record.save()
         redirect_url = reverse('patient-page', args=(patient_id,))
@@ -321,13 +330,22 @@ def new_patient_record_page(request, patient_id):
     
 def edit_patient_record_page(request, patient_id, record_id):
     record = PatientRecord.objects.get(id=record_id)
+    
+    #separating record management field into groups / list
     mgt = record.management.split("---") if record.management not in ["Awaiting Test Results", "Awaiting Doctors Recommendations"] else ["TBD", "TBD", "TBD", "TBD"]
-    #getting records awaiting results
+    
+    #accessing records pending doctors conclusions or awaiting test results
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
-    
     values = ["Tests Done Successfully!", "Awaiting Test Results"]
     test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
+    
+    #creating list of record test attachments paths
+    test_attachments_list = (record.test_attachments).split("---") if record.test_attachments != None else []
+    attachment_paths = []
+    for k in test_attachments_list:
+        path_1 = f"base/files/{k}"
+        attachment_paths.append(path_1)
     
     if request.method == "POST":
         # getting medical history data from form
@@ -337,12 +355,20 @@ def edit_patient_record_page(request, patient_id, record_id):
         family_history = ", ".join(request.POST["family_history"].split("\r\n")) if request.POST["family_history"] != "" else "None"
         social_history = ", ".join(request.POST["social_history"].split("\r\n")) if request.POST["social_history"] != "" else "None"
         
-        # getting medical record data from form        
         # getting medical record data from form
         signs_and_symptoms = ", ".join(request.POST["signs_and_symptoms"].split("\r\n")) if request.POST["signs_and_symptoms"] != "" else "None"
         impressions = ", ".join(request.POST["impressions"].split("\r\n")) if request.POST["impressions"] != "" else "None"
         investigations = ", ".join(request.POST["investigations"].split("\r\n")) if request.POST["investigations"] != "" else "None"
-        test_results = ", ".join(request.POST["test_results"].split("\r\n")) if request.POST["test_results"] != "" else "None"
+        test_results = ", ".join(request.POST["test_results"].split("\r\n")) if     request.POST["test_results"] != "" else "None"
+
+        #getting attachments uploaded
+        if "test_attachments" in request.FILES:
+            test_attachments = request.FILES.getlist("test_attachments")
+            test_attachments_name_s = file_handler(test_attachments)
+            test_attachments_name_s_string = "---".join(test_attachments_name_s)
+        else:
+            test_attachments_name_s_string = None
+        
         conclusions = ", ".join(request.POST["conclusions"].split("\r\n")) if request.POST["conclusions"] != "" else "None"
         
         #getting management data
@@ -359,13 +385,20 @@ def edit_patient_record_page(request, patient_id, record_id):
         record.gyn_obs_history = gyn_obs_history
         record.family_history = family_history
         record.social_history = social_history
-        
         record.signs_and_symptoms = signs_and_symptoms
         record.impressions = impressions
         record.investigations = investigations
         record.test_results = test_results
         record.conclusions = conclusions
         record.management = management
+        
+        #updating attachment list
+        if test_attachments_name_s_string != None:
+            if record.test_attachments != None:
+                record.test_attachments = record.test_attachments + f"---{test_attachments_name_s_string}"
+            else:
+                record.test_attachments = test_attachments_name_s_string
+        
         record.save()
         
         messages.success(request, "Your Record Has Been Updated Successfully")    
@@ -383,7 +416,8 @@ def edit_patient_record_page(request, patient_id, record_id):
         "mgt_meds": mgt[0],
         "mgt_surg": mgt[1],
         "mgt_ther": mgt[2],
-        "mgt_other": mgt[3]
+        "mgt_other": mgt[3],
+        "attachment_paths": attachment_paths
         }
         return render(request, 'base/edit_medical_record.html', context)
 
@@ -397,8 +431,6 @@ def patient_page(request, patient_id):
     medical_records_edited = []
     for rec in medical_records:
         mgt_list = rec.management.split("---") if rec.management not in ["Awaiting Test Results", "Awaiting Doctors Recommendations"] else ["TBD", "TBD", "TBD", "TBD"]
-        
-        print(mgt_list)
         mgt = f"Medical: {mgt_list[0]}, Surgical: {mgt_list[1]}, Therapy: {mgt_list[2]}, Other: {mgt_list[3]}"
         rec.management = mgt
         medical_records_edited.append(rec)
@@ -467,18 +499,25 @@ def medical_record_page(request, patient_id, record_id):
     
     mgt = record.management.split("---") if record.management not in ["Awaiting Test Results", "Awaiting Doctors Recommendations"] else ["TBD", "TBD", "TBD", "TBD"]
     
-    #getting records awaiting results
+    #getting records awaiting results or awaiting doctors conclusions
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
-    
     values = ["Tests Done Successfully!", "Awaiting Test Results"]
     test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
+    
+    #creating list of record test attachments paths
+    test_attachments_list = (record.test_attachments).split("---") if record.test_attachments != None else []
+    attachment_paths = []
+    for k in test_attachments_list:
+        path_1 = f"base/files/{k}"
+        attachment_paths.append(path_1)
     
     if patient.date_of_birth != None:
         patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
     else:
         patient_age = 'Unknown'
     
+    print(attachment_paths)
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -493,7 +532,9 @@ def medical_record_page(request, patient_id, record_id):
         "mgt_meds": mgt[0],
         "mgt_surg": mgt[1],
         "mgt_ther": mgt[2],
-        "mgt_other": mgt[3]
+        "mgt_other": mgt[3],
+        "attachment_paths": attachment_paths,
+        "attachment_number": len(attachment_paths)
     }
     
     return render(request, 'base/medical_record_page.html', context)
@@ -737,6 +778,12 @@ def records_page(request, page=1):
     doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
     doctors = [x.user for x in doctor_hospitalprofiles]
     records_ = PatientRecord.objects.filter(doctor__in=doctors).order_by("-date_added", "-time_added")
+    
+    for rec in records_:
+        mgt_list = rec.management.split("---") if rec.management not in ["Awaiting Test Results", "Awaiting Doctors Recommendations"] else ["TBD", "TBD", "TBD", "TBD"]
+        mgt = f"Medical: {mgt_list[0]}, Surgical: {mgt_list[1]}, Therapy: {mgt_list[2]}, Other: {mgt_list[3]}"
+        rec.management = mgt
+    
     records = Paginator(records_, 10)
     
     #getting records awaiting results
@@ -843,7 +890,16 @@ def investigations_update_page(request, patient_id, record_id):
     
     if request.method == 'POST':
         test_results = ", ".join(request.POST["test_results"].split("\r\n"))
+        
+        if "test_attachments" in request.FILES:
+            test_attachments = request.FILES.getlist("test_attachments")
+            test_attachments_name_s = file_handler(test_attachments)
+            test_attachments_name_s_string = "---".join(test_attachments_name_s)
+        else:
+            test_attachments_name_s_string = None
+        
         record.test_results = test_results
+        record.test_attachments=test_attachments_name_s_string
         record.conclusions = "Awaiting Doctors Conclusion"
         record.management = "Awaiting Doctors Recommendations"
         record.record_status = "Tests Done Successfully!"

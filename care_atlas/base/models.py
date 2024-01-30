@@ -33,6 +33,8 @@ class PatientRecord(models.Model):
     conclusions = models.TextField(null=True)
     management = models.TextField(blank=False)
     
+    test_attachments = models.CharField(max_length=250, null=True)
+    
     medical_history = models.TextField(null=True)
     surgical_history = models.TextField(null=True)
     gyn_obs_history = models.TextField(null=True)

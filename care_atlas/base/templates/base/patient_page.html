@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
 <div>
     <!-- Modal 1-->
@@ -69,7 +70,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form method="POST" action="{% url 'new-patient-record' patient.id %}" class="mx-5">
+            <form method="POST" enctype="multipart/form-data" action="{% url 'new-patient-record' patient.id %}" class="mx-5">
               {% csrf_token %}
 
               <!-- clinical summary -->
@@ -124,6 +125,13 @@
               <div class="mb-3">
                 <label for="tr" class="form-label fw-medium">Test Results</label>
                 <textarea class="form-control" id="tr" rows="3" name="test_results" placeholder="Please Enter Test Results and/or Conclusion from Medical Diagnosis"></textarea>
+                <div class="row">
+                  <div class="col-6 mb-3"></div>
+                  <div class="col">
+                    <label for="formFileMultiple" class="form-label my-2 text-center fw-semibold">Attach Files</label>
+                    <input class="form-control" type="file" value="" id="formFileMultiple" name="test_attachments" multiple>
+                  </div>
+                </div>
               </div>
 
               <div class="mb-3">

@@ -25,10 +25,11 @@
           <li class="list-group-item"><span class="fw-bold">Patient Details: <span class="text-primary">{{record.patient.first_name}}</span> {{record.patient.nationality}} {{record.patient.sex}}</span></li>
             
           <li class="list-group-item"><span class="fw-bold">Signs and Symptoms: </span>{{record.signs_and_symptoms}}</li>
-          <li class="list-group-item"><span class="fw-bold">Tests Done For: </span>{{record.tests_for}}</li>
-          <li class="list-group-item"><span class="fw-bold">Tests Done / Test Methods: </span>{{record.test_methods}}</li>
+          <li class="list-group-item"><span class="fw-bold">Impressions: </span>{{record.impressions}}</li>
+          <li class="list-group-item"><span class="fw-bold">Investigations: </span>{{record.investigations}}</li>
           <li class="list-group-item"><span class="fw-bold">Results: </span>{{record.test_results}}</li>
-          <li class="list-group-item"><span class="fw-bold">Prescriptions: </span>{{record.prescriptions}}</li>
+          <li class="list-group-item"><span class="fw-bold">Conclusions: </span>{{record.conclusions}}</li>
+          <li class="list-group-item"><span class="fw-bold">Management: </span>{{record.management}}</li>
         </ul>
         <a class="btn btn-primary col fw-semibold mx-4 shadow-lg" href="{% url 'medical-record-page' record.patient.id record.id %}">View in Detail</a>
       </div>
