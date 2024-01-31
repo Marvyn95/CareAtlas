@@ -46,5 +46,6 @@ urlpatterns = [
     path('users/user_profile_page/', users_views.user_profile_page, name='profile-page'),
     path('users/edit_profile_page', users_views.edit_user_profile_page, name='edit-profile-page'),
     path('base/order_tests_page/<int:patient_id>', base_views.order_tests_page, name='order-tests'),
-    path('base/update_investigations_page/<int:patient_id>/<int:record_id>', base_views.investigations_update_page, name='investigations-update')
+    path('base/update_investigations_page/<int:patient_id>/<int:record_id>', base_views.investigations_update_page, name='investigations-update'),
+    path('base/delete_attachment/<int:patient_id>/<int:record_id>/<path:attachment_path>', base_views.delete_attachment, name='delete-attachment')
 ]

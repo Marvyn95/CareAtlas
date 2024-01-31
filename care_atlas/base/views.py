@@ -9,6 +9,7 @@ from django.urls import reverse
 import json
 from fractions import Fraction
 from base.utils import file_handler
+import os
 
 
 date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
@@ -292,11 +293,11 @@ def new_patient_record_page(request, patient_id):
         test_results = ", ".join(request.POST["test_results"].split("\r\n")) if request.POST["test_results"] != "" else "None"
         
         if "test_attachments" in request.FILES:
+            print("yes we have an attachment")
             test_attachments = request.FILES.getlist("test_attachments")
             test_attachments_name_s = file_handler(test_attachments)
             test_attachments_name_s_string = "---".join(test_attachments_name_s)
-        else:
-            test_attachments_name_s_string = None
+            print(test_attachments_name_s_string)
         
         conclusions = ", ".join(request.POST["conclusions"].split("\r\n")) if request.POST["conclusions"] != "" else "None"
         
@@ -308,22 +309,38 @@ def new_patient_record_page(request, patient_id):
                 
         management = "---".join([mgt_meds, mgt_surg, mgt_ther, mgt_other])
         patient=Patient.objects.get(id=patient_id)
-            
-        medical_record = PatientRecord(patient=patient,
-                                       doctor=request.user,
-                                       signs_and_symptoms=signs_and_symptoms,
-                                       impressions=impressions,
-                                       investigations=investigations,
-                                       test_results=test_results,
-                                       conclusions=conclusions,
-                                       management=management,
-                                       medical_history=medical_history,
-                                       surgical_history=surgical_history,
-                                       gyn_obs_history=gyn_obs_history,
-                                       family_history=family_history,
-                                       social_history=social_history,
-                                       test_attachments=test_attachments_name_s_string
-                                       )
+         
+        if "test_attachments" in request.FILES:
+            medical_record = PatientRecord(patient=patient,
+                                        doctor=request.user,
+                                        signs_and_symptoms=signs_and_symptoms,
+                                        impressions=impressions,
+                                        investigations=investigations,
+                                        test_results=test_results,
+                                        conclusions=conclusions,
+                                        management=management,
+                                        medical_history=medical_history,
+                                        surgical_history=surgical_history,
+                                        gyn_obs_history=gyn_obs_history,
+                                        family_history=family_history,
+                                        social_history=social_history,
+                                        test_attachments=test_attachments_name_s_string
+                                        )
+        else:
+            medical_record = PatientRecord(patient=patient,
+                            doctor=request.user,
+                            signs_and_symptoms=signs_and_symptoms,
+                            impressions=impressions,
+                            investigations=investigations,
+                            test_results=test_results,
+                            conclusions=conclusions,
+                            management=management,
+                            medical_history=medical_history,
+                            surgical_history=surgical_history,
+                            gyn_obs_history=gyn_obs_history,
+                            family_history=family_history,
+                            social_history=social_history
+                            )
         medical_record.save()
         redirect_url = reverse('patient-page', args=(patient_id,))
         return redirect(redirect_url)
@@ -921,3 +938,31 @@ def investigations_update_page(request, patient_id, record_id):
             "test_notifications": test_notifications
     }
     return render(request, 'base/investigations_update.html', context)
+
+
+def delete_attachment(request, patient_id, record_id, attachment_path):
+    patient = Patient.objects.get(id=patient_id)
+    record = PatientRecord.objects.get(id=record_id)
+    
+    #removing attachment from files
+    if os.path.exists(attachment_path):
+        print("path exists")
+        os.remove(attachment_path)
+    
+    #removing attachment name from database
+    attachment_to_delete = attachment_path.split("/")[-1]
+    print(attachment_to_delete)
+    attachment_list = (record.test_attachments).split("---")
+    print(attachment_list)
+    for i in attachment_list:
+        if i == attachment_to_delete:
+            attachment_list.remove(attachment_to_delete)
+            break
+    
+    attachment_string = "---".join(attachment_list)
+    record.test_attachments = attachment_string
+    record.save()
+    
+    messages.success(request, "Attachment Deleted Successfully")
+    redirect_url = reverse('edit-patient-record', args=(patient_id, record_id))
+    return redirect(redirect_url)  

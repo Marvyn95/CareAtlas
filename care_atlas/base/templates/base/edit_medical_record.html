@@ -7,92 +7,99 @@
 <div class="col text-primary justify-content-around m"><h3 class="fw-bold">Edit Medical Record</h3></div>
 <div class="col"></div>
 </div>
-<div class="">
-    <form method="POST" enctype="multipart/form-data" action="" class="mx-5">
-      {% csrf_token %}
 
-      <!-- clinical summary -->
-
-      <div class="mb-3">
-        <label for="sas" class="form-label fw-medium">Medical History</label>
-        <textarea class="form-control" id="sas" rows="3" name="medical_history" placeholder="Enter brief medical history of patient">{{record.surgical_history}}</textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="sas" class="form-label fw-medium">Surgical History</label>
-        <textarea class="form-control" id="sas" rows="3" name="surgical_history" placeholder="Enter patient surgical history of patient if any">{{record.surgical_history}}</textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="sas" class="form-label fw-medium">GYN / OBS History</label>
-        <textarea class="form-control" id="sas" rows="3" name="gyn_obs_history" placeholder="Enter Patient GYN / OBS History">{{record.gyn_obs_history}}</textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="sas" class="form-label fw-medium">Family Medical History </label>
-        <textarea class="form-control" id="sas" rows="3" name="family_history" placeholder="Enter patient family medical history">{{record.family_history}}</textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="sas" class="form-label fw-medium">Social History / Lifestyle</label>
-        <textarea class="form-control" id="sas" rows="3" name="social_history" placeholder="Enter patient social history">{{record.social_history}}</textarea>
-      </div>
-
-      <!-- End of clinical summary -->
-
-      <div class="mb-3">
-        <label for="sas" class="form-label fw-medium">Signs and Symptoms</label>
-        <textarea class="form-control" id="sas" rows="3" name="signs_and_symptoms" placeholder="Enter present signs and symptoms of the patient" required>{{record.signs_and_symptoms}}</textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="ii" class="form-label fw-medium">Impressions / Diagnosis:</label>
-        <textarea class="form-control" id="ii" rows="3" placeholder="Enter diseases or disorders being tested for based on the signs and symptoms mentioned" name="impressions">{{record.impressions}}</textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="tmu" class="form-label fw-medium">Investigations / Lab Tests</label>
-        <textarea class="form-control" id="tmu" rows="3" name="investigations">{{record.investigations}}</textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="tr" class="form-label fw-medium">Test Results</label>
-        <textarea class="form-control" id="tr" rows="3" name="test_results" placeholder="Please Enter Test Results from Medical Diagnosis">{{record.test_results}}</textarea>
-        <div class="row">
-          <div class="col-6 mb-3"></div>
-          <div class="col">
-            <label for="formFileMultiple" class="form-label my-2 text-center fw-semibold">Attach Files</label>
-            {% for path in attachment_paths %}
-              <P><a class="text-primary fw-bold fs-6" href="{% static path %}">Attachment</a><span><a href="" class="text-danger ms-5 fw-bold fs-6">Delete</a></span></P>
-            {% endfor %}
-            <input class="form-control" type="file" value="" id="formFileMultiple" name="test_attachments" multiple>
+<div class="row">
+  <div class="col"><a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'medical-record-page' record.patient.id record.id %}" role="button">Back to Record Page</a></div>
+  <div class="col-9">
+    <div class="">
+      <form method="POST" enctype="multipart/form-data" action="" class="mx-5">
+        {% csrf_token %}
+  
+        <!-- clinical summary -->
+  
+        <div class="mb-3">
+          <label for="sas" class="form-label fw-medium">Medical History</label>
+          <textarea class="form-control" id="sas" rows="3" name="medical_history" placeholder="Enter brief medical history of patient">{{record.surgical_history}}</textarea>
+        </div>
+  
+        <div class="mb-3">
+          <label for="sas" class="form-label fw-medium">Surgical History</label>
+          <textarea class="form-control" id="sas" rows="3" name="surgical_history" placeholder="Enter patient surgical history of patient if any">{{record.surgical_history}}</textarea>
+        </div>
+  
+        <div class="mb-3">
+          <label for="sas" class="form-label fw-medium">GYN / OBS History</label>
+          <textarea class="form-control" id="sas" rows="3" name="gyn_obs_history" placeholder="Enter Patient GYN / OBS History">{{record.gyn_obs_history}}</textarea>
+        </div>
+  
+        <div class="mb-3">
+          <label for="sas" class="form-label fw-medium">Family Medical History </label>
+          <textarea class="form-control" id="sas" rows="3" name="family_history" placeholder="Enter patient family medical history">{{record.family_history}}</textarea>
+        </div>
+  
+        <div class="mb-3">
+          <label for="sas" class="form-label fw-medium">Social History / Lifestyle</label>
+          <textarea class="form-control" id="sas" rows="3" name="social_history" placeholder="Enter patient social history">{{record.social_history}}</textarea>
+        </div>
+  
+        <!-- End of clinical summary -->
+  
+        <div class="mb-3">
+          <label for="sas" class="form-label fw-medium">Signs and Symptoms</label>
+          <textarea class="form-control" id="sas" rows="3" name="signs_and_symptoms" placeholder="Enter present signs and symptoms of the patient" required>{{record.signs_and_symptoms}}</textarea>
+        </div>
+  
+        <div class="mb-3">
+          <label for="ii" class="form-label fw-medium">Impressions / Diagnosis:</label>
+          <textarea class="form-control" id="ii" rows="3" placeholder="Enter diseases or disorders being tested for based on the signs and symptoms mentioned" name="impressions">{{record.impressions}}</textarea>
+        </div>
+  
+        <div class="mb-3">
+          <label for="tmu" class="form-label fw-medium">Investigations / Lab Tests</label>
+          <textarea class="form-control" id="tmu" rows="3" name="investigations">{{record.investigations}}</textarea>
+        </div>
+  
+        <div class="mb-3">
+          <label for="tr" class="form-label fw-medium">Test Results</label>
+          <textarea class="form-control" id="tr" rows="3" name="test_results" placeholder="Please Enter Test Results from Medical Diagnosis">{{record.test_results}}</textarea>
+          <div class="row">
+            <div class="col-6 mb-3"></div>
+            <div class="col">
+              <label for="formFileMultiple" class="form-label my-2 text-center fw-semibold">Attach Files</label>
+              {% for path in attachment_paths %}
+                <P><a class="text-primary fw-bold fs-6" href="{% static path %}">Attachment</a><a href="{% url 'delete-attachment' record.patient.id record.id path %}" class="btn text-danger fw-bold ms-5">Delete</a></P>
+              {% endfor %}
+              <input class="form-control" type="file" value="" id="formFileMultiple" name="test_attachments" multiple>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="cc" class="form-label fw-medium">Conclusions</label>
-        <textarea class="form-control" id="cc" rows="3" name="conclusions" placeholder="Please Conclusion from Medical Diagnosis">{{record.conclusions}}</textarea>
-      </div>
-
-      <div class="mb-3">
+  
         <div class="mb-3">
-          <label for="mm" class="form-label fw-semibold">Management</label>
-          <h6 class="text-center">Medical</h6>
-          <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_meds" placeholder="Please Enter Medications Given If Any" >{{mgt_meds}}</textarea>
-          <h6 class="text-center">Surgical</h6>
-          <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_surg" placeholder="Please Enter Any Surgical Procedures Conducted If Any" >{{mgt_surg}}</textarea>
-          <h6 class="text-center">Therapy</h6>
-          <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_ther" placeholder="Please Enter Therapy Treatments Given If Any" >{{mgt_ther}}</textarea>
-          <h6 class="text-center">Others</h6>
-          <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_other" placeholder="Please Enter Any Other Treatment Methods Utilized If Any" >{{mgt_other}}</textarea>
+          <label for="cc" class="form-label fw-medium">Conclusions</label>
+          <textarea class="form-control" id="cc" rows="3" name="conclusions" placeholder="Please Conclusion from Medical Diagnosis">{{record.conclusions}}</textarea>
         </div>
-      </div>
-
-      <div class="d-flex justify-content-center">
-      <a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'patient-page' record.patient.id%}" role="button">Back to Patient Page</a>
-      <button type="submit" class="btn btn-primary ms-2 px-4 py-2 fw-bold">Update Record</button>
-      </div>
-    </form>
+  
+        <div class="mb-3">
+          <div class="mb-3">
+            <label for="mm" class="form-label fw-semibold">Management</label>
+            <h6 class="text-center">Medical</h6>
+            <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_meds" placeholder="Please Enter Medications Given If Any" >{{mgt_meds}}</textarea>
+            <h6 class="text-center">Surgical</h6>
+            <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_surg" placeholder="Please Enter Any Surgical Procedures Conducted If Any" >{{mgt_surg}}</textarea>
+            <h6 class="text-center">Therapy</h6>
+            <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_ther" placeholder="Please Enter Therapy Treatments Given If Any" >{{mgt_ther}}</textarea>
+            <h6 class="text-center">Others</h6>
+            <textarea class="form-control mb-3" id="mm" rows="3" name="mgt_other" placeholder="Please Enter Any Other Treatment Methods Utilized If Any" >{{mgt_other}}</textarea>
+          </div>
+        </div>
+  
+        <div class="d-flex justify-content-center">
+        <a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'medical-record-page' record.patient.id record.id %}" role="button">Back to Record Page</a>
+        <button type="submit" class="btn btn-primary ms-2 px-4 py-2 fw-bold fs-5">Update Record</button>
+        </div>
+      </form>
+    </div>
   </div>
+  <div class="col-1"></div>
+</div>
 {% endblock content %}
