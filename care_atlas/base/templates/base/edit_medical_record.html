@@ -66,8 +66,8 @@
             <div class="col-6 mb-3"></div>
             <div class="col">
               <label for="formFileMultiple" class="form-label my-2 text-center fw-semibold">Attach Files</label>
-              {% for path in attachment_paths %}
-                <P><a class="text-primary fw-bold fs-6" href="{% static path %}">Attachment</a><a href="{% url 'delete-attachment' record.patient.id record.id path %}" class="btn text-danger fw-bold ms-5">Delete</a></P>
+              {% for attachment in test_attachments_list %}
+                <P><a class="text-primary fw-bold fs-6" href="{% get_media_prefix %}{{ attachment }}">Attachment</a><a href="{% url 'delete-attachment' record.patient.id record.id attachment %}" class="btn text-danger fw-bold ms-5">Delete</a></P>
               {% endfor %}
               <input class="form-control" type="file" value="" id="formFileMultiple" name="test_attachments" multiple>
             </div>

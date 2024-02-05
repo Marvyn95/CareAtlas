@@ -1,4 +1,6 @@
 import secrets
+import os
+from django.conf import settings
 
 def file_handler(files):
     file_name_list = []
@@ -8,8 +10,10 @@ def file_handler(files):
         file_ext = (i.name).split(".")[-1]
         new_file_name = f"{random_string}.{file_ext}"
         
+        file_path = os.path.join(settings.BASE_DIR, "media", new_file_name)
+        
         #saving file in memory with new name
-        with open(f"base/static/base/files/{new_file_name}", "wb+") as f:
+        with open(file_path, "wb+") as f:
             for chunk in i.chunks():
                 f.write(chunk)
                 

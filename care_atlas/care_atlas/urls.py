@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from users import views as users_views
 from base import views as base_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,5 +49,9 @@ urlpatterns = [
     path('users/edit_profile_page', users_views.edit_user_profile_page, name='edit-profile-page'),
     path('base/order_tests_page/<int:patient_id>', base_views.order_tests_page, name='order-tests'),
     path('base/update_investigations_page/<int:patient_id>/<int:record_id>', base_views.investigations_update_page, name='investigations-update'),
-    path('base/delete_attachment/<int:patient_id>/<int:record_id>/<path:attachment_path>', base_views.delete_attachment, name='delete-attachment')
+    path('base/delete_attachment/<int:patient_id>/<int:record_id>/<path:attachment>', base_views.delete_attachment, name='delete-attachment')
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

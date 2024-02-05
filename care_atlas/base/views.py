@@ -10,6 +10,7 @@ import json
 from fractions import Fraction
 from base.utils import file_handler
 import os
+from django.conf import settings
 
 
 date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
@@ -293,11 +294,9 @@ def new_patient_record_page(request, patient_id):
         test_results = ", ".join(request.POST["test_results"].split("\r\n")) if request.POST["test_results"] != "" else "None"
         
         if "test_attachments" in request.FILES:
-            print("yes we have an attachment")
             test_attachments = request.FILES.getlist("test_attachments")
             test_attachments_name_s = file_handler(test_attachments)
             test_attachments_name_s_string = "---".join(test_attachments_name_s)
-            print(test_attachments_name_s_string)
         
         conclusions = ", ".join(request.POST["conclusions"].split("\r\n")) if request.POST["conclusions"] != "" else "None"
         
@@ -308,6 +307,7 @@ def new_patient_record_page(request, patient_id):
         mgt_other = ", ".join(request.POST["mgt_other"].split("\r\n")) if request.POST["mgt_other"] != "" else "None"     
                 
         management = "---".join([mgt_meds, mgt_surg, mgt_ther, mgt_other])
+        
         patient=Patient.objects.get(id=patient_id)
          
         if "test_attachments" in request.FILES:
@@ -418,6 +418,10 @@ def edit_patient_record_page(request, patient_id, record_id):
         
         record.save()
         
+        if record.test_results != "Awaiting Test Results" or record.conclusions != "Awaiting Test Results" or record.management != "Awaiting Test Results":
+            record.record_status = None
+            record.save()
+        
         messages.success(request, "Your Record Has Been Updated Successfully")    
         redirect_url = reverse('medical-record-page', args=(patient_id, record_id))
         return redirect(redirect_url)
@@ -434,7 +438,8 @@ def edit_patient_record_page(request, patient_id, record_id):
         "mgt_surg": mgt[1],
         "mgt_ther": mgt[2],
         "mgt_other": mgt[3],
-        "attachment_paths": attachment_paths
+        "attachment_paths": attachment_paths,
+        "test_attachments_list": test_attachments_list
         }
         return render(request, 'base/edit_medical_record.html', context)
 
@@ -524,9 +529,11 @@ def medical_record_page(request, patient_id, record_id):
     
     #creating list of record test attachments paths
     test_attachments_list = (record.test_attachments).split("---") if record.test_attachments != None else []
+    print(test_attachments_list)
+
     attachment_paths = []
     for k in test_attachments_list:
-        path_1 = f"base/files/{k}"
+        path_1 = os.path.join(settings.BASE_DIR, "media", k)
         attachment_paths.append(path_1)
     
     if patient.date_of_birth != None:
@@ -534,7 +541,6 @@ def medical_record_page(request, patient_id, record_id):
     else:
         patient_age = 'Unknown'
     
-    print(attachment_paths)
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -551,7 +557,8 @@ def medical_record_page(request, patient_id, record_id):
         "mgt_ther": mgt[2],
         "mgt_other": mgt[3],
         "attachment_paths": attachment_paths,
-        "attachment_number": len(attachment_paths)
+        "attachment_number": len(test_attachments_list),
+        "test_attachments_list": test_attachments_list
     }
     
     return render(request, 'base/medical_record_page.html', context)
@@ -940,29 +947,30 @@ def investigations_update_page(request, patient_id, record_id):
     return render(request, 'base/investigations_update.html', context)
 
 
-def delete_attachment(request, patient_id, record_id, attachment_path):
+def delete_attachment(request, patient_id, record_id, attachment):
     patient = Patient.objects.get(id=patient_id)
     record = PatientRecord.objects.get(id=record_id)
+      
+    #getting list attachments from database
+    attachment_list = (record.test_attachments).split("---") if record.test_attachments != None else []
     
-    #removing attachment from files
-    if os.path.exists(attachment_path):
-        print("path exists")
-        os.remove(attachment_path)
-    
-    #removing attachment name from database
-    attachment_to_delete = attachment_path.split("/")[-1]
-    print(attachment_to_delete)
-    attachment_list = (record.test_attachments).split("---")
-    print(attachment_list)
+    #removing attachmemnt name from database and server
     for i in attachment_list:
-        if i == attachment_to_delete:
-            attachment_list.remove(attachment_to_delete)
+        if i == attachment:
+            # removing attachment name from list of attachments
+            attachment_list.remove(attachment)
+            #removing attachment from server
+            os.remove(os.path.join(settings.BASE_DIR, "media", attachment))
             break
     
     attachment_string = "---".join(attachment_list)
-    record.test_attachments = attachment_string
-    record.save()
+    if attachment_string != "":
+        record.test_attachments = attachment_string
+        record.save()
+    else:
+        record.test_attachments = None
+        record.save()
     
     messages.success(request, "Attachment Deleted Successfully")
     redirect_url = reverse('edit-patient-record', args=(patient_id, record_id))
-    return redirect(redirect_url)  
+    return redirect(redirect_url)

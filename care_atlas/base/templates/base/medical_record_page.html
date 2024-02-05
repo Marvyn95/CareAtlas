@@ -52,8 +52,8 @@
 
         <h5 class="mb-2 fw-bold">Test Attachments (<span class="text-primary fw-bold">{{attachment_number}}</span>)</h5>
         <ul class="mb-5">
-          {% for path in attachment_paths %}
-          <li class="fs-5 mb-2 fst-italic"><a class="text-primary fw-bold fs-6" href="{% static path %}">Attachment</a></li>
+          {% for attachment in test_attachments_list %}
+          <li class="fs-5 mb-2 fst-italic"><a class="text-primary fw-bold fs-6" href="{% get_media_prefix %}{{ attachment }}">Attachment</a></li>
           {% endfor %}
         </ul>
 
