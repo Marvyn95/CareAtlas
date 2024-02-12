@@ -20,6 +20,7 @@ from users import views as users_views
 from base import views as base_views
 from django.conf import settings
 from django.conf.urls.static import static
+from stock import views as stock_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -44,12 +45,13 @@ urlpatterns = [
     path('base/bills/<int:page>/', base_views.bills_page, name='bills-page'),
     path('base/records/<int:page>/', base_views.records_page, name='records-page'),
     path('base/search/<int:page>/', base_views.search_page, name='search-page'),
-    path('base/search/<int:page>/<str:search_string>/', base_views.search_page, name='search-page'),
+    path('base/ssearch/<int:page>/<str:search_string>/', base_views.search_page, name='search-page'),
     path('users/user_profile_page/', users_views.user_profile_page, name='profile-page'),
     path('users/edit_profile_page', users_views.edit_user_profile_page, name='edit-profile-page'),
     path('base/order_tests_page/<int:patient_id>', base_views.order_tests_page, name='order-tests'),
     path('base/update_investigations_page/<int:patient_id>/<int:record_id>', base_views.investigations_update_page, name='investigations-update'),
-    path('base/delete_attachment/<int:patient_id>/<int:record_id>/<path:attachment>', base_views.delete_attachment, name='delete-attachment')
+    path('base/delete_attachment/<int:patient_id>/<int:record_id>/<path:attachment>', base_views.delete_attachment, name='delete-attachment'),
+    path ('stock/medications_list/', stock_views.medication_list_page, name='medication-list')
 ]
 
 

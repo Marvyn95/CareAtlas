@@ -192,14 +192,24 @@
                 <div class="row">
                   <div class="card rounded-3 col w-25 bg-body-secondary border border-0">
                     <div class="card-body">
-                      <h4 class="card-title">Next of Kin</h4>
+                      <h4 class="card-title">Next of Kin:</h4>
+                      {% if patient.next_of_kin %}
                       <h5 class="card-subtitle mb-2 text-primary">{{patient.next_of_kin}}</h5>
+                      {% else %}
+                      <h5 class="card-subtitle mb-2 text-primary">None</h5>
+                      {% endif %}
+
                     </div>
                   </div>
                   <div class="card rounded-3 col w-25 bg-body-secondary border border-0">
                     <div class="card-body">
-                      <h4 class="card-title">Next of Kin's Contact</h4>
+                      <h4 class="card-title">Next of Kin's Contact"</h4>
+                      {% if patient.next_of_kin %}
                       <h5 class="card-subtitle mb-2 text-primary">{{patient.next_of_kin_contact}}</h5>
+                      {% else %}
+                      <h5 class="card-subtitle mb-2 text-primary">None</h5>
+                      {% endif %}
+
                     </div>
                   </div>
               </div>

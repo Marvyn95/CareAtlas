@@ -23,6 +23,7 @@ class Medication(models.Model):
     }
     strength_value_units = models.CharField(blank=False, choices=strength_value_units_choices, max_length=10)
     quantity = models.IntegerField(default=0)
+    hospital = models.CharField(max_length=100, blank=False)
     
     def __str__(self):
         medication = f"Name: {self.name}, Brand: {self.brand}, Quantity: {self.quantity}, Strength: {self.strength_value} {self.strength_value_units}"

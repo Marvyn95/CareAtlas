@@ -1,3 +1,4 @@
+
 {% load static %}
 <html lang="en">
 <head>
@@ -46,19 +47,8 @@
     </div>
     
 
-    
-    <div class="col-7 p-3 bg-body-secondary my-2 rounded-4">
-      <nav class="navbar bg-body-tertiary rounded-4 shadow-lg mb-4">
-        <div class="container-fluid">
-          <a href="{%url 'application-home' %}" class="link-underline link-underline-opacity-0"><span class="navbar-brand mb-0 h1 text-primary fw-bolder fs-3 ms-3">CareAtlas</span></a>
-          <form class="d-flex w-75 my-auto" role="search" action="{% url 'search-page' 1 %}" method="POST">
-            {% csrf_token %}
-            <input class="form-control me-2" type="text" placeholder="Search Clients/Patients" aria-label="Search" name="search_string" value="{{search_text}}">
-            <button class="btn btn-primary shadow-lg fw-bold" type="submit">Search</button>
-          </form>
-        </div>
-      </nav>
 
+    <div class="col-7 p-3 bg-body-secondary my-2 rounded-4">
       {% if messages %}
         {% for message in messages %}
           <div class="alert alert-primary text-center my-2" role="alert">
@@ -71,6 +61,8 @@
       {% endblock content%}
       
     </div>
+
+
 
     <div class="col-2 p-3 bg-body-secondary mx-1 my-2 rounded-4 text-center">
       <a href="{% url 'logout' %}" class="border border-3 border-dark btn btn-light fw-bold fs-6 rounded-4 text-secondary p-3 shadow-lg mt-5 w-75" type="button"><i class=" bi bi-backspace-fill text-body-emphasis me-3" style="font-size: 150%"></i>Log Out</a>
