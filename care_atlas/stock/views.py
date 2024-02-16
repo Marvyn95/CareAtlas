@@ -72,6 +72,26 @@ def medication_list_page(request):
 def edit_medication_entry(request, med_id):
     medication = Medication.objects.get(id=med_id)
     
+    if request.method == "POST":
+        name = request.POST["name"]
+        brand = request.POST["brand"] if request.POST["brand"] != "" else "None"
+        formulation = request.POST["formulation"]
+        strength = request.POST["strength"]
+        units = request.POST["units"]
+        
+        #updating and saving the medication entry
+        medication.name = name
+        medication.brand = brand
+        medication.formulation = formulation
+        medication.strength_value = strength
+        medication.strength_value_units = units
+        medication.save()
+        
+        messages.success(request, "Medication Updated Successfully")
+        redirect_url=reverse("edit-medication", args=(med_id, ))
+        return redirect(redirect_url)
+        
+
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -82,3 +102,17 @@ def edit_medication_entry(request, med_id):
     }
     print(medication)
     return render(request, 'stock/edit_medication_entry.html', context)
+
+def update_quantity_page(request, med_id):
+    medication = Medication.objects.get(id=med_id)
+    
+    if request.method == "POST":
+        quantity = request.POST["quantity"]
+        medication.quantity += int(quantity)
+        medication.save()
+        
+        messages.success(request, "Quantity Updated Successfully")
+        redirect_url=reverse("edit-medication", args=(med_id, ))
+        return redirect(redirect_url)
+        
+        
