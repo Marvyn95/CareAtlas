@@ -81,7 +81,7 @@ def application_home_page(request):
     
         ages = []
         for i in current_year_records:
-            if i.patient.date_of_birth != 'null':
+            if i.patient.date_of_birth:
                 patient_age = int((datetime.datetime.now().date() - i.patient.date_of_birth).days/365)
                 ages.append(patient_age)
                 
@@ -99,7 +99,9 @@ def application_home_page(request):
             gender_ratio = Fraction(len(male_clients), len(female_clients))
             male_rep = gender_ratio.numerator
             female_rep = gender_ratio.denominator       
-                      
+        
+        average_age = int(sum(ages)/len(ages)) if len(ages) != 0 else "CBD" 
+                    
         context = {
             "day": date_1[0],
             "day_of_month": date_1[1],
@@ -109,7 +111,7 @@ def application_home_page(request):
             "days_patient_num": len(list(today_records)),
             "male_rep": male_rep,
             "female_rep": female_rep,
-            "average_age": int(sum(ages)/len(ages)),
+            "average_age": average_age,
             "last_six_months": json.dumps(last_six_months, ensure_ascii=False),
             "client_totals": json.dumps(client_totals),
             "test_notifications": test_notifications
@@ -139,7 +141,7 @@ def new_patient_page(request):
         sex = request.POST["sex"]
         nationality = request.POST["nationality"]
         phone_number = request.POST["phone_number"]        
-        date_of_birth = request.POST["date_of_birth"]
+        date_of_birth = request.POST["date_of_birth"] if date_of_birth != "" else "null"
         address = request.POST["address"]
         next_of_kin = request.POST["next_of_kin"]
         next_of_kin_contact = request.POST["next_of_kin_contact"]
