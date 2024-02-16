@@ -53,7 +53,8 @@ urlpatterns = [
     path('base/delete_attachment/<int:patient_id>/<int:record_id>/<path:attachment>', base_views.delete_attachment, name='delete-attachment'),
     path ('stock/medications_list/', stock_views.medication_list_page, name='medication-list'),
     path('stock/edit_medication_entry/<int:med_id>', stock_views.edit_medication_entry, name='edit-medication'),
-    path('stock/update_quantity/<int:med_id>/', stock_views.update_quantity_page, name='update-quantity')
+    path('stock/update_quantity/<int:med_id>/', stock_views.update_quantity_page, name='update-quantity'),
+    path('base/edit_patient_profile/<int:patient_id>/', base_views.edit_patient_profile_page, name='edit-patient-profile')
 ]
 
 

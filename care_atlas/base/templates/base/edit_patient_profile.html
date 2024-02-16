@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="w-50 mx-auto">
+        <h1 class="display-5  mb-3 text-primary fw-bold mt-2"><i class="bi bi-person-fill-add me-3"></i>Edit Patient Profile</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-2 mx-auto">
+            <a class="btn btn-primary col fw-semibold mx-3 shadow-lg fs-4" href="{% url 'patient-page' patient.id %}">Back to Patient Page</a>
+        </div>
+
+        <div class="col">
+            <form method="POST" class="row mx-auto bg-primary-subtle p-2 rounded-4 g-3 w-75 mt-3 shadow-lg">
+                {% csrf_token %}
+                <div class="col-md-6">
+                  <label for="" class="form-label">First Name</label>
+                  <input type="text" class="form-control" id="" name="first_name" value="{{patient.first_name}}" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="" class="form-label">Last Name</label>
+                  <input type="text" class="form-control" id="" name="last_name" value="{{patient.last_name}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Sex</label>
+                    <select id="" class="form-select" name="sex" required>
+                      <option value="{{patient.sex}}" >{{patient.sex}}</option>
+                      <option>Male</option>
+                      <option>Female</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                <div class="col-12">
+                  <label for="i" class="form-label">Nationality</label>
+                  <input type="text" class="form-control" id="" value="{{patient.nationality}}" name="nationality">
+                </div>
+                <div class="col-12">
+                    <label for="" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="" placeholder="" name="phone_number" value="{{patient.phone_number}}">
+                </div>            
+                <div class="col-12">
+                    <label for="i" class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="" placeholder={{patient.date_of_birth}} name="date_of_birth" value={{patient.date_of_birth}} >
+                </div>
+                <div class="col-12">
+                  <label for="i" class="form-label">Address</label>
+                  <input type="text" class="form-control" id="" placeholder="" name="address" value="{{patient.address}}">
+                </div>
+                <div class="col-12">
+                  <label for="i" class="form-label">Next of Kin</label>
+                  <input type="text" class="form-control" id="" placeholder="" name="next_of_kin" value="{{patient.next_of_kin}}">
+                </div>
+                <div class="col-12">
+                  <label for="i" class="form-label">Contact of Next of Kin</label>
+                  <input type="text" class="form-control" id="" placeholder="" name="next_of_kin_contact" value="{{patient.next_of_kin_contact}}">
+                </div>
+                <div class="col-12">
+                  <label for="i" class="form-label">Religion</label>
+                  <input type="text" class="form-control" id="" placeholder="" name="religion" value="{{patient.religion}}">
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary fw-bold fs-5 p-2 mt-2 mb-1 shadow-lg">Save Patient</button>
+                </div>
+              </form>
+        </div>
+    </div>
+{% endblock content %}

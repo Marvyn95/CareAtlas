@@ -146,38 +146,95 @@ def new_patient_page(request):
         religion = request.POST["religion"]
         
         
-        if date_of_birth == "":
-            patient1 = Patient(
-                first_name=first_name,
-                last_name=last_name,
-                sex=sex,
-                nationality=nationality,
-                phone_number=phone_number,
-                address=address,
-                next_of_kin=next_of_kin,
-                next_of_kin_contact=next_of_kin_contact,
-                religion=religion
+        patient1 = Patient(
+            first_name=first_name,
+            last_name=last_name,
+            sex=sex,
+            nationality=nationality,
+            phone_number=phone_number,
+            address=address,
+            next_of_kin=next_of_kin,
+            next_of_kin_contact=next_of_kin_contact,
+            religion=religion
         )
-        else:
-            patient1 = Patient(
-                first_name=first_name,
-                last_name=last_name,
-                sex=sex,
-                nationality=nationality,
-                phone_number=phone_number,
-                date_of_birth=date_of_birth,
-                address=address,
-                next_of_kin=next_of_kin,
-                next_of_kin_contact=next_of_kin_contact,
-                religion=religion
-            )
+        
+        if date_of_birth != "":
+                patient1.date_of_birth=date_of_birth
+                patient1.save()
             
         patient1.save()
         messages.success(request, "Patient Profile Created Successfully")
         redirect_url=reverse('application-page', args=(1,))
         return redirect(redirect_url)
     else:
-        return render(request, 'base/new_patient.html', date)
+        #getting records awaiting results
+        doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+        doctors = [x.user for x in doctor_hospitalprofiles]
+        
+        values = ["Tests Done Successfully!", "Awaiting Test Results"]
+        test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)  
+        
+        context = {
+            "day": date_1[0],
+            "day_of_month": date_1[1],
+            "month": date_1[2],
+            "year": date_1[3].replace(",", ""),
+            "date": date,
+            "test_notifications": test_notifications
+        }
+        return render(request, 'base/new_patient.html', context)
+
+   
+def edit_patient_profile_page(request, patient_id):
+    patient = Patient.objects.get(id=patient_id)
+     
+    #getting records awaiting results
+    doctor_hospitalprofiles  = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name)
+    doctors = [x.user for x in doctor_hospitalprofiles]
+    values = ["Tests Done Successfully!", "Awaiting Test Results"]
+    test_notifications = PatientRecord.objects.filter(doctor__in=doctors).filter(record_status__in=values)
+    
+    if request.method == "POST":
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        sex = request.POST["sex"]
+        nationality = request.POST["nationality"]
+        phone_number = request.POST["phone_number"]        
+        date_of_birth = request.POST["date_of_birth"]
+        address = request.POST["address"]
+        next_of_kin = request.POST["next_of_kin"]
+        next_of_kin_contact = request.POST["next_of_kin_contact"]
+        religion = request.POST["religion"]
+        
+        patient.first_name=first_name
+        patient.last_name=last_name
+        patient.sex=sex
+        patient.nationality=nationality
+        patient.phone_number=phone_number
+        patient.address=address
+        patient.next_of_kin=next_of_kin
+        patient.next_of_kin_contact=next_of_kin_contact
+        patient.religion=religion
+        
+        if date_of_birth != "":
+            patient.date_of_birth=date_of_birth
+            
+        patient.save()
+        
+        messages.success(request, "Patient Profile Updated Successfully")
+        redirect_url=reverse('patient-page', args=(patient_id,))
+        return redirect(redirect_url)    
+    
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "patient": patient,
+        "test_notifications": test_notifications
+    }
+    return render(request, 'base/edit_patient_profile.html', context)
 
 
 
@@ -469,6 +526,7 @@ def patient_page(request, patient_id):
     else:
         patient_age = ''
     
+    print(patient.date_of_birth)
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],

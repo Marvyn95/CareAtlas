@@ -163,62 +163,63 @@
     </div>
 
 
-        <!-- Modal 3-->
-        <div class="modal fade modal-dialog-scrollable modal-lg" id="patient_profile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false">
-          <div class="modal-dialog">
-            <div class="modal-content bg-body-secondary">
-              <div class="modal-header">
-                <h1 class="modal-title fs-3 text-primary fw-bold" id="exampleModalLabel">Patient Profile</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modal 3-->
+    <div class="modal fade modal-dialog-scrollable modal-lg" id="patient_profile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content bg-body-secondary">
+          <div class="modal-header">
+            <h1 class="modal-title fs-3 text-primary fw-bold" id="exampleModalLabel">Patient Profile</h1>
+            <a class="btn fw-semibold text-danger link-underline link-underline-opacity-0 mx-auto" href="{% url 'edit-patient-profile' patient.id %}">edit profile</a>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col text-center">
+                <h1><i class="bi bi-person-circle"></i></h1>
+                <h2>{{patient.first_name}} {{patient.last_name}}</h2>
+                <h3 class="text-body-secondary">{{patient.nationality}} {{patient.sex}} {{patient.patient_age}}</h3>
               </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col text-center">
-                    <h1><i class="bi bi-person-circle"></i></h1>
-                    <h2>{{patient.first_name}} {{patient.last_name}}</h2>
-                    <h3 class="text-body-secondary">{{patient.nationality}} {{patient.sex}} {{patient.patient_age}}</h3>
-                  </div>
 
-                  <div class="card rounded-3 col bg-body-secondary border border-0">
-                    <div class="card-body">
-                      <h4 class="card-title">Contact: <span class="card-subtitle mb-2 text-primary">{{patient.phone_number}}</span></h4>
-                      <h4 class="card-title">Address: <span class="card-subtitle mb-2 text-primary">{{patient.address}}</span></h4>
-                      <h4 class="card-title">Religion: <span class="card-subtitle mb-2 text-primary">{{patient.religion}}</span></h4>                  
-                    </div>
-                  </div>
+              <div class="card rounded-3 col bg-body-secondary border border-0">
+                <div class="card-body">
+                  <h4 class="card-title">Contact: <span class="card-subtitle mb-2 text-primary">{{patient.phone_number}}</span></h4>
+                  <h4 class="card-title">Address: <span class="card-subtitle mb-2 text-primary">{{patient.address}}</span></h4>
+                  <h4 class="card-title">Religion: <span class="card-subtitle mb-2 text-primary">{{patient.religion}}</span></h4>                  
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="card rounded-3 col w-25 bg-body-secondary border border-0">
+                <div class="card-body">
+                  <h4 class="card-title">Next of Kin:</h4>
+                  {% if patient.next_of_kin %}
+                  <h5 class="card-subtitle mb-2 text-primary">{{patient.next_of_kin}}</h5>
+                  {% else %}
+                  <h5 class="card-subtitle mb-2 text-primary">None</h5>
+                  {% endif %}
 
                 </div>
-
-                <div class="row">
-                  <div class="card rounded-3 col w-25 bg-body-secondary border border-0">
-                    <div class="card-body">
-                      <h4 class="card-title">Next of Kin:</h4>
-                      {% if patient.next_of_kin %}
-                      <h5 class="card-subtitle mb-2 text-primary">{{patient.next_of_kin}}</h5>
-                      {% else %}
-                      <h5 class="card-subtitle mb-2 text-primary">None</h5>
-                      {% endif %}
-
-                    </div>
-                  </div>
-                  <div class="card rounded-3 col w-25 bg-body-secondary border border-0">
-                    <div class="card-body">
-                      <h4 class="card-title">Next of Kin's Contact"</h4>
-                      {% if patient.next_of_kin %}
-                      <h5 class="card-subtitle mb-2 text-primary">{{patient.next_of_kin_contact}}</h5>
-                      {% else %}
-                      <h5 class="card-subtitle mb-2 text-primary">None</h5>
-                      {% endif %}
-
-                    </div>
-                  </div>
               </div>
+              <div class="card rounded-3 col w-25 bg-body-secondary border border-0">
+                <div class="card-body">
+                  <h4 class="card-title">Next of Kin's Contact"</h4>
+                  {% if patient.next_of_kin %}
+                  <h5 class="card-subtitle mb-2 text-primary">{{patient.next_of_kin_contact}}</h5>
+                  {% else %}
+                  <h5 class="card-subtitle mb-2 text-primary">None</h5>
+                  {% endif %}
 
+                </div>
               </div>
-            </div>
+          </div>
+
           </div>
         </div>
-        <!-- end model 3 -->
+      </div>
+    </div>
+    <!-- end model 3 -->
 
 
   <!-- patient details section -->
