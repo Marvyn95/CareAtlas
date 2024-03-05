@@ -34,7 +34,7 @@
     </div>
     <div class="row">
         <div class="col-9"></div>
-        <button type="button" class="border border-0 bg-light mb-5 fw-semibold text-danger col" data-bs-toggle="modal" data-bs-target="#change_password">Change Passswod</button>
+        <a href="{% url 'password_reset' %}" class="col"><button type="button" class="btn me-3 text-danger">change Password</button></a>
     </div>
 
 
@@ -47,50 +47,54 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{% url 'edit-profile-page' %}" class="mx-5">
+                <form method="POST" action="{% url 'edit-profile-page' %}" class="w-75 mx-auto">
                 {% csrf_token %}
                 <div class="row mb-3 ">
-                    <label for="" class="col-sm-2 col-form-label fw-semibold">Hospital</label>
-                    <select id="" class="form-select col" name="hospital_name" required>
-                        <option value="{{user.hospitalprofile.hospital_name}}">{{user.hospitalprofile.hospital_name}}</option>
-                        {% for hosp in registered_hospitals %}
-                            <option>{{hosp.hospital_name}}</option>
-                        {% endfor %}
-                    </select>
+                    <label for="" class="col-sm-3 col-form-label fw-semibold">Hospital</label>
+                    <div class="col">
+                        <select id="" class="form-select" name="hospital_name" required>
+                            <option value="{{user.hospitalprofile.hospital_name}}">{{user.hospitalprofile.hospital_name}}</option>
+                            {% for hosp in registered_hospitals %}
+                                <option>{{hosp.hospital_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="first_name" class="col-sm-2 col-form-label fw-semibold">First Name</label>
-                    <div class="col-sm-10">
+                    <label for="first_name" class="col-sm-3 col-form-label fw-semibold">First Name</label>
+                    <div class="col">
                       <input type="text" class="form-control" id="first_name" name="first_name" value="{{user.first_name}}">
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="last_name" class="col-sm-2 col-form-label fw-semibold">Last Name</label>
-                    <div class="col-sm-10">
+                    <label for="last_name" class="col-sm-3 col-form-label fw-semibold">Last Name</label>
+                    <div class="col">
                       <input type="text" class="form-control" id="last_name" name="last_name" value="{{user.last_name}}">
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="role" class="col-sm-2 col-form-label fw-semibold">Role</label>
-                    <select id="role" class="form-select col" name="role" required>
-                        <option value="{{user.hospitalprofile.role}}">{{user.hospitalprofile.role}}</option>
-                        <option>Doctor</option>
-                        <option>Nurse</option>
-                        <option>Laboratory Technician</option>
-                        <option>Pharmacist</option>
-                        <option>Radiologist</option>
-                        <option>Physical Therapist</option>
-                    </select>
+                    <label for="role" class="col-sm-3 col-form-label fw-semibold">Role</label>
+                    <div class="col">
+                        <select id="role" class="form-select" name="role" required>
+                            <option value="{{user.hospitalprofile.role}}">{{user.hospitalprofile.role}}</option>
+                            <option>Doctor</option>
+                            <option>Nurse</option>
+                            <option>Laboratory Technician</option>
+                            <option>Pharmacist</option>
+                            <option>Radiologist</option>
+                            <option>Physical Therapist</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="email" class="col-sm-2 col-form-label fw-semibold">Email</label>
-                    <div class="col-sm-10">
+                    <label for="email" class="col-sm-3 col-form-label fw-semibold">Email</label>
+                    <div class="col">
                       <input type="email" class="form-control" id="email" name="email" value="{{user.email}}">
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="phone_number" class="col-sm-2 col-form-label fw-semibold">Phone No.</label>
-                    <div class="col-sm-10">
+                    <label for="phone_number" class="col-sm-3 col-form-label fw-semibold">Phone No.</label>
+                    <div class="col">
                       <input type="phone_number" class="form-control" id="phone_number" name="phone_number" value="{{user.hospitalprofile.phone_number}}">
                     </div>
                 </div>

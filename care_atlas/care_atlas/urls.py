@@ -21,6 +21,7 @@ from base import views as base_views
 from django.conf import settings
 from django.conf.urls.static import static
 from stock import views as stock_views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -54,7 +55,11 @@ urlpatterns = [
     path ('stock/medications_list/', stock_views.medication_list_page, name='medication-list'),
     path('stock/edit_medication_entry/<int:med_id>', stock_views.edit_medication_entry, name='edit-medication'),
     path('stock/update_quantity/<int:med_id>/', stock_views.update_quantity_page, name='update-quantity'),
-    path('base/edit_patient_profile/<int:patient_id>/', base_views.edit_patient_profile_page, name='edit-patient-profile')
+    path('base/edit_patient_profile/<int:patient_id>/', base_views.edit_patient_profile_page, name='edit-patient-profile'),
+    path('password_reset', auth_views.PasswordResetView.as_view(template_name='users/password_reset.html'), name='password_reset'),
+    path('pasword_reset_done', auth_views.PasswordResetDoneView.as_view(template_name='users/password_reset_done.html'), name='password_reset_done'),
+    path('password-reset-confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete')
 ]
 
 

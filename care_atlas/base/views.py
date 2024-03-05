@@ -11,6 +11,7 @@ from fractions import Fraction
 from base.utils import file_handler
 import os
 from django.conf import settings
+from stock.models import Medication
 
 
 date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
@@ -508,7 +509,7 @@ def patient_page(request, patient_id):
     
     vitals = list(PatientVital.objects.filter(patient=patient).order_by("date_added", "time_added"))[-5:]
     medical_records = PatientRecord.objects.filter(patient=patient).order_by("-date_added", "-time_added")
-    
+    medications = Medication.objects.filter(hospital=request.user.hospitalprofile.hospital_name).order_by("name")
     medical_records_edited = []
     for rec in medical_records:
         mgt_list = rec.management.split("---") if rec.management not in ["Awaiting Test Results", "Awaiting Doctors Recommendations"] else ["TBD", "TBD", "TBD", "TBD"]
@@ -528,7 +529,6 @@ def patient_page(request, patient_id):
     else:
         patient_age = ''
     
-    print(patient.date_of_birth)
     context = {
         "day": date_1[0],
         "day_of_month": date_1[1],
@@ -539,7 +539,8 @@ def patient_page(request, patient_id):
         "vitals": vitals,
         "medical_records": medical_records_edited,
         "patient_age": patient_age,
-        "test_notifications": test_notifications
+        "test_notifications": test_notifications,
+        "medications": medications
     }
     return render(request, 'base/patient_page.html', context)
 

@@ -19,6 +19,7 @@
             <div class="mb-4">
                 <label for="Password1" class="form-label">Password</label>
                 <input type="password" class="form-control border border-3 border-secondary" id="Password1" name="password">
+                <a href="{% url 'password_reset' %}"><button type="button" class="btn me-3">Forgot Password</button></a>
             </div>
             <button type="submit" class="btn btn-primary fw-bold btn-lg px-6 me-3">Login</button>
             <a href="{% url 'register' %}"><button type="button" class="btn btn-primary btn-lg fw-bold me-3">No Account? Register</button></a>
