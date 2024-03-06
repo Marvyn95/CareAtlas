@@ -13,6 +13,10 @@ import os
 from django.conf import settings
 from stock.models import Medication
 
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
 
 date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
 date = {"day": date_1[0],  "day_of_month": date_1[1], "month": date_1[2], "year": date_1[3].replace(",", "")}
@@ -540,7 +544,9 @@ def patient_page(request, patient_id):
         "medical_records": medical_records_edited,
         "patient_age": patient_age,
         "test_notifications": test_notifications,
-        "medications": medications
+        "medications": medications,
+        "vitals_length": len(vitals),
+        "medical_records_length": len(medical_records_edited)
     }
     return render(request, 'base/patient_page.html', context)
 
@@ -590,7 +596,6 @@ def medical_record_page(request, patient_id, record_id):
     
     #creating list of record test attachments paths
     test_attachments_list = (record.test_attachments).split("---") if record.test_attachments != None else []
-    print(test_attachments_list)
 
     attachment_paths = []
     for k in test_attachments_list:
@@ -1035,3 +1040,47 @@ def delete_attachment(request, patient_id, record_id, attachment):
     messages.success(request, "Attachment Deleted Successfully")
     redirect_url = reverse('edit-patient-record', args=(patient_id, record_id))
     return redirect(redirect_url)
+
+def render_medical_report(request, patient_id, record_id):
+    patient = Patient.objects.get(id=patient_id)
+    record = PatientRecord.objects.get(id=record_id)
+    
+    if patient.date_of_birth != None:
+        patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
+    else:
+        patient_age = 'Unknown'
+        
+    mgt = record.management.split("---") if record.management not in ["Awaiting Test Results", "Awaiting Doctors Recommendations"] else ["TBD", "TBD", "TBD", "TBD"]
+    
+    template_path = 'base/medical_report_pdf.html'
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "record": record,
+        "patient": patient,
+        "patient_age": patient_age,
+        "mgt_meds": mgt[0],
+        "mgt_surg": mgt[1],
+        "mgt_ther": mgt[2],
+        "mgt_other": mgt[3],
+    }
+    
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+    
+    # create a pdf
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    
+    # if error then show some funny view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+   
+    return response

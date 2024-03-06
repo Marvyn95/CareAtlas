@@ -245,27 +245,31 @@
     </div>
 
     <div class="container mt-3">
-      <div class="row">
-        {% for vital in vitals %}
-        <div class="col bg-primary-subtle m-3 py-3 rounded-4 border border-2 border-primary shadow-lg" style="max-width: 20%;">
-          <div class="row">
-            <div class="col-8">
-              <h6 class=""><i class="bi bi-calendar3-week-fill text-primary me-1"></i>{{vital.date_added}}</h6>
-            </div>
+      {% if vitals_length == 0 %}
+        <div class="w-75 mx-auto"><h5 class="fw-medium text-body-secondary">No Vitals to Show</h5></div>
+      {% else %}
+        <div class="row">
+          {% for vital in vitals %}
+          <div class="col bg-primary-subtle m-3 py-3 rounded-4 border border-2 border-primary shadow-lg" style="max-width: 20%;">
+            <div class="row">
+              <div class="col-8">
+                <h6 class=""><i class="bi bi-calendar3-week-fill text-primary me-1"></i>{{vital.date_added}}</h6>
+              </div>
 
-            {%if user == vital.doctor%}
-            <div class="col-2"><a class="text-primary fw-bold link-underline link-underline-opacity-0" href="{% url 'edit-vitals-record' patient.id vital.id %}">Edit</a></div>
-            {%endif%}
+              {%if user == vital.doctor%}
+              <div class="col-2"><a class="text-primary fw-bold link-underline link-underline-opacity-0" href="{% url 'edit-vitals-record' patient.id vital.id %}">Edit</a></div>
+              {%endif%}
+            </div>
+            <h4 class="ps-2"><span class="h3">{{vital.systolic_blood_pressure}}</span> / {{vital.diastolic_blood_pressure}} <span class="text-primary fs-6">mmHg</span></h4>
+            <h5 class="ps-2">{{vital.weight}}<span class="text-primary fs-6">kg</span>  {{vital.temperature}}<i class="bi bi-thermometer-high text-primary"></i>  {{vital.pulse_bpm}}<span class="text-primary fs-6">bpm</span></h5>
+            {% if vital.oxygen_saturation %}
+              <h5 class="ms-2">{{vital.oxygen_saturation}}<span class="text-primary"> % (spO2)</span></h5>
+            {% endif %}
           </div>
-          <h4 class="ps-2"><span class="h3">{{vital.systolic_blood_pressure}}</span> / {{vital.diastolic_blood_pressure}} <span class="text-primary fs-6">mmHg</span></h4>
-          <h5 class="ps-2">{{vital.weight}}<span class="text-primary fs-6">kg</span>  {{vital.temperature}}<i class="bi bi-thermometer-high text-primary"></i>  {{vital.pulse_bpm}}<span class="text-primary fs-6">bpm</span></h5>
-          {% if vital.oxygen_saturation %}
-            <h5 class="ms-2">{{vital.oxygen_saturation}}<span class="text-primary"> % (spO2)</span></h5>
-          {% endif %}
+          {% endfor %}
         </div>
-        {% endfor %}
-      </div>
-      <a class="btn btn-primary col fw-semibold mx-4 shadow-lg" href="{% url 'patient-vitals-page' patient.id %}">All Patient Vital Records</a>
+        <a class="btn btn-primary col fw-semibold mx-4 shadow-lg" href="{% url 'patient-vitals-page' patient.id %}">All Patient Vital Records</a>
+      {% endif %}
     </div>
   </div>
 
@@ -280,32 +284,36 @@
       </div>
     </div>
 
-    {% for record in medical_records %}
-    <div class="card w-100 h-15 mb-3 mx-auto rounded-4 shadow-lg border border-2 border-secondary">
-      <div class="card-body">
-        <div class="row pt-2">
-          <h5 class="card-title col">{{record.date_added}}</h5>
-          <p class="col fw-medium"><i class="bi bi-alarm-fill me-1"></i>{{record.time_added}}</p>
-          <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{record.doctor.first_name}}</p>
-          <p class="col-4 fw-medium"><i class="bi bi-hospital-fill me-1"></i>{{record.doctor.hospitalprofile.hospital_name}}</p>
-          
-          <!-- {% if user == record.doctor %}
-            <a type="button" class="btn col fw-bold text-primary me-4" href="{% url 'edit-patient-record' patient.id record.id %}">Edit</a>
-          {% endif %} -->
-        </div>
+    {% if medical_records_length == 0 %}
+      <div class="w-75 mx-auto"><h5 class="fw-medium text-body-secondary">No Medical Records to Show</h5></div>
+    {% else %}
+      {% for record in medical_records %}
+      <div class="card w-100 h-15 mb-3 mx-auto rounded-4 shadow-lg border border-2 border-secondary">
+        <div class="card-body">
+          <div class="row pt-2">
+            <h5 class="card-title col">{{record.date_added}}</h5>
+            <p class="col fw-medium"><i class="bi bi-alarm-fill me-1"></i>{{record.time_added}}</p>
+            <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{record.doctor.first_name}}</p>
+            <p class="col-4 fw-medium"><i class="bi bi-hospital-fill me-1"></i>{{record.doctor.hospitalprofile.hospital_name}}</p>
+            
+            <!-- {% if user == record.doctor %}
+              <a type="button" class="btn col fw-bold text-primary me-4" href="{% url 'edit-patient-record' patient.id record.id %}">Edit</a>
+            {% endif %} -->
+          </div>
 
-        <ul class="">
-          <li class="list-group-item"><span class="fw-bold">Signs and Symptoms: </span>{{record.signs_and_symptoms}}</li>
-          <li class="list-group-item"><span class="fw-bold">Impressions: </span>{{record.impressions}}</li>
-          <li class="list-group-item"><span class="fw-bold">Investigations: </span>{{record.investigations}}</li>
-          <li class="list-group-item"><span class="fw-bold">Results: </span>{{record.test_results}}</li>
-          <li class="list-group-item"><span class="fw-bold">Conclusions: </span>{{record.conclusions}}</li>
-          <li class="list-group-item"><span class="fw-bold">Management: </span>{{record.management}}</li>
-        </ul>
-        <a class="btn btn-primary col fw-semibold mx-4 shadow-lg" href="{% url 'medical-record-page' patient.id record.id %}">View in Detail</a>
+          <ul class="">
+            <li class="list-group-item"><span class="fw-bold">Signs and Symptoms: </span>{{record.signs_and_symptoms}}</li>
+            <li class="list-group-item"><span class="fw-bold">Impressions: </span>{{record.impressions}}</li>
+            <li class="list-group-item"><span class="fw-bold">Investigations: </span>{{record.investigations}}</li>
+            <li class="list-group-item"><span class="fw-bold">Results: </span>{{record.test_results}}</li>
+            <li class="list-group-item"><span class="fw-bold">Conclusions: </span>{{record.conclusions}}</li>
+            <li class="list-group-item"><span class="fw-bold">Management: </span>{{record.management}}</li>
+          </ul>
+          <a class="btn btn-primary col fw-semibold mx-4 shadow-lg" href="{% url 'medical-record-page' patient.id record.id %}">View in Detail</a>
+        </div>
       </div>
-    </div>
-    {% endfor %}
+      {% endfor %}
+    {% endif %}
   </div>
 
 </div>  

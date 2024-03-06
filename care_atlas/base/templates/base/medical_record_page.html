@@ -27,9 +27,9 @@
           <!-- <h5 class="my-1 fw-semibold text-primary">{{record.date_added}}</h5> -->
           <h5 class="my-1 fw-medium text-black">{{record.time_added}}</h5>
           <h5 class="my-1 fw-medium text-black">Report By: {{record.doctor.first_name}} {{record.doctor.last_name}}</h5>
-          <h5 class="my-1 fw-medium text-black">{{record.doctor.role}}</h5>
-          <h5 class="my-1 fw-medium text-black">{{record.doctor.phone_number}}</h5>
-          <h5 class="my-1 fw-medium text-black">{{record.doctor.email}}</h5>
+          <h5 class="my-1 fw-medium text-black">Role: {{record.doctor.hospitalprofile.role}}</h5>
+          <h5 class="my-1 fw-medium text-black">Phone: {{record.doctor.hospitalprofile.phone_number}}</h5>
+          <h5 class="my-1 fw-medium text-black">Email: {{record.doctor.email}}</h5>
           <h5 class="my-1 fw-medium text-black">{{record.doctor.hospitalprofile.hospital_name}}</h5>
         </div>
        </div>
@@ -81,7 +81,7 @@
           {% endif %}
         </div>
 
-        <div class="col"><button type="submit" class="btn text-primary ms-2 fw-bold fs-5">Print Report</button></div>
+        <div class="col"><a type="button" class="btn col fw-bold text-primary me-4 fs-5" href="{% url 'render-medical-report' patient.id record.id %}">print Record</a></div>
         
         {% if user == record.doctor and bill == None%}
           <div class="col text-center">
