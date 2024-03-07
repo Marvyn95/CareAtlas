@@ -1084,3 +1084,68 @@ def render_medical_report(request, patient_id, record_id):
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
    
     return response
+
+def render_medical_bill(requeust, patient_id, record_id, bill_id):
+    patient = Patient.objects.get(id=patient_id)
+    record = PatientRecord.objects.get(id=record_id)
+    bill = PatientBill.objects.get(id=bill_id)
+    
+    if patient.date_of_birth != None:
+        patient_age = int((datetime.datetime.now().date() - patient.date_of_birth).days/365)
+    else:
+        patient_age = 'Unknown'
+        
+    test_list = bill.test_list.split(", ")
+    test_list_filtered = [i for i in test_list if i != ""]
+    
+    test_cost_list = bill.test_cost_list.split(", ")
+    test_cost_list_filtered = [j for j in test_cost_list if j != "0"]
+    
+    test_dict = dict(zip(test_list, test_cost_list))
+        
+    medication_fees_list = (bill.medication_fees_list).split("---") if bill.medication_fees_list != None else []
+    medication_fees_dict = {"meds": medication_fees_list[0], "surg": medication_fees_list[1], "ther": medication_fees_list[2]}
+    
+    template_path = 'base/medical_bill_pdf.html'
+    context = {
+        "day": date_1[0],
+        "day_of_month": date_1[1],
+        "month": date_1[2],
+        "year": date_1[3].replace(",", ""),
+        "date": date,
+        "record": record,
+        "patient": patient,
+        "bill": bill,
+        "patient_age": patient_age,
+        "test_list_filtered": test_list_filtered,
+        "test_cost_list_filtered": test_cost_list,
+        "test_1": test_list[0],
+        "test_2": test_list[1],
+        "test_3": test_list[2],
+        "test_4": test_list[3],
+        "test_5": test_list[4],
+        "test_cost_1": test_cost_list[0],
+        "test_cost_2": test_cost_list[1],
+        "test_cost_3": test_cost_list[2],
+        "test_cost_4": test_cost_list[3],
+        "test_cost_5": test_cost_list[4],
+        "medication_fees_list": medication_fees_list,
+        "medication_fees_dict": medication_fees_dict
+    }
+    
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="bill.pdf"'
+    
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+    
+    # create a pdf
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    
+    # if error then show some funny view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+   
+    return response

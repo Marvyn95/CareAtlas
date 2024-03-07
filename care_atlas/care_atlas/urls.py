@@ -60,7 +60,9 @@ urlpatterns = [
     path('pasword_reset_done', auth_views.PasswordResetDoneView.as_view(template_name='users/password_reset_done.html'), name='password_reset_done'),
     path('password-reset-confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), name='password_reset_confirm'),
     path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'),
-    path('base/render_medical_report/<int:patient_id>/<int:record_id>/', base_views.render_medical_report, name='render-medical-report')
+    path('base/render_medical_report/<int:patient_id>/<int:record_id>/', base_views.render_medical_report, name='render-medical-report'),
+    path('base/render_medical_bill/<int:patient_id>/<int:record_id>/<int:bill_id>', base_views.render_medical_bill, name='render-medical-bill')
+    
 ]
 
 

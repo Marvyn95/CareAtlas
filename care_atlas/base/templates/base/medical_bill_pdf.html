@@ -1,0 +1,91 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareAtlas</title>
+
+</head>
+<body>
+    <div>
+        <div><h1 style="text-align:center; font-size:x-large;">Medical Bill</h1></div>
+        <ul style="font-size:large;">
+            <li style="list-style: none;">Date: {{bill.date_added}}</li>
+            <li style="list-style: none;">Time: {{bill.time_added}}</li>
+            <li style="list-style: none;">Doctor: {{bill.doctor.first_name}} {{bill.doctor.last_name}}</li>
+            <li style="list-style: none;">Hospital: {{bill.doctor.hospitalprofile.hospital_name}}</li>
+        </ul>            
+    </div>
+    <div>
+        <br>
+        <ul style="font-size:large;">
+            <li style="list-style: none;"><h3>Patient Details</h3></li>
+            <li style="list-style: none;">{{patient.first_name}} {{patient.last_name}}</li>
+            <li style="list-style: none;">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</li>
+            <li style="list-style: none;">{{patient.phone_number}}</li>
+        </ul>
+    </div>
+    <br>
+    <div>
+        <table border="1" style="border-collapse: collapse; text-align:center; border: 1px solid black; width: 50%; font-size:large; ">
+            <tr>
+                <th style="padding:3px">No.</th>
+                <th style="padding:3px">Items</th>
+                <th style="padding:3px">Description</th>
+                <th style="padding:3px">Ammount</th>
+            </tr>
+            <tr>
+                <td style="padding:3px">1</td>
+                <td style="padding:3px">Professional Fees</td>
+                <td style="padding:3px">Doctor Consultation</td>
+                <td style="padding:3px">{{bill.consultation_fees}}</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Investigations / Lab Tests</td>
+                <td>
+                  {% for test in test_list_filtered %}
+                    <p>{{test}}</p>
+                  {% endfor %}
+                </td>
+                <td style="padding:3px">
+                  {% for cost in test_cost_list_filtered %}
+                    <p>{{cost}}</p>
+                  {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Nursing Care</td>
+                <td style="text-align: left; padding:3px">patient assessment, medication administration, patient monitoring, emergency response, IV therapy, pain management, etc</td>
+                <td style="padding:3px">{{bill.nursing_care_fees}}</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Medication and Treatments</td>
+                <td style="padding:3px">
+                  <p>Medication</p>
+                  <p>Surgery</p>
+                  <p>Therapy</p>
+                </td>
+                <td>
+                    {% for fee in medication_fees_list %}
+                      <p>{{fee}}</p>
+                    {% endfor %}
+                  </td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td style="padding:3px">Other Specific Charges</td>
+                <td><p>{{bill.specific_charges}}</p></td>
+                <td style="padding:3px">{{bill.specific_charge_fees}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="font-weight: bolder;">Total Ammount</td>
+                <td></td>
+                <td style="padding:3px; font-weight: bolder;">{{bill.total_charges}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

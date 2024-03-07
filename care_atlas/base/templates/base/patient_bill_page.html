@@ -97,8 +97,8 @@
         <div class="row">
             <div class="col-4"><a type="submit" class="btn btn-primary fw-bold" href="{% url 'medical-record-page' patient.id record.id %}">Medical Record Page</a></div>
             <div class="col-4"></div>
-            <div class="col"><button type="submit" class="btn text-primary fw-bold fs-5" data-bs-toggle="modal" data-bs-target="#editbill">Edit Bill</button></div>
-            <div class="col"><button type="submit" class="btn text-primary fw-bold fs-5">Print Bill</button></div>
+            <div class="col"><button type="submit" class="btn text-primary fw-bold fs-5" data-bs-toggle="modal" data-bs-target="#editbill">Edit</button></div>
+            <div class="col"><a type="button" class="btn col fw-bold text-primary me-4 fs-5" href="{% url 'render-medical-bill' patient.id record.id bill.id%}">Download</a></div>
         </div>
 
 
