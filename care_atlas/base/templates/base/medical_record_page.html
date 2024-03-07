@@ -77,11 +77,11 @@
   
         <div class="col text-center">
           {% if user == record.doctor %}
-            <a type="button" class="btn col fw-bold text-primary me-4 fs-5" href="{% url 'edit-patient-record' patient.id record.id %}">Edit Record</a>
+            <a type="button" class="btn col fw-bold text-primary me-4 fs-5" href="{% url 'edit-patient-record' patient.id record.id %}">Edit</a>
           {% endif %}
         </div>
 
-        <div class="col"><a type="button" class="btn col fw-bold text-primary me-4 fs-5" href="{% url 'render-medical-report' patient.id record.id %}">print Record</a></div>
+        <div class="col"><a type="button" class="btn col fw-bold text-primary me-4 fs-5" href="{% url 'render-medical-report' patient.id record.id %}">Download</a></div>
         
         {% if user == record.doctor and bill == None%}
           <div class="col text-center">

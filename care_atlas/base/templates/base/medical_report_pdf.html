@@ -10,50 +10,54 @@
         <div class="container-1">
             <div class="one"><h1 style="text-align:center;" class="heading">Medical Report</h1></div>
             <div class="two"></div>
-            <div class="three"><h3>{{record.date_added}}</h3></div>
+            <div class="three" style="font-size: large;"><h3>{{record.date_added}}</h3></div>
         </div>
         <div class="container-1">
-            <div>
+            <div style="font-size: large;">
+                <h3>Patient Details</h3>
                 <ul style="list-style: none;">
-                    <li><p>{{patient.first_name}} {{patient.last_name}}</p></li>
-                    <li><p>{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</p></li>
-                    <li><p>{{patient.phone_number}}</p></li>
-                    <li></li>
+                    <li style="list-style: none;">{{patient.first_name}} {{patient.last_name}}</li>
+                    <li style="list-style: none;">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</li>
+                    <li style="list-style: none;">{{patient.phone_number}}</li>
                 </ul>   
             </div>
+            <br>
             <div class="two"></div>
-            <div class="three">
+            <div class="three" style="font-size: large;">
+                <h3>Hospital Details</h3>
                 <ul style="list-style: none;">
-                    <li><p>{{record.time_added}}</p></li>
-                    <li><p>Report By: {{record.doctor.first_name}} {{record.doctor.last_name}}</p></li>
-                    <li><p>Role: {{record.doctor.hospitalprofile.role}}</p></li>
-                    <li><p>Phone: {{record.doctor.hospitalprofile.phone_number}}</p></li>
-                    <li><p>Email: {{record.doctor.email}}</p></li>
-                    <li><p>{{record.doctor.hospitalprofile.hospital_name}}</p></li>
+                    <li style="list-style: none;">{{record.time_added}}</li>
+                    <li style="list-style: none;">Report By: {{record.doctor.first_name}} {{record.doctor.last_name}}</li>
+                    <li style="list-style: none;">Role: {{record.doctor.hospitalprofile.role}}</li>
+                    <li style="list-style: none;">Phone: {{record.doctor.hospitalprofile.phone_number}}</li>
+                    <li style="list-style: none;">Email: {{record.doctor.email}}</li>
+                    <li style="list-style: none;">{{record.doctor.hospitalprofile.hospital_name}}</li>
                 </ul>            
             </div>
         </div>
         <br>
-        <h4>Patient History</h4>
-        <p class="info"><span>Medical: </span>{{record.medical_history}}, <span>Surgical: </span>{{record.surgical_history}}, <span>Gyn/Obs: </span>{{record.gyn_obs_history}}, <span>Family: </span>{{record.family_history}}, <span>Social: </span>{{record.social_history}}</p>
-        <h4 class="">Condition / Signs / Symptoms</h4>
-        <p class="info">{{record.signs_and_symptoms}}</p>
-        <h4 class="">Impressions / Diagnosis</h4>
-        <p class="info">{{record.impressions}}</p>
-        <h4 class="">Investigations / Lab Tests</h4>
-        <p class="info">{{record.investigations}}</p>
-        <h4 class="">Test Results</h4>
-        <p class="info">{{record.test_results}}</p>
-        <!-- <h4 class="">Test Attachments (<span class="">{{attachment_number}}</span>)</h4>    -->
-        <h4 class="info">Conclusions</h4>
-        <p class="">{{record.conclusions}}</p>
-        <h4 class="info">Management</h4>
-        <ul class="">
-        <li class="">Medical: {{mgt_meds}}</li>
-        <li class="">Surgical: {{mgt_surg}}</li>
-        <li class=""> Therapy: {{mgt_ther}}</li>
-        <li class="">Others: {{mgt_other}}</li>
-        </ul> 
+        <div style="font-size: large;">
+            <h4>Patient History</h4>
+            <p class="info"><span>Medical: </span>{{record.medical_history}}, <span>Surgical: </span>{{record.surgical_history}}, <span>Gyn/Obs: </span>{{record.gyn_obs_history}}, <span>Family: </span>{{record.family_history}}, <span>Social: </span>{{record.social_history}}</p>
+            <h4 class="">Condition / Signs / Symptoms</h4>
+            <p class="info">{{record.signs_and_symptoms}}</p>
+            <h4 class="">Impressions / Diagnosis</h4>
+            <p class="info">{{record.impressions}}</p>
+            <h4 class="">Investigations / Lab Tests</h4>
+            <p class="info">{{record.investigations}}</p>
+            <h4 class="">Test Results</h4>
+            <p class="info">{{record.test_results}}</p>
+            <!-- <h4 class="">Test Attachments (<span class="">{{attachment_number}}</span>)</h4>    -->
+            <h4 class="info">Conclusions</h4>
+            <p class="">{{record.conclusions}}</p>
+            <h4 class="info">Management</h4>
+            <ul class="">
+            <li class="">Medical: {{mgt_meds}}</li>
+            <li class="">Surgical: {{mgt_surg}}</li>
+            <li class=""> Therapy: {{mgt_ther}}</li>
+            <li class="">Others: {{mgt_other}}</li>
+            </ul> 
+        </div>
     </div>
 </body>
 </html>
