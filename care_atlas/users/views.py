@@ -24,7 +24,6 @@ def register(request):
         hospital_name = request.POST['hospital_name']
         role = request.POST['role']
         form1 = UserRegistrationForm(request.POST)        
-        approve_reg_application()
                 
         if form1.is_valid():
             # saving user profile
@@ -35,12 +34,12 @@ def register(request):
                 email = form1.cleaned_data.get('email'),              
                 password = make_password(form1.cleaned_data.get('password1'))          
             )            
-            hospital_profile = HospitalProfile(user = user_instance, hospital_name = hospital_name, role=role)
+            hospital_profile = HospitalProfile(user = user_instance, hospital_name = hospital_name, role=role, account_status="Inactive")
             
             user_instance.save()
             hospital_profile.save()
             
-            messages.success(request, "Your CareAtlas Account Has Been Created! You May Log In")
+            messages.success(request, "Your CareAtlas Account Has Been Created and Awaiting Approval!")
             return redirect("login")
         else:
             form1 = UserRegistrationForm(request.POST)
@@ -55,19 +54,25 @@ def register(request):
 
 def login_page(request):
     if request.method == 'POST':
-        user = User.objects.filter(email = request.POST['email']).first()
+        user = User.objects.filter(email = request.POST['email']).first()      
         if user:
-            username = user.username
-            password = request.POST['password']
-            # authenticating and logging in user
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user) 
-                messages.success(request, 'Your Login Was Succesful')
-                return redirect('application-home')
+            #checking account activation status
+            profile = HospitalProfile.objects.filter(user=user).first()
+            if profile.account_status == "Active":
+                username = user.username
+                password = request.POST['password']
+                # authenticating and logging in user
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user) 
+                    messages.success(request, 'Your Login Was Succesful')
+                    return redirect('application-home')
+                else:
+                    messages.warning(request, 'Login Denied!, Please Check Login Credentials')
+                    return redirect('login')
             else:
-                messages.warning(request, 'Login Denied!, Please Check Login Credentials')
-                return redirect('login')
+                messages.warning(request, 'Login Denied!, Account not Activated!, Check With Your Administrator!')
+                return redirect('login')        
         else:
             messages.warning(request, 'Login Denied!, Please Check Login Credentials')
             return redirect('login')
@@ -125,3 +130,21 @@ def edit_user_profile_page(request):
         
         redirect_url = reverse('profile-page')
         return redirect(redirect_url)
+    
+def account_activation(request, user_id, decision):
+    user = User.objects.get(id=user_id)
+    if decision == 'True':
+        profile = HospitalProfile.objects.filter(user=user).first()
+        profile.account_status = "Active"
+        profile.save()
+        messages.success(request, f"{user.first_name} {user.last_name}'s account activated successfully!")
+    elif decision == 'False':
+        user.delete()
+        messages.success(request, f"{user.first_name} {user.last_name}'s account removed!")           
+    
+    redirect_url=reverse('application-home')
+    return redirect(redirect_url)
+        
+            
+        
+        

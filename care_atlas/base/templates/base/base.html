@@ -72,6 +72,8 @@
       
     </div>
 
+
+
     <div class="col-2 p-3 bg-body-secondary mx-1 my-2 rounded-4 text-center">
       <a href="{% url 'logout' %}" class="border border-3 border-dark btn btn-light fw-bold fs-6 rounded-4 text-secondary p-3 shadow-lg mt-5 w-75" type="button"><i class=" bi bi-backspace-fill text-body-emphasis me-3" style="font-size: 150%"></i>Log Out</a>
       <div>
@@ -123,6 +125,20 @@
           {% endfor %}   
         {% endif %}
 
+        {% if user.hospitalprofile.admin_status == 'Admin' %}
+          {% for account in inactive_accounts %}
+            <div class="card text-bg-dark mb-3 mx-auto shadow-lg rounded-4" style="max-width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title"><span class="text-primary fw-bolder">{{account.user.first_name}} {{account.user.last_name}}</span> wants to create an account with this hospital</h5>
+                <div class="row">
+                  <div class="col-4 fw-bolder"><a href="{% url 'account-activation' account.user.id 'True' %}" class="link-underline link-underline-opacity-0">Activate</a></div>
+                  <div class="col-4"></div>
+                  <div class="col-4 fw-bolder"><a href="{% url 'account-activation' account.user.id 'False' %}" class="link-underline link-underline-opacity-0 text-danger">Deny</a></div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
       </div>
 
     </div>

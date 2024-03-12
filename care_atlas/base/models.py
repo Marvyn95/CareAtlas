@@ -50,7 +50,7 @@ class PatientRecord(models.Model):
     
 class PatientVital(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
-    doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    doctor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     date_added = models.DateField(auto_now_add=True)
     time_added = models.TimeField(auto_now_add=True)
     pulse_bpm = models.IntegerField(null=True)
@@ -66,7 +66,7 @@ class PatientVital(models.Model):
     
 class PatientBill(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
-    doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    doctor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     medical_record = models.OneToOneField(PatientRecord, on_delete=models.DO_NOTHING, null=True)
     date_added = models.DateField(auto_now_add=True)
     time_added = models.TimeField(auto_now_add=True)

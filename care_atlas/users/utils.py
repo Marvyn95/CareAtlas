@@ -2,7 +2,7 @@ from users.models import RegisteredHospital
 
 
 def approve_reg_application():
-    pass
+    return True
 
 
 def get_registered_hospitals():

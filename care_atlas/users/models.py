@@ -7,6 +7,10 @@ class HospitalProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     phone_number = models.CharField(max_length=20, null=True)
     role = models.CharField(max_length=50, null=True)
+    admin_status_choices = {"Regular": "Regular", "Admin": "Admin"}
+    admin_status = models.CharField(max_length=20, choices=admin_status_choices, null=True)
+    account_status_choices = {"Active": "Active", "Inactive": "Inactive"}
+    account_status = models.CharField(max_length=20, choices=account_status_choices, null=True)
     
     def __str__(self):
         profile = f"{self.user.first_name} {self.user.last_name}, {self.hospital_name}"
@@ -25,5 +29,3 @@ class RegisteredHospital(models.Model):
     def __str__(self):
         hospital_details = f"{self.hospital_name}, {self.town_or_state}, {self.country}"
         return hospital_details
-    
-    

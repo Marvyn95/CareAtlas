@@ -21,13 +21,12 @@ from xhtml2pdf import pisa
 date_1 = datetime.datetime.now().strftime("%a %d %b %Y, %I:%M%p").split(" ")
 date = {"day": date_1[0],  "day_of_month": date_1[1], "month": date_1[2], "year": date_1[3].replace(",", "")}
 
-
-
 # Create your views here.
 def home_page(request):
     return render(request, 'base/home_page.html')
 
 def application_patient_page(request, page=1):
+    
     all_patients = Patient.objects.all().order_by('-date_added')
     patients = Paginator(all_patients, 24)
     
@@ -47,6 +46,12 @@ def application_patient_page(request, page=1):
         "patients": patients.page(page),
         "test_notifications": test_notifications
     }
+    
+    #getting all inactive accounts for users hospital and adding them to context
+    inactive_accounts = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name).filter(account_status="Inactive")
+    print(inactive_accounts)
+    context["inactive_accounts"] = inactive_accounts
+    
     return render(request, 'base/application_patient_page.html', context)
 
 
@@ -121,6 +126,10 @@ def application_home_page(request):
             "client_totals": json.dumps(client_totals),
             "test_notifications": test_notifications
         }
+        #getting all inactive accounts for users hospital and adding them to context
+        inactive_accounts = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name).filter(account_status="Inactive")
+        print(inactive_accounts)
+        context["inactive_accounts"] = inactive_accounts
     else:        
         context = {
             "day": date_1[0],
@@ -136,6 +145,10 @@ def application_home_page(request):
             "client_totals": json.dumps(client_totals),
             "test_notifications": test_notifications
         }
+        #getting all inactive accounts for users hospital and adding them to context
+        inactive_accounts = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name).filter(account_status="Inactive")
+        print(inactive_accounts)
+        context["inactive_accounts"] = inactive_accounts
     return render(request, 'base/application_home_page.html', context)
 
 
