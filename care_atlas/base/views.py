@@ -128,7 +128,6 @@ def application_home_page(request):
         }
         #getting all inactive accounts for users hospital and adding them to context
         inactive_accounts = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name).filter(account_status="Inactive")
-        print(inactive_accounts)
         context["inactive_accounts"] = inactive_accounts
     else:        
         context = {
@@ -147,7 +146,6 @@ def application_home_page(request):
         }
         #getting all inactive accounts for users hospital and adding them to context
         inactive_accounts = HospitalProfile.objects.filter(hospital_name=request.user.hospitalprofile.hospital_name).filter(account_status="Inactive")
-        print(inactive_accounts)
         context["inactive_accounts"] = inactive_accounts
     return render(request, 'base/application_home_page.html', context)
 
