@@ -28,7 +28,13 @@ SECRET_KEY = 'django-insecure-((h=%jnv&ky%!um5p&!kd5o4^s&m!kqgb+dz59652k_wi^a4&0
 DEBUG = True
 
 ALLOWED_HOSTS = ["careatlasug.com", "www.careatlasug.com", "3.221.174.162", "localhost", "127.0.0.1"]
-# CSRF_TRUSTED_ORIGINS = ["http://careatlasug.com", "http://www.careatlasug.com", "http://3.221.174.162", "http://localhost", "http://127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = [
+    'https://www.careatlasug.com',
+    'http://www.careatlasug.com',
+    'https://careatlasug.com',
+    'http://careatlasug.com',
+    'http://localhost:8000'
+]
 
 # Application definition
 
