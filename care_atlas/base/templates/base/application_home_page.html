@@ -4,27 +4,27 @@
     <h2 class="fw-bold">Hello, <span class="text-primary">{{user.first_name}}</span> {{user.last_name}}</h2>
 </div>
 <div class="row w-75 mt-5 mx-auto text-center">
-    <div class="col bg-primary rounded-3 px-3 py-4 mx-2 my-3 shadow-lg">
-        <h4 class="fw-bold text-white">Total Clients Today</h4>
-        <div class="row my-4">
+    <div class="col bg-primary rounded-3 px-2 py-2 mx-2 my-3 shadow-lg">
+        <h5 class="fw-bold text-white">Total Clients Today</h5>
+        <div class="row my-2">
             <div class="col-2 my-auto"><i class="bi bi-people-fill text-dark ms-3" style="font-size: 315%"></i></div>
             <div class="col">
                 <h2 class="fw-bold text-white">{{days_patient_num}} <span class="text-primary">No.</span></h2>
             </div>
         </div>
     </div>
-    <div class="col bg-primary rounded-3 px-3 py-4 mx-2 my-3 shadow-lg">
-        <h4 class="fw-bold text-white">Gender Distribution (M/F)</h4>
-        <div class="row my-4">
+    <div class="col bg-primary rounded-3 px-2 py-2 mx-2 my-3 shadow-lg">
+        <h5 class="fw-bold text-white">Gender Ratio (M/F)</h5>
+        <div class="row my-2">
             <div class="col-2 my-auto"><i class="bi bi-person-arms-up text-dark ms-3" style="font-size: 315%"></i></div>
             <div class="col">
                 <h2 class="fw-bold text-white"><span class="text-white">{{male_rep}}</span> / <span class="text-white">{{female_rep}}</span></h2>
             </div>
         </div>
     </div>
-    <div class="col bg-primary rounded-3 px-3 py-4 mx-2 my-3 shadow-lg">
-        <h3 class="fw-bold text-white">Avg. Client Age</h3>
-        <div class="row my-4">
+    <div class="col bg-primary rounded-3 px-2 py-2 mx-2 my-3 shadow-lg">
+        <h5 class="fw-bold text-white">Avg. Client Age</h5>
+        <div class="row my-2">
             <div class="col-2 my-auto"><i class="bi bi-calculator-fill text-dark ms-3" style="font-size: 315%"></i></div>
             <div class="col">
                 <h3 class="fw-bold text-white">{{average_age}} <span class="text-white">Years</span></h3>
@@ -34,16 +34,13 @@
 </div>
 
 <div class="row text-center w-75 mt-5 mx-auto">
-    <div class="col-8 bg-white rounded-3 p-4 text-center shadow-lg">
+    <div class="col-9 bg-white rounded-3 p-2 text-center shadow-lg">
         <canvas id="myChart" class="w-100 h-100"></canvas>
     </div>
-    <div class="col row">
-        <div class=" col-10 m-auto bg-primary rounded-3 p-4 shadow-lg">
-            <a type="button" class="btn btn-primary btn-lg px-5" href="{% url 'application-page' 1 %}">
-                <div class="mb-2"><i class="bi bi-people-fill fs-2"></i></div>
-                <div class="h2 fw-bold">Patients</div>
+    <div class="col">
+            <a type="button" class="w-100 btn btn-primary btn-lg rounded-3 shadow-lg" href="{% url 'application-page' 1 %}">
+                <h5 class="my-4 fw-bold"><i class="bi bi-people-fill fs-4 me-3"></i>Patients</h5>                
             </a>
-        </div>
         <!-- <div class=" col-10 m-auto bg-primary rounded-3 p-4 shadow-lg">
             <a type="button" class="btn btn-primary btn-lg px-5" href="{% url 'medication-list' %}">
                 <div class="mb-2"><i class="bi bi-book-half fs-2"></i></div>

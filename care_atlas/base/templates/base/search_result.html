@@ -16,18 +16,19 @@
 
           <div class="row">
             {% for patient in patients %}
-            <div class="col-6 mt-2">
-              <div class="card bg-primary-subtle rounded-4 shadow-lg">
+            <div class="col-4 mt-2">
+              <div class="bg-primary-subtle rounded-4 shadow-lg px-3 py-1">
                 <a href="{% url 'patient-page' patient.id %}" class="link-underline link-underline-opacity-0"><div class="card-body">
-                  <h5 class="card-title fw-semibold text-primary"><i class="bi bi-person-circle me-2 text-black"></i>{{patient.first_name}} {{patient.last_name}}</h5>
-                  <h5 class="card-subtitle mb-2 text-body-secondary">{{patient.nationality}} <span class="text-primary">{{patient.sex}}</span></h5>
-                  {% if patient.date_of_birth %}
-                    <h5 class="fw-semibold text-black">Born: <span class="fw-bold ">{{patient.date_of_birth}}</span></h5>
-                  {% endif %}
-
-                  {% if patient.phone_number %}
-                    <h5 class="fw-semiold text-black"><i class="bi bi-telephone me-2"></i></i><span class="fw-bold text-primary">{{patient.phone_number}}</span></h5>
-                  {% endif %}
+                  <ul class="list-unstyled fw-semibold">
+                    <li class="card-title fw-semibold text-primary fs-5"><i class="bi bi-person-circle me-2 text-black"></i>{{patient.first_name}} {{patient.last_name}}</li>
+                    <li class="card-subtitle text-body-secondary">{{patient.nationality}} <span class="text-primary">{{patient.sex}}</span></li>
+                    {% if patient.date_of_birth %}
+                      <li class="fw-semibold text-black">Born: <span class="fw-bold ">{{patient.date_of_birth}}</span></li>
+                    {% endif %}
+                    {% if patient.phone_number %}
+                      <li class="fw-semiold text-black"><i class="bi bi-telephone me-2"></i></i><span class="fw-bold text-primary">{{patient.phone_number}}</span></li>
+                    {% endif %}
+                  </ul>
                 </div></a>
               </div>
             </div>

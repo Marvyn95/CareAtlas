@@ -4,11 +4,11 @@
 
     <div class="row my-3">
         <div class="text-center mt-3 col">
-          <a class="btn btn-secondary px-3 fw-bold fs-5" href="{% url 'patient-page' patient.id%}" role="button"><i class="bi bi-backspace-fill me-3"></i>Patient Page</a>
+          <a class="btn btn-secondary px-3 fw-bold fs-6" href="{% url 'patient-page' patient.id%}" role="button"><i class="bi bi-backspace-fill me-3"></i>Patient Page</a>
         </div>
         <div class="col">
           <a href="{% url 'patient-page' patient.id %}" class="link-underline link-underline-opacity-0">
-            <h2 class="mb-1 mt-3 text-black fw-bold"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span> <span class="fst-italic text-secondary">Vital History</span></h2>
+            <h5 class="mb-1 mt-3 text-black fw-bold"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span> <span class="fst-italic text-secondary">Vital History</span></h5>
           </a>
           <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</h5>
           <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2"></i>{{patient.phone_number}}</h5>
@@ -20,17 +20,17 @@
         <div class="card w-75 my-3 mx-auto rounded-4 shadow-lg">
             <div class="">
               <div class="row pt-2 ms-1">
-                <h5 class="card-title col">{{vital.date_added}}</h5>
+                <p class="card-title col fw-semibold">{{vital.date_added}}</>
                 <p class="col fw-medium"><i class="bi bi-alarm-fill me-1"></i>{{vital.time_added}}</p>
-                <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{vital.doctor.first_name}} {{vital.doctor.last_name}}</p>
-                <p class="col fw-medium"><i class="bi bi-hospital-fill me-1"></i>{{vital.doctor.hospitalprofile.hospital_name}}</p>
+                <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{vital.doctor.first_name}}</p>
+                <!-- <p class="col fw-medium"><i class="bi bi-hospital-fill me-1"></i>{{vital.doctor.hospitalprofile.hospital_name}}</p> -->
                 
                 {% if user == vital.doctor %}
                 <a type="button" class="btn col fw-bold text-primary me-4" href="{% url 'edit-vitals-record' patient.id vital.id %}">Edit</a>
                 {% endif %}
               </div>
       
-              <ul class="fs-5">
+              <ul class="fs-6">
                 <li class="list-group-item"><span class="fw-medium">Blood Pressure: </span><span class="fw-semibold text-danger">{{vital.systolic_blood_pressure}} / {{vital.diastolic_blood_pressure}}</span> <span class="text-primary fw-medium">mmHg</span></span></li>
                 <li class="list-group-item"><span class="fw-medium">Weight: </span><span class="fw-semibold text-danger">{{vital.weight}} <span class="text-primary">kg</span></span></li>
                 <li class="list-group-item"><span class="fw-medium">Heart Rate: </span><span class="fw-semibold text-danger">{{vital.pulse_bpm}} <span class="text-primary">bpm</span></span></li>

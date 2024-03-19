@@ -3,38 +3,32 @@
 {% block content %}
 <div class="bg-light w-75 h-75 mx-auto mt-5 row rounded-4">
     <div class="col align-items-center ms-5">
-            <h1 class="fw-bold" style="font-size: 600%;">Profile</h1>
-            <h4 class="mt-4 text-secondary">First Name</h4>
-            <h4 class="border-bottom border-secondary-subtle border-3">{{user.first_name}}</h4>
+            <h5 class="fw-bold text-center" style="font-size: 200%;">Profile</h5>
+            <h5 class="mt-3 text-secondary">First Name</h5>
+            <h5 class="border-bottom border-secondary-subtle border-3">{{user.first_name}}</h5>
     
-            <h4 class="mt-4 text-secondary">Last Name</h4>
-            <h4 class="border-bottom border-secondary-subtle border-3">{{user.last_name}}</h4>
+            <h5 class="mt-3 text-secondary">Last Name</h5>
+            <h5 class="border-bottom border-secondary-subtle border-3">{{user.last_name}}</h5>
 
-            <h4 class="mt-4 text-secondary">Role</h4>
-            <h4 class="border-bottom border-secondary-subtle border-3">{{user.hospitalprofile.role}}</h4>
+            <h5 class="mt-3 text-secondary">Role</h5>
+            <h5 class="border-bottom border-secondary-subtle border-3">{{user.hospitalprofile.role}}</h5>
     
-            <h4 class="mt-4 text-secondary">Email</h4>
-            <h4 class="border-bottom border-secondary-subtle border-3">{{user.email}}</h4>
+            <h5 class="mt-3 text-secondary">Email</h5>
+            <h5 class="border-bottom border-secondary-subtle border-3">{{user.email}}</h5>
     
-            <h4 class="mt-4 text-secondary">Phone Number</h4>
+            <h5 class="mt-3 text-secondary">Phone Number</h5>
             {% if  user.hospitalprofile.phone_number %}
-                <h4 class="border-bottom border-secondary-subtle border-3">{{user.hospitalprofile.phone_number}}</h4>
+                <h5 class="border-bottom border-secondary-subtle border-3">{{user.hospitalprofile.phone_number}}</h5>
             {% else %}
-                <h4 class="border-bottom border-secondary-subtle border-3">None</h4>
+                <h5 class="border-bottom border-secondary-subtle border-3">None</h5>
             {% endif %}
-
     
-            <h4 class="mt-5 text-secondary">Medical Facility</h4>
-            <h4 class="border-bottom border-secondary-subtle border-3">{{user.hospitalprofile.hospital_name}}</h4>
+            <h5 class="mt-3 text-secondary">Medical Facility</h5>
+            <h5 class="borer-bottom border-secondary-subtle border-3">{{user.hospitalprofile.hospital_name}}</h5>
     </div>
     <div class="col text-center mt-3">
-        <div class=""><i class="bi bi-person-fill text-primary" style="font-size: 1800%;"></i></div>
-        <div class=""></div>
-        <button type="button" class="px-3 border border-0 fw-bold fs-4 text-white bg-primary shadow-lg rounded-3 py-2" data-bs-toggle="modal" data-bs-target="#edit_profile"><i class="bi bi-person-fill-add me-3 text-white" style="font-size: 140%"></i>Update Profile</button>
-    </div>
-    <div class="row">
-        <div class="col-9"></div>
-        <a href="{% url 'password_reset' %}" class="col"><button type="button" class="btn me-3 text-danger">change Password</button></a>
+        <button type="button" class="px-2 border border-0 fw-bold fs-6 text-white bg-primary shadow-lg rounded-3 py-2" data-bs-toggle="modal" data-bs-target="#edit_profile"><i class="bi bi-person-fill-add me-3 text-white" style="font-size: 140%"></i>Update Profile</button>
+        <a href="{% url 'password_reset' %}" class="fw-semibold mt-3"><button type="button" class="btn me-3 text-danger">change Password</button></a>
     </div>
 
 
@@ -43,7 +37,7 @@
         <div class="modal-dialog">
             <div class="modal-content bg-body-secondary">
             <div class="modal-header">
-                <h1 class="modal-title fs-5 text-primary fw-bold" id="exampleModalLabel">Update your Profile</h1>
+                <h5 class="modal-title fs-5 text-primary fw-bold" id="exampleModalLabel">Update your Profile</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

@@ -1,14 +1,14 @@
 {% extends 'base/base.html' %}
 {% block content %}
+<div class="mt-4"><a type="submit" class="btn btn-secondary ms-2 fw-bold" href="{% url 'medical-record-page' patient.id record.id %}">Back to Medical Record Page</a></div>
 <div class="row">
-  <div class="col mt-4"><a type="submit" class="btn btn-secondary ms-2 fw-bold" href="{% url 'medical-record-page' patient.id record.id %}">Medical Record Page</a></div>
-  <div class="col-9 mt-4 mx-auto bg-white rounded-4 p-5">
+  <div class="col-11 mt-4 mx-auto bg-white rounded-4 p-5">
     <div class="row">
       <div class="col-8">
-        <h3 class="fw-bold">Medical Bill</h3>
+        <h4 class="fw-bold">Medical Bill</h4>
       </div>
       <div class="col">
-        <h3><span class="text-secondary fw-bold">{{bill.date_added}}</span></h3>
+        <h4><span class="text-secondary fw-bold">{{bill.date_added}}</span></h4>
       </div>
     </div>
 
@@ -21,14 +21,14 @@
     <div class="row">
       <div class=" col-6 d-flex">
         <div class="">
-          <h2 class="text-black fw-medium"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2>
+          <h5 class="text-black fw-medium"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h5>
           <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</h5>
           <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2 text-black"></i>{{patient.phone_number}}</h5>
         </div>
       </div>
      </div>
 
-    <div class="my-2 mx-5">
+    <div class="mx-3">
         <table class="table table-bordered border-black mt-5">
             <thead>
               <tr class="table-primary text-center">
@@ -217,7 +217,6 @@
       <!-- end model 1 -->
     </div>   
   </div>
-  <div class="col"></div>
 </div>
 
 {% endblock content %}

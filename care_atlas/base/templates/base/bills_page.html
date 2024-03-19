@@ -1,11 +1,11 @@
 {% extends 'base/base.html' %}
 {% block content %}
-    <h2 class="mt-5 mb-5 ms-4 text-black fw-bold"><i class="bi bi-receipt me-3"></i>{{user.hospitalprofile.hospital_name}} <span class="text-primary">Medical Bills</span></h2>
+    <h2 class="mb-4 ms-4 text-black fw-bold"><i class="bi bi-receipt me-3"></i>{{user.hospitalprofile.hospital_name}} <span class="text-primary">Medical Bills</span></h2>
 
     {% for bill in all_bills %}
-    <div class="card w-75 h-15 mb-3 mx-auto rounded-4 shadow-lg border border-3 border-dark">
+    <div class="card w-100 h-15 mb-3 mx-auto rounded-4 shadow-lg border border-3 border-secondary">
       <div class="card-body">
-        <div class="row pt-2 justify-content-center">
+        <div class="row justify-content-center">
           <h5 class="card-title col ms-4">{{bill.date_added}}</h5>
           <p class="col fw-medium"><i class="bi bi-alarm-fill me-1"></i>{{bill.time_added}}</p>
           <p class="col fw-medium"><i class="bi bi-person-lines-fill me-1"></i>{{bill.doctor.first_name}}</p>
@@ -23,13 +23,13 @@
         </ul>
         <div class="row">
             <div class="col-8"></div>
-            <div class="col"><a class="btn btn-primary px-3 fw-bold shadow-lg" href="{% url 'patient-bill-page' bill.patient.id bill.medical_record.id bill.id %}">View Bill Details</a></div>
+            <div class="col"><a class="btn btn-sm btn-primary px-3 fw-bold shadow-lg" href="{% url 'patient-bill-page' bill.patient.id bill.medical_record.id bill.id %}">View Bill Details</a></div>
         </div>
       </div>
     </div>
     {% endfor %}
 
-    <div class="d-flex justify-content-center mt-5 fw-bold">
+    <div class="d-flex justify-content-center mt-2 fw-bold">
       <nav aria-label="..." class="">
         <ul class="pagination">
 

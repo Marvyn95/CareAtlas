@@ -5,10 +5,10 @@
   <div class="col-10 mt-4 mx-auto bg-white rounded-4 p-5">
     <div class="row">
       <div class="col-8">
-        <h3 class="fw-bold">Generate Patient Medical Bill</h3>
+        <h5 class="fw-bold">Generate Patient Medical Bill</h5>
       </div>
       <div class="col">
-        <h3><span class="text-secondary fw-bold">{{record.date_added}}</span></h3>
+        <h5><span class="text-secondary fw-bold">{{record.date_added}}</span></h5>
       </div>
     </div>
 
@@ -20,21 +20,21 @@
     <div class="row">
       <div class=" col-6 d-flex">
         <div class="">
-          <h2 class="text-black fw-medium"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h2>
+          <h4 class="text-black fw-medium"><i class="bi bi-person-circle me-3"></i>{{patient.first_name}} <span class="text-primary">{{patient.last_name}}</span></h4>
           <h5 class="my-1 fw-medium text-body-secondary">{{patient.nationality}}  {{patient.sex}}  {{patient_age}}</h5>
           <h5 class="my-1 fw-medium text-primary"><i class="bi bi-telephone-fill me-2 text-black"></i>{{patient.phone_number}}</h5>
         </div>
       </div>
      </div>
 
-    <div class="my-2">
+    <div class="my-3">
         <div class=" w-100 h-15 mb-3 mx-0 rounded-4 fst-italic ">
             <div class="card-body">      
               <ul class="">
-                <li class="list-group-item"><span class="fw-bold">Signs and Symptoms: </span>{{record.signs_and_symptoms}}</li>
-                <li class="list-group-item"><span class="fw-bold">Impressions: </span>{{record.impressions}}</li>
+                <!-- <li class="list-group-item"><span class="fw-bold">Signs and Symptoms: </span>{{record.signs_and_symptoms}}</li> -->
+                <!-- <li class="list-group-item"><span class="fw-bold">Impressions: </span>{{record.impressions}}</li> -->
                 <li class="list-group-item"><span class="fw-bold">Investigations: </span>{{record.investigations}}</li>
-                <li class="list-group-item"><span class="fw-bold">Test Results: </span>{{record.test_results}}</li>
+                <!-- <li class="list-group-item"><span class="fw-bold">Test Results: </span>{{record.test_results}}</li> -->
                 <li class="list-group-item"><span class="fw-bold">Conclusions: </span>{{record.conclusions}}</li>
                 <li class="list-group-item"><span class="fw-bold">Treatments: </span>{{record.management}}</li>
               </ul>

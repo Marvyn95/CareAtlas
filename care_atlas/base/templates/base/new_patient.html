@@ -1,61 +1,56 @@
 {% extends 'base/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="w-50 mx-auto">
-        <h1 class="display-5  mb-3 text-primary fw-bold mt-2"><i class="bi bi-person-fill-add me-3"></i>New Patient</h1>
-    </div>
-
-    <div class="">
-        <form method="POST" class="row mx-auto bg-primary-subtle p-4 rounded-4 g-3 w-75 mb-5 shadow-lg">
-            {% csrf_token %}
-            <div class="col-md-6">
-              <label for="" class="form-label">First Name</label>
-              <input type="text" class="form-control" id="" name="first_name" required>
-            </div>
-            <div class="col-md-6">
-              <label for="" class="form-label">Last Name</label>
-              <input type="text" class="form-control" id="" name="last_name" required>
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Sex</label>
-                <select id="" class="form-select" name="sex" required>
-                  <option value="" disabled selected> Select Patient Sex</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
-                </select>
-              </div>
-            <div class="col-12">
-              <label for="i" class="form-label">Nationality</label>
-              <input type="text" class="form-control" id="" value="Ugandan" name="nationality">
-            </div>
-            <div class="col-12">
-                <label for="" class="form-label">Phone Number</label>
-                <input type="text" class="form-control" id="" placeholder="" name="phone_number">
-            </div>            
-            <div class="col-12">
-                <label for="i" class="form-label">Date of Birth</label>
-                <input type="date" class="form-control" id="" placeholder="" name="date_of_birth">
-            </div>
-            <div class="col-12">
-              <label for="i" class="form-label">Address</label>
-              <input type="text" class="form-control" id="" placeholder="" name="address">
-            </div>
-            <div class="col-12">
-              <label for="i" class="form-label">Next of Kin</label>
-              <input type="text" class="form-control" id="" placeholder="" name="next_of_kin">
-            </div>
-            <div class="col-12">
-              <label for="i" class="form-label">Contact of Next of Kin</label>
-              <input type="text" class="form-control" id="" placeholder="" name="next_of_kin_contact">
-            </div>
-            <div class="col-12">
-              <label for="i" class="form-label">Religion</label>
-              <input type="text" class="form-control" id="" placeholder="" name="religion">
-            </div>
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary fw-bold fs-5 p-2 mt-2 mb-1 shadow-lg">Save Patient</button>
-            </div>
-          </form>
-    </div>
+    <h5 class="mb-3 text-primary fw-bold mt-2 text-center"><i class="bi bi-person-fill-add me-3"></i>New Patient</h5>
+    <form method="POST" class="row mx-auto bg-primary-subtle p-2 rounded-4 g-3 w-50 mb-5 shadow-lg">
+        {% csrf_token %}
+        <div class="col-md-6">
+          <!-- <label for="" class="form-label">First Name</label> -->
+          <input type="text" class="form-control" id="" name="first_name" placeholder="First Name" required>
+        </div>
+        <div class="col-md-6">
+          <!-- <label for="" class="form-label">Last Name</label> -->
+          <input type="text" class="form-control" id="" name="last_name" placeholder="Last Name" required>
+        </div>
+        <div class="">
+            <!-- <label for="" class="form-label">Sex</label> -->
+            <select id="" class="form-select" name="sex" required>
+              <option value="" disabled selected> Select Patient Sex</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+        <div class="col-12">
+          <label for="i" class="form-label">Nationality</label>
+          <input type="text" class="form-control" id="" value="Ugandan" name="nationality" placeholder="Nationality">
+        </div>
+        <div class="col-12">
+            <!-- <label for="" class="form-label">Phone Number</label> -->
+            <input type="text" class="form-control" id="" placeholder="Phone Number" name="phone_number">
+        </div>            
+        <div class="col-12">
+            <label for="i" class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" id="" placeholder="Date of Birth" name="date_of_birth">
+        </div>
+        <div class="col-12">
+          <!-- <label for="i" class="form-label">Address</label> -->
+          <input type="text" class="form-control" id="" placeholder="Address" name="address">
+        </div>
+        <div class="col-12">
+          <!-- <label for="i" class="form-label">Next of Kin</label> -->
+          <input type="text" class="form-control" id="" placeholder="Next of Kin" name="next_of_kin">
+        </div>
+        <div class="col-12">
+          <!-- <label for="i" class="form-label">Contact of Next of Kin</label> -->
+          <input type="text" class="form-control" id="" placeholder="Contact for Next of Kin" name="next_of_kin_contact">
+        </div>
+        <div class="col-12">
+          <!-- <label for="i" class="form-label">Religion</label> -->
+          <input type="text" class="form-control" id="" placeholder="Religion" name="religion">
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary fw-bold p-2 mt-2 mb-1 shadow-lg">Save Patient</button>
+        </div>
+      </form>
 {% endblock content %}
