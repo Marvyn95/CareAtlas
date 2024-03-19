@@ -157,7 +157,7 @@ def new_patient_page(request):
         sex = request.POST["sex"]
         nationality = request.POST["nationality"]
         phone_number = request.POST["phone_number"]        
-        date_of_birth = request.POST["date_of_birth"] if date_of_birth != "" else "null"
+        date_of_birth = request.POST["date_of_birth"] if request.POST["date_of_birth"] != "" else "null"
         address = request.POST["address"]
         next_of_kin = request.POST["next_of_kin"]
         next_of_kin_contact = request.POST["next_of_kin_contact"]
