@@ -58,23 +58,27 @@ def login_page(request):
         if user:
             #checking account activation status
             profile = HospitalProfile.objects.filter(user=user).first()
-            if profile.account_status == "Active":
-                username = user.username
-                password = request.POST['password']
-                # authenticating and logging in user
-                user = authenticate(request, username=username, password=password)
-                if user is not None:
-                    login(request, user) 
-                    messages.success(request, 'Your Login Was Succesful')
-                    return redirect('application-home')
+            if profile:
+                if profile.account_status == "Active":
+                    username = user.username
+                    password = request.POST['password']
+                    # authenticating and logging in user
+                    user = authenticate(request, username=username, password=password)
+                    if user is not None:
+                        login(request, user) 
+                        messages.success(request, 'Your Login Was Succesful')
+                        return redirect('application-home')
+                    else:
+                        messages.warning(request, 'Login Denied!, Wrong Password!')
+                        return redirect('login')
                 else:
-                    messages.warning(request, 'Login Denied!, Please Check Login Credentials')
+                    messages.warning(request, 'Login Denied!, Account not Activated!, Check With Your Administrator!')
                     return redirect('login')
             else:
-                messages.warning(request, 'Login Denied!, Account not Activated!, Check With Your Administrator!')
-                return redirect('login')        
+                messages.warning(request, 'Login Denied!, No Attached Account Status!')
+                return redirect('login')
         else:
-            messages.warning(request, 'Login Denied!, Please Check Login Credentials')
+            messages.warning(request, 'Login Denied!, Please Check Login Credentials!')
             return redirect('login')
     return render(request, 'users/login_page.html')
 
