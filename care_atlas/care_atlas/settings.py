@@ -97,8 +97,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'care_atlas',
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'USER': 'marvin',
+        'PASSWORD': '6967Snss.',
         'HOST': 'localhost',
         'PORT': '',
     }
