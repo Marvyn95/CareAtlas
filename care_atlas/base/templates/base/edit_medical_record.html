@@ -14,8 +14,13 @@
     <div class="">
       <form method="POST" enctype="multipart/form-data" action="" class="mx-5">
         {% csrf_token %}
-  
-        <!-- clinical summary -->
+
+        <div class="mb-3">
+          <label for="sas" class="form-label fw-medium">Signs and Symptoms</label>
+          <textarea class="form-control" id="sas" rows="3" name="signs_and_symptoms" placeholder="Enter present signs and symptoms of the patient" required>{{record.signs_and_symptoms}}</textarea>
+        </div>
+        
+        <!-- clinical history section -->
         <div class="mb-3">
           <label for="sas" class="form-label fw-medium">Medical History</label>
           <textarea class="form-control" id="sas" rows="3" name="medical_history" placeholder="Enter brief medical history of patient">{{record.surgical_history}}</textarea>
@@ -42,12 +47,7 @@
         </div>
   
         <!-- End of clinical summary -->
-  
-        <div class="mb-3">
-          <label for="sas" class="form-label fw-medium">Signs and Symptoms</label>
-          <textarea class="form-control" id="sas" rows="3" name="signs_and_symptoms" placeholder="Enter present signs and symptoms of the patient" required>{{record.signs_and_symptoms}}</textarea>
-        </div>
-  
+        
         <div class="mb-3">
           <label for="ii" class="form-label fw-medium">Impressions / Diagnosis:</label>
           <textarea class="form-control" id="ii" rows="3" placeholder="Enter diseases or disorders being tested for based on the signs and symptoms mentioned" name="impressions">{{record.impressions}}</textarea>
