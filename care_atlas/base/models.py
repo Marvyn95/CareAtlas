@@ -10,11 +10,11 @@ class Patient(models.Model):
     date_added = models.DateField(auto_now_add=True)
     sex_type = {"Male": "Male", "Female": "Female", "Complicated": "Complicated"}
     sex = models.CharField(blank=False, choices=sex_type, max_length=15)
-    phone_number = models.CharField(max_length=20, null=True)
-    address = models.CharField(max_length=30, null=True)
-    next_of_kin = models.CharField(max_length=30, null=True)
+    phone_number = models.CharField(max_length=30, null=True)
+    address = models.CharField(max_length=50, null=True)
+    next_of_kin = models.CharField(max_length=40, null=True)
     next_of_kin_contact = models.CharField(max_length=30, null=True)
-    religion = models.CharField(max_length=30, null=True)
+    religion = models.CharField(max_length=50, null=True)
     
     def __str__(self):
         patient = f"{self.first_name} {self.last_name}, {self.nationality}, {self.sex}, DOB: {self.date_of_birth}, TEL: {self.phone_number}"
@@ -41,7 +41,7 @@ class PatientRecord(models.Model):
     family_history = models.TextField(null=True)
     social_history = models.TextField(null=True)
     
-    record_status = models.CharField(max_length=20, null=True)
+    record_status = models.CharField(max_length=50, null=True)
     
     def __str__(self):
         record = f"signs: {self.signs_and_symptoms}, Impressions: {self.impressions}, Investigations: {self.investigations}, Test Results: {self.test_results}, Conclusions: {self.conclusions}, Management: {self.management}"
