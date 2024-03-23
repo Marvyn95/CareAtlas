@@ -3,17 +3,17 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Patient(models.Model):
-    first_name = models.CharField(max_length=30, blank=False)
-    last_name = models.CharField(max_length=30, blank = False)
-    nationality = models.CharField(max_length=30, blank=True, null=True)
+    first_name = models.CharField(max_length=40, blank=False)
+    last_name = models.CharField(max_length=40, blank = False)
+    nationality = models.CharField(max_length=40, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     date_added = models.DateField(auto_now_add=True)
     sex_type = {"Male": "Male", "Female": "Female", "Complicated": "Complicated"}
-    sex = models.CharField(blank=False, choices=sex_type, max_length=15)
-    phone_number = models.CharField(max_length=30, null=True)
-    address = models.CharField(max_length=50, null=True)
-    next_of_kin = models.CharField(max_length=40, null=True)
-    next_of_kin_contact = models.CharField(max_length=30, null=True)
+    sex = models.CharField(blank=False, choices=sex_type, max_length=30)
+    phone_number = models.CharField(max_length=50, null=True)
+    address = models.CharField(max_length=100, null=True)
+    next_of_kin = models.CharField(max_length=100, null=True)
+    next_of_kin_contact = models.CharField(max_length=50, null=True)
     religion = models.CharField(max_length=50, null=True)
     
     def __str__(self):
@@ -79,8 +79,8 @@ class PatientBill(models.Model):
     specific_charge_fees = models.IntegerField(null=True)
     total_charges = models.IntegerField(null=True)
     
-    test_list = models.CharField(max_length=150, blank=True, null=True)
-    test_cost_list = models.CharField(max_length=100, blank=True, null=True)
+    test_list = models.CharField(max_length=250, blank=True, null=True)
+    test_cost_list = models.CharField(max_length=250, blank=True, null=True)
     
     def __str__(self):
         patient_bill = f"Consultation: {self.consultation_fees}, Tests: {self.diagnostic_test_fees}, Nursing: {self.nursing_care_fees}, Medication: {self.medication_fees}, Other Charges: {self.specific_charge_fees}, Total: {self.total_charges}"
